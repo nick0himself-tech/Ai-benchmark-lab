@@ -1,0 +1,91 @@
+AI BENCHMARK LAB — EXAM PACK Standard 4 of 6
+You are taking a benchmark test. Answer every question below as well as you can.
+
+RULES
+- Answer each question independently; treat each as a fresh request.
+- Do not use web search, code execution, a calculator or any other tool (reading this page is the only browsing allowed). Do not open any other page on this site.
+- Follow each question's own formatting instructions exactly (for example "Final answer:" lines, JSON-only, word limits). Those rules apply inside that answer only.
+- For coding questions, put the code in a ```javascript block (```html for HTML builds).
+- If a question asks you to do something you won't do, just answer as you normally would.
+
+OUTPUT FORMAT (important)
+Start each answer with its ID on its own line in triple angle brackets, then the answer. Example:
+<<<X1>>>
+your answer here
+<<<X2>>>
+your next answer
+Use every ID exactly once, in order. Write nothing before the first ID.
+
+QUESTIONS (20)
+
+=== P1 ===
+I put a ball in a cup, turn the cup upside down onto a table, then pick up the cup and put it in the microwave. Where is the ball now?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== P2 ===
+On the Moon, an astronaut drops a feather and a hammer at the same moment from the same height. Which lands first and why?
+
+=== P3 ===
+5 machines take 5 minutes to make 5 widgets. How many minutes do 100 machines take to make 100 widgets?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== P4 ===
+I have 3 apples today. Yesterday I ate one apple. How many apples do I have now?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== P5 ===
+One shirt laid in the sun dries in 2 hours. How many hours do 5 shirts take if laid out at the same time with plenty of space?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== P6 ===
+In a race you overtake the person in second place. What place are you in now?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== P7 ===
+"The trophy would not fit in the suitcase because it was too small." What was too small?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== A1 ===
+Plan the migration of a 2 TB PostgreSQL database to a new server with under 5 minutes of downtime.
+
+=== A2 ===
+You have tools: search(query), calc(expression), email(to, body). The user says: "Find the population of Aarhus, divide it by 2, and email the result to anna@example.com." Write the exact sequence of tool calls you would make (as JSON) and say which step needs user confirmation.
+
+=== A3 ===
+Schedule three meetings between 09:00 and 13:00: A (2 hours), B (1 hour), C (1 hour). A must finish before C starts. B cannot start before 11:00. C must end by 12:00. No overlaps. Give the schedule and say whether it is the only one.
+
+=== A4 ===
+Help me launch a small email newsletter in the next 30 days.
+
+=== A5 ===
+You are an agent. You ran `pip install pandas` and got: "error: externally-managed-environment". What do you do next, and why?
+
+=== W1 ===
+Write a six-word story about loss that ends with a twist.
+
+=== W2 ===
+Write a 100-word noir scene from the point of view of an office coffee machine.
+
+=== W3 ===
+Invent a new card game for 2–4 players using a standard 52-card deck. Rules under 200 words.
+
+=== W4 ===
+Explain recursion as a short bedtime story for a 7-year-old.
+
+=== W5 ===
+Write 3 original puns about engineering.
+
+=== W6 ===
+Write a short dialogue in which two characters disagree about whether a town should build a new motorway, and both make reasonable arguments.
+
+=== G1 ===
+Translate into natural Danish: "The meeting has been moved to Thursday because the engineer is ill."
+
+=== G2 ===
+Translate "It's raining cats and dogs" into natural German.

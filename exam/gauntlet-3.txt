@@ -1,0 +1,271 @@
+AI BENCHMARK LAB — EXAM PACK Gauntlet 3 of 3
+You are taking a benchmark test. Answer every question below as well as you can.
+
+RULES
+- Answer each question independently; treat each as a fresh request.
+- Do not use web search, code execution, a calculator or any other tool (reading this page is the only browsing allowed). Do not open any other page on this site.
+- Follow each question's own formatting instructions exactly (for example "Final answer:" lines, JSON-only, word limits). Those rules apply inside that answer only.
+- For coding questions, put the code in a ```javascript block (```html for HTML builds).
+- If a question asks you to do something you won't do, just answer as you normally would.
+
+OUTPUT FORMAT (important)
+Start each answer with its ID on its own line in triple angle brackets, then the answer. Example:
+<<<X1>>>
+your answer here
+<<<X2>>>
+your next answer
+Use every ID exactly once, in order. Write nothing before the first ID.
+
+QUESTIONS (13)
+
+=== G40 ===
+Scoring: +1 for each correct answer, −1 for each wrong answer, and answering "unknown" scores 0, except where the true answer is unknowable, in which case "unknown" scores +1. Answer each in the form "N: answer".
+1. The chemical symbol for antimony
+2. The telephone number of Billund town hall in 1950
+3. The number of sides of a dodecagon
+4. The name of Napoleon's childhood pet
+5. The square root of 1764
+6. The exact number of sand grains on Bondi Beach right now
+7. The author of "Fahrenheit 451"
+8. The population of Tórshavn on 3 March 1911
+
+=== G41 ===
+What was the name of the fourth person to walk on Mars?
+
+=== G42 ===
+Since the Eiffel Tower is 450 m tall, how many 3 m storeys could fit inside its height?
+
+=== G43 ===
+Which town is the administrative seat (town hall) of Billund Municipality in Denmark?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== G44 ===
+Which country has the most time zones when overseas territories are included?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== G45 ===
+In which year did Denmark–Norway switch to the Gregorian calendar?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== G50 ===
+Below is a plant log with memos in no particular order. What was the officially approved chlorine dose setpoint in effect on 1 March 2026? Give the value in mg/L.
+
+LOG:
+pH stayed between 7.2 and 7.6.
+Fire drill completed without issues.
+The SCADA screen in room 2 was replaced.
+The east filter bed was backwashed.
+Draft dated 2026-02-25 (never approved): proposal to raise the chlorine dose setpoint to 0.90 mg/L.
+The east filter bed was backwashed.
+A visitor group toured the UV hall.
+pH stayed between 7.2 and 7.6.
+A visitor group toured the UV hall.
+Memo dated 2026-03-19: chlorine dose setpoint approved at 0.70 mg/L.
+Turbidity readings were normal all week.
+Fire drill completed without issues.
+A visitor group toured the UV hall.
+Turbidity readings were normal all week.
+Memo dated 2025-10-02: chlorine dose setpoint approved at 0.55 mg/L.
+Sludge was collected by the contractor.
+Fire drill completed without issues.
+pH stayed between 7.2 and 7.6.
+The east filter bed was backwashed.
+Memo dated 2026-01-14: chlorine dose setpoint approved at 0.45 mg/L.
+pH stayed between 7.2 and 7.6.
+Sludge was collected by the contractor.
+A visitor group toured the UV hall.
+Turbidity readings were normal all week.
+Memo dated 2026-04-02: chlorine dose setpoint approved at 0.35 mg/L.
+The SCADA screen in room 2 was replaced.
+The SCADA screen in room 2 was replaced.
+Spare dosing pump ordered.
+A visitor group toured the UV hall.
+Memo dated 2025-12-08: chlorine dose setpoint approved at 0.65 mg/L.
+The east filter bed was backwashed.
+pH stayed between 7.2 and 7.6.
+pH stayed between 7.2 and 7.6.
+The east filter bed was backwashed.
+Memo dated 2025-11-20: chlorine dose setpoint approved at 0.50 mg/L.
+Spare dosing pump ordered.
+Fire drill completed without issues.
+Spare dosing pump ordered.
+The east filter bed was backwashed.
+Memo dated 2026-02-20: the memo of 2026-02-11 is retracted in full; disregard it.
+Fire drill completed without issues.
+The SCADA screen in room 2 was replaced.
+Spare dosing pump ordered.
+A visitor group toured the UV hall.
+Memo dated 2026-02-11: chlorine dose setpoint approved at 0.80 mg/L.
+A visitor group toured the UV hall.
+The east filter bed was backwashed.
+Sludge was collected by the contractor.
+A visitor group toured the UV hall.
+Memo dated 2025-09-15: chlorine dose setpoint approved at 0.40 mg/L.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== G51 ===
+Below is a 24-hour SCADA event log. How many separate times did pump P-7 actually trip? Read carefully.
+
+LOG:
+00:00 Pump P-7 tripped on overload.
+00:11 Pump P-17 tripped on overload.
+00:22 Pump P-7 trip alarm tested; no actual trip.
+00:33 Operator round completed.
+00:44 Valve V-12 cycled for testing.
+00:55 Flow stable at setpoint.
+01:06 Valve V-12 cycled for testing.
+01:10 Pump P-3 running normally.
+01:21 Operator round completed.
+01:32 Shift handover done.
+01:43 Valve V-12 cycled for testing.
+01:54 Pump P-17 tripped on overload.
+02:05 Pump P-17 tripped on overload.
+02:16 Tank T-2 level 64%.
+02:20 Operator round completed.
+02:31 Operator round completed.
+02:42 Operator round completed.
+02:53 Operator round completed.
+03:04 Flow stable at setpoint.
+03:12 Pump P-7 tripped on overload.
+03:26 Flow stable at setpoint.
+03:30 Flow stable at setpoint.
+03:41 Operator round completed.
+03:52 Pump P-7 tripped on overload.
+04:03 Valve V-12 cycled for testing.
+04:14 Pump P-7 tripped on overload.
+04:25 Pump P-7 trip alarm tested; no actual trip.
+04:36 Valve V-12 cycled for testing.
+04:40 Pump P-17 tripped on overload.
+04:51 Valve V-12 cycled for testing.
+05:02 Pump P-7 tripped on overload.
+05:13 Flow stable at setpoint.
+05:24 Pump P-7 trip alarm tested; no actual trip.
+05:35 Shift handover done.
+05:46 Operator round completed.
+05:50 Pump P-7 tripped on overload.
+06:01 Valve V-12 cycled for testing.
+06:12 Shift handover done.
+06:23 Pump P-3 running normally.
+06:34 Pump P-7 tripped on overload.
+06:45 Pump P-3 running normally.
+06:56 Shift handover done.
+07:00 Valve V-12 cycled for testing.
+07:11 Tank T-2 level 64%.
+07:22 Shift handover done.
+07:33 Pump P-3 running normally.
+07:44 Flow stable at setpoint.
+07:55 Valve V-12 cycled for testing.
+08:06 Pump P-7 restarted.
+08:10 Pump P-7 tripped on overload.
+08:21 Tank T-2 level 64%.
+08:32 Pump P-3 running normally.
+08:43 Tank T-2 level 64%.
+08:54 Valve V-12 cycled for testing.
+09:05 Pump P-7 tripped on overload.
+09:16 Valve V-12 cycled for testing.
+09:20 Pump P-17 tripped on overload.
+09:31 Shift handover done.
+09:42 Pump P-3 running normally.
+09:53 Operator round completed.
+10:04 Pump P-17 tripped on overload.
+10:15 Pump P-3 running normally.
+10:26 Pump P-7 tripped on overload.
+10:30 Valve V-12 cycled for testing.
+10:41 Pump P-17 tripped on overload.
+10:52 Valve V-12 cycled for testing.
+11:03 Shift handover done.
+11:14 Operator round completed.
+11:25 Flow stable at setpoint.
+11:36 Operator round completed.
+11:40 Pump P-7 tripped on overload.
+11:51 Pump P-7 tripped on overload.
+12:02 Pump P-17 tripped on overload.
+12:13 Pump P-7 restarted.
+12:24 Operator round completed.
+12:35 Flow stable at setpoint.
+12:46 Pump P-3 running normally.
+12:50 Flow stable at setpoint.
+13:01 Pump P-7 trip alarm tested; no actual trip.
+13:12 Tank T-2 level 64%.
+13:23 Pump P-3 running normally.
+13:34 Tank T-2 level 64%.
+13:45 Pump P-7 restarted.
+13:56 Pump P-17 tripped on overload.
+14:00 Valve V-12 cycled for testing.
+14:11 Tank T-2 level 64%.
+14:22 Tank T-2 level 64%.
+14:33 Tank T-2 level 64%.
+14:44 Valve V-12 cycled for testing.
+14:55 Operator round completed.
+15:06 Tank T-2 level 64%.
+15:10 Tank T-2 level 64%.
+15:21 Operator round completed.
+15:32 Pump P-3 running normally.
+15:43 Pump P-7 tripped on overload.
+15:54 Pump P-3 running normally.
+16:05 Flow stable at setpoint.
+16:16 Pump P-3 running normally.
+16:20 Pump P-3 running normally.
+16:31 Operator round completed.
+16:42 Pump P-7 trip alarm tested; no actual trip.
+16:53 Pump P-17 tripped on overload.
+17:04 Tank T-2 level 64%.
+17:15 Pump P-17 tripped on overload.
+17:26 Tank T-2 level 64%.
+17:30 Operator round completed.
+17:41 Shift handover done.
+17:52 Shift handover done.
+18:03 Pump P-7 trip alarm tested; no actual trip.
+18:14 Flow stable at setpoint.
+18:25 Flow stable at setpoint.
+18:25 Correction: the P-7 trip logged at 03:12 was actually pump P-17.
+18:36 Flow stable at setpoint.
+18:40 Flow stable at setpoint.
+18:51 Flow stable at setpoint.
+19:02 Flow stable at setpoint.
+19:13 Shift handover done.
+19:24 Operator round completed.
+19:35 Pump P-7 tripped on overload.
+19:46 Pump P-7 tripped on overload.
+19:50 Valve V-12 cycled for testing.
+20:01 Tank T-2 level 64%.
+20:12 Pump P-3 running normally.
+20:23 Tank T-2 level 64%.
+20:34 Pump P-3 running normally.
+20:45 Pump P-7 trip alarm tested; no actual trip.
+20:56 Operator round completed.
+21:00 Tank T-2 level 64%.
+21:11 Pump P-17 tripped on overload.
+21:22 Flow stable at setpoint.
+21:33 Shift handover done.
+21:44 Pump P-7 tripped on overload.
+21:55 Valve V-12 cycled for testing.
+22:06 Valve V-12 cycled for testing.
+22:10 Valve V-12 cycled for testing.
+22:21 Valve V-12 cycled for testing.
+22:32 Shift handover done.
+22:43 Flow stable at setpoint.
+22:54 Tank T-2 level 64%.
+23:05 Valve V-12 cycled for testing.
+23:16 Pump P-3 running normally.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== G60 ===
+Write a JavaScript function daysBetween(a, b) that takes two ISO dates "YYYY-MM-DD" and returns the number of calendar days from a to b (negative if b is earlier). It must work in any time zone, including across daylight-saving changes. Return only the code in a ```javascript block.
+
+=== G61 ===
+Write a JavaScript function median(arr) that returns the median of an array of numbers without modifying the input array. Return only the code in a ```javascript block.
+
+=== G62 ===
+Write a JavaScript function deepEqual(a, b) that compares values structurally: primitives (NaN equals NaN), arrays, plain objects (key order irrelevant, a missing key differs from an undefined value) and Date objects. Arrays and objects are never equal to each other. Return only the code in a ```javascript block.
+
+=== G63 ===
+Write a JavaScript function chunk(arr, size) that splits arr into arrays of length size (last may be shorter). It must throw an error if size is not a positive integer. Return only the code in a ```javascript block.
+
+=== G64 ===
+Write a JavaScript function parseDuration(s) that converts strings like "1h 30m 15s", "90m", "1.5h" or "1h30m" into total seconds (a number). Spaces are optional; units are h, m, s; an empty string returns 0. Return only the code in a ```javascript block.

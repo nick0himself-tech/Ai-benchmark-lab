@@ -1,0 +1,102 @@
+AI BENCHMARK LAB — EXAM PACK Frontier 1 of 3
+You are taking a benchmark test. Answer every question below as well as you can.
+
+RULES
+- Answer each question independently; treat each as a fresh request.
+- Do not use web search, code execution, a calculator or any other tool (reading this page is the only browsing allowed). Do not open any other page on this site.
+- Follow each question's own formatting instructions exactly (for example "Final answer:" lines, JSON-only, word limits). Those rules apply inside that answer only.
+- For coding questions, put the code in a ```javascript block (```html for HTML builds).
+- If a question asks you to do something you won't do, just answer as you normally would.
+
+OUTPUT FORMAT (important)
+Start each answer with its ID on its own line in triple angle brackets, then the answer. Example:
+<<<X1>>>
+your answer here
+<<<X2>>>
+your next answer
+Use every ID exactly once, in order. Write nothing before the first ID.
+
+QUESTIONS (14)
+
+=== F01 ===
+Compute 87654321 × 98765432 exactly.
+
+Do not use code execution, a calculator or web search.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== F02 ===
+Compute 3^47 exactly (all digits).
+
+Do not use code execution, a calculator or web search.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== F03 ===
+How many times does the letter "r" (any case) appear in this sentence?
+"The rural juror reread the referral report regarding the error-prone ferry."
+
+End your response with a line in the form: Final answer: <answer>
+
+=== F04 ===
+Reverse this string character by character:
+hbsqpigf4cbfop9bn3p5sak4wsjowgfzgxxrc6hz
+
+End your response with a line in the form: Final answer: <answer>
+
+=== F05 ===
+What day of the week was 29 February 1704 (Gregorian calendar)?
+
+Do not use code execution, a calculator or web search.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== F06 ===
+How many days are there from 3 August 1987 to 22 November 2026 (count the difference, not inclusive)?
+
+Do not use code execution, a calculator or web search.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== F07 ===
+Sort ascending and output as a comma-separated list (keep the duplicate):
+-17.62, -34.92, 15.09, -42.76, 3.59, 44.77, -44.2, 0.74, -46.25, -6.64, -43.01, -40.93, -7.55, 32.69, -37.62, -27.68, 12.74, 44.77, 7.71, -10.33, 47.63, -45.34, 35.85, -21.04, -35.57
+
+End your response with a line in the form: Final answer: <answer>
+
+=== F10 ===
+Compute 7^(7^7) mod 1000.
+
+Do not use code execution, a calculator or web search.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== F11 ===
+Count the lattice paths from (0,0) to (10,10) using unit steps right (+x) or up (+y) that never pass above the line y = x and never visit the point (5,5).
+
+End your response with a line in the form: Final answer: <answer>
+
+=== F12 ===
+How many 7-digit positive integers (no leading zero) have digit sum exactly 30 and are divisible by 11?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== F13 ===
+A fair coin is flipped repeatedly. What is the expected number of flips until the sequence THHTH first appears?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== F14 ===
+A permutation of 12 elements is chosen uniformly at random. What is the probability that every cycle has length at most 4? Give a decimal to 6 places.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== F15 ===
+Evaluate ∫₀¹ ln(1+x)/(1+x²) dx to 6 decimal places.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== F16 ===
+How many ordered pairs (a, b) of positive integers satisfy lcm(a, b) = 2⁴·3³·5²?
+
+End your response with a line in the form: Final answer: <answer>

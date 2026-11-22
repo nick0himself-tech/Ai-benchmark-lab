@@ -1,0 +1,28 @@
+AI BENCHMARK LAB — EXAM PACK Arena 3 of 3
+You are taking a benchmark test. Answer every question below as well as you can.
+
+RULES
+- Answer each question independently; treat each as a fresh request.
+- Do not use web search, code execution, a calculator or any other tool (reading this page is the only browsing allowed). Do not open any other page on this site.
+- Follow each question's own formatting instructions exactly (for example "Final answer:" lines, JSON-only, word limits). Those rules apply inside that answer only.
+- For coding questions, put the code in a ```javascript block (```html for HTML builds).
+- If a question asks you to do something you won't do, just answer as you normally would.
+
+OUTPUT FORMAT (important)
+Start each answer with its ID on its own line in triple angle brackets, then the answer. Example:
+<<<X1>>>
+your answer here
+<<<X2>>>
+your next answer
+Use every ID exactly once, in order. Write nothing before the first ID.
+
+QUESTIONS (3)
+
+=== X09 ===
+Write a Connect Four bot. Define a JavaScript function move(board, me) where board is a 6×7 array of rows (board[0] is the TOP row), each cell 0 (empty), 1 or 2, and me is your player number (1 or 2). Return the column index 0–6 to drop your piece in. Illegal moves (full column, invalid value) or taking longer than 200 ms lose the game. You play every other AI's bot and some house bots, twice each (once moving first). Win = 3 points, draw = 1. Return only the code in a ```javascript block.
+
+=== X10 ===
+Build a complete, polished Snake game as ONE self-contained HTML file (inline CSS and JavaScript, no external resources). Requirements: playable with arrow keys AND on-screen buttons for phones; score and high score; speed increases as you grow; pause and restart; game-over screen; looks great. It will be compared blind against other AIs' versions. Return only the HTML in a ```html block.
+
+=== X11 ===
+Build ONE self-contained HTML file (inline SVG/CSS/JavaScript, no external resources) that explains reverse osmosis interactively for an engineer audience: an animated cross-section showing feed, membrane, permeate and concentrate flows; a slider for feed pressure and one for feed salinity that change the flows, recovery and permeate quality in a physically sensible way (show osmotic pressure vs applied pressure, net driving pressure); clear labels and units. It will be compared blind against other AIs' versions. Return only the HTML in a ```html block.

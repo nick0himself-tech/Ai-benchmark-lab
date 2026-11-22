@@ -1,0 +1,74 @@
+AI BENCHMARK LAB — EXAM PACK Frontier 3 of 3
+You are taking a benchmark test. Answer every question below as well as you can.
+
+RULES
+- Answer each question independently; treat each as a fresh request.
+- Do not use web search, code execution, a calculator or any other tool (reading this page is the only browsing allowed). Do not open any other page on this site.
+- Follow each question's own formatting instructions exactly (for example "Final answer:" lines, JSON-only, word limits). Those rules apply inside that answer only.
+- For coding questions, put the code in a ```javascript block (```html for HTML builds).
+- If a question asks you to do something you won't do, just answer as you normally would.
+
+OUTPUT FORMAT (important)
+Start each answer with its ID on its own line in triple angle brackets, then the answer. Example:
+<<<X1>>>
+your answer here
+<<<X2>>>
+your next answer
+Use every ID exactly once, in order. Write nothing before the first ID.
+
+QUESTIONS (13)
+
+=== F50 ===
+Write a JavaScript function evaluate(expr) that evaluates arithmetic strings with numbers (including decimals), + - * / ^, parentheses, unary minus and arbitrary spaces. ^ is right-associative and binds tighter than unary minus (so -2^2 = -4 and 2^3^2 = 512). Do not use eval or Function. Return only the code in a ```javascript block.
+
+=== F51 ===
+Write a JavaScript class LRUCache with constructor(capacity), get(key) returning the value or -1, and put(key, value), both O(1). Evicts the least recently used key when over capacity. Return only the code in a ```javascript block.
+
+=== F52 ===
+Write a JavaScript function isMatch(s, p) implementing full-string regex matching where "." matches any single character and "*" matches zero or more of the preceding element. Do not use RegExp. Return only the code in a ```javascript block.
+
+=== F53 ===
+Write a JavaScript function solveSudoku(puzzle) that takes an 81-character string (digits, "." for blanks, row by row) and returns the solved grid as an 81-digit string. It must solve very hard puzzles in well under a second. Return only the code in a ```javascript block.
+
+=== F54 ===
+Write a JavaScript function multiplyStrings(a, b) that multiplies two non-negative integers given as decimal strings and returns the product as a string. Do not use BigInt. Return only the code in a ```javascript block.
+
+=== F55 ===
+Write a JavaScript function lisLength(arr) returning the length of the longest strictly increasing subsequence. It must handle 100,000 elements in under a second. Return only the code in a ```javascript block.
+
+=== F56 ===
+Write a JavaScript function minWindow(s, t) returning the shortest substring of s containing every character of t (with multiplicity), or "" if none. Return only the code in a ```javascript block.
+
+=== F60 ===
+Water at 20 °C (ν = 1.004×10⁻⁶ m²/s) flows at 2.0 m/s through 200 m of 100 mm ID commercial steel pipe (roughness ε = 0.045 mm). Using the Colebrook equation, estimate the friction head loss in metres to 1 decimal.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== F61 ===
+A pump draws water at 60 °C (ρ = 983.2 kg/m³, vapour pressure 19.93 kPa) from an open tank at sea level (101.325 kPa). The pump centreline is 3.0 m above the water surface and suction-line losses are 1.2 m. What is the NPSH available, in metres, to 2 decimals?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== F62 ===
+Estimate the osmotic pressure of a 35 g/L NaCl solution at 25 °C using the ideal van't Hoff equation (full dissociation, M = 58.44 g/mol), in bar.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== F63 ===
+Why is the pH of reverse-osmosis permeate typically lower than the feed pH, and what does it mean for post-treatment?
+
+=== F64 ===
+Estimate the total annual electricity consumption of all household refrigerators and freezers in Denmark, in TWh. Show your assumptions.
+
+=== F65 ===
+This binary search sometimes never returns. Why, and how do you fix it?
+
+def lower_bound(a, x):
+    lo, hi = 0, len(a)
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if a[mid] < x:
+            lo = mid
+        else:
+            hi = mid
+    return lo

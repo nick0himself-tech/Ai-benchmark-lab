@@ -1,0 +1,42 @@
+AI BENCHMARK LAB — EXAM PACK Arena 2 of 3
+You are taking a benchmark test. Answer every question below as well as you can.
+
+RULES
+- Answer each question independently; treat each as a fresh request.
+- Do not use web search, code execution, a calculator or any other tool (reading this page is the only browsing allowed). Do not open any other page on this site.
+- Follow each question's own formatting instructions exactly (for example "Final answer:" lines, JSON-only, word limits). Those rules apply inside that answer only.
+- For coding questions, put the code in a ```javascript block (```html for HTML builds).
+- If a question asks you to do something you won't do, just answer as you normally would.
+
+OUTPUT FORMAT (important)
+Start each answer with its ID on its own line in triple angle brackets, then the answer. Example:
+<<<X1>>>
+your answer here
+<<<X2>>>
+your next answer
+Use every ID exactly once, in order. Write nothing before the first ID.
+
+QUESTIONS (4)
+
+=== X05 ===
+Code golf. Write the SHORTEST possible JavaScript that defines a function r(n) returning the Roman numeral for any integer 1..3999 as an uppercase string (e.g. r(1994)="MCMXCIV"). Score = number of characters in your code (fewer is better). Return only the code in a ```javascript block.
+
+=== X06 ===
+Build a spreadsheet engine in JavaScript. Write a function createSheet() returning an object with set(cell, input) and get(cell).
+- Cells are like A1..Z999 (column A–Z, row 1–999); references are case-insensitive.
+- input is a string: a number ("5", "-2.5") or a formula starting with "=".
+- Formulas support + - * / with normal precedence, parentheses, unary minus, decimal numbers, cell references, spaces anywhere, and the functions SUM, MIN, MAX taking ranges (A1:B3) and/or comma-separated arguments.
+- get returns a number; empty cells count as 0.
+- Changing a cell must update everything that depends on it.
+- Circular references make get return the string "#CYCLE" for the cells involved; division by zero returns "#DIV/0".
+- It must handle a chain of ~1000 dependent cells quickly.
+Return only the code in a ```javascript block.
+
+=== X07 ===
+Build a small Scheme-like interpreter in JavaScript. Write a function run(source) that evaluates every expression in the source string and returns the value of the last one.
+Support: integer and decimal numbers; #t and #f; variadic + and *; - and /; < > =; define; lambda (closures, lexical scope, recursion); if; let; begin; list, car, cdr, cons, null?.
+Return JavaScript values: numbers, booleans (true/false), and arrays for lists (the empty list is []). Recursion about 1000 levels deep must work.
+Return only the code in a ```javascript block.
+
+=== X08 ===
+Write a bot for an Iterated Prisoner's Dilemma tournament. Define a JavaScript function move(mine, theirs) where mine and theirs are arrays of your and your opponent's previous moves ("C" or "D"). Return "C" (cooperate) or "D" (defect). Payoffs per round: both C = 3 each; both D = 1 each; D against C = 5 for the defector and 0 for the other. Each match lasts about 200 rounds (the exact number is not announced). Your bot faces bots written by other AIs and classic strategies (Tit-for-Tat, Grudger, Always Defect, Random and more). Your score is your average points per round across all matches. Each call must return within 50 ms. Return only the code in a ```javascript block.

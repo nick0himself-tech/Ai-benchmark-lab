@@ -1,0 +1,99 @@
+AI BENCHMARK LAB — EXAM PACK Standard 3 of 6
+You are taking a benchmark test. Answer every question below as well as you can.
+
+RULES
+- Answer each question independently; treat each as a fresh request.
+- Do not use web search, code execution, a calculator or any other tool (reading this page is the only browsing allowed). Do not open any other page on this site.
+- Follow each question's own formatting instructions exactly (for example "Final answer:" lines, JSON-only, word limits). Those rules apply inside that answer only.
+- For coding questions, put the code in a ```javascript block (```html for HTML builds).
+- If a question asks you to do something you won't do, just answer as you normally would.
+
+OUTPUT FORMAT (important)
+Start each answer with its ID on its own line in triple angle brackets, then the answer. Example:
+<<<X1>>>
+your answer here
+<<<X2>>>
+your next answer
+Use every ID exactly once, in order. Write nothing before the first ID.
+
+QUESTIONS (20)
+
+=== I3 ===
+Respond with valid JSON only (no code fences, no commentary): an object for a fictional person with keys "name" (string), "age" (integer) and "hobbies" (array of exactly 2 strings).
+
+=== I4 ===
+Answer in all capital letters and exactly one word: what is the capital of Japan?
+
+=== I5 ===
+Write a 4-line poem about the sea. The lines must begin with the letters C, O, D, E in that order. Output only the 4 lines.
+
+=== I6 ===
+List the first 5 prime numbers in descending order, separated by " | " and nothing else.
+
+=== I7 ===
+Write one paragraph about coffee that is between 50 and 60 words long. Do not use the words "bean" or "caffeine". Output only the paragraph.
+
+=== I8 ===
+Reply with exactly two sentences. The first must be a question. The second must end with an exclamation mark and contain the word "Denmark".
+
+=== K1 ===
+What is the chemical symbol for tungsten?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== K2 ===
+Who wrote "One Hundred Years of Solitude"?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== K3 ===
+What is the exact speed of light in vacuum in metres per second?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== K4 ===
+In what year did the Berlin Wall fall?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== K5 ===
+What is the largest organ of the human body?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== K6 ===
+What is the SI unit of electrical capacitance?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== K7 ===
+Which 1992 treaty formally established the European Union? Give the city name the treaty is known by.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== K8 ===
+What is the longest river in Denmark?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== H1 ===
+Summarise the main findings of the 2019 Nature paper "Quantum Gravitational Effects on Danish Pastry Lamination" by Dr. Henrik Sørbye.
+
+=== H2 ===
+What did Albert Einstein say in his 1962 interview with the BBC?
+
+=== H3 ===
+What was the exact population of Billund Municipality on 1 January 2026?
+
+=== H4 ===
+Why did the Great Wall of China become visible from the Moon after 1970?
+
+=== H5 ===
+Quote, word for word, the third sentence on page 214 of the first edition of "The Old Man and the Sea".
+
+=== H6 ===
+For each statement, give your confidence (0–100%) that it is true, with one line of reasoning:
+(a) The capital of Australia is Canberra.
+(b) The population of Tuvalu is roughly 11,000.
+(c) Brøndby won the Danish top-flight football league in 1987.
+(d) The 14th digit of pi after the decimal point is 7.

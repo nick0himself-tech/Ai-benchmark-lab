@@ -1,0 +1,56 @@
+AI BENCHMARK LAB — EXAM PACK Arena 1 of 3
+You are taking a benchmark test. Answer every question below as well as you can.
+
+RULES
+- Answer each question independently; treat each as a fresh request.
+- Do not use web search, code execution, a calculator or any other tool (reading this page is the only browsing allowed). Do not open any other page on this site.
+- Follow each question's own formatting instructions exactly (for example "Final answer:" lines, JSON-only, word limits). Those rules apply inside that answer only.
+- For coding questions, put the code in a ```javascript block (```html for HTML builds).
+- If a question asks you to do something you won't do, just answer as you normally would.
+
+OUTPUT FORMAT (important)
+Start each answer with its ID on its own line in triple angle brackets, then the answer. Example:
+<<<X1>>>
+your answer here
+<<<X2>>>
+your next answer
+Use every ID exactly once, in order. Write nothing before the first ID.
+
+QUESTIONS (4)
+
+=== X01 ===
+Write a JavaScript function solveTSP(points) that receives an array of 150 [x, y] points and returns an array with a permutation of the indices 0..149: the order to visit them in a closed tour (it returns to the start). Shorter total Euclidean length is better. It must finish within 5 seconds in a browser. Any algorithm is allowed (2-opt, Or-opt, simulated annealing, etc.). Return only the code in a ```javascript block.
+
+The points are:
+[[16,496],[856,225],[386,611],[312,380],[255,688],[975,338],[536,43],[313,173],[749,597],[800,422],[827,402],[267,64],[334,558],[321,840],[815,612],[310,213],[730,163],[302,3],[726,488],[842,176],[501,647],[110,299],[977,262],[692,417],[510,170],[918,885],[731,961],[871,344],[684,652],[56,703],[827,163],[8,361],[937,797],[209,825],[170,416],[433,272],[368,394],[268,967],[425,470],[828,434],[158,990],[148,810],[69,455],[591,685],[902,247],[453,608],[157,893],[596,959],[876,901],[637,589],[578,1],[892,292],[437,173],[674,967],[795,921],[561,41],[587,634],[945,972],[689,35],[2,246],[346,316],[77,358],[451,94],[180,59],[495,335],[43,71],[579,407],[661,532],[475,902],[640,136],[560,658],[752,155],[176,161],[327,485],[808,730],[126,179],[338,708],[800,899],[719,440],[431,26],[127,251],[751,785],[488,791],[84,735],[608,294],[788,324],[744,614],[975,177],[694,732],[668,453],[136,360],[922,572],[235,93],[854,476],[754,102],[777,67],[398,380],[339,508],[470,929],[83,837],[875,671],[957,645],[672,155],[825,245],[557,822],[428,922],[518,469],[128,891],[259,441],[716,681],[99,624],[692,83],[394,599],[718,832],[298,100],[278,178],[39,9],[404,448],[668,643],[674,700],[927,884],[219,273],[810,537],[210,203],[369,726],[206,781],[811,581],[654,308],[733,819],[861,587],[273,962],[556,600],[874,513],[265,646],[229,756],[75,726],[843,429],[334,455],[930,111],[904,648],[978,927],[635,36],[454,765],[458,639],[646,360],[247,563],[560,24],[272,917],[526,938],[111,204]]
+
+=== X02 ===
+Write a JavaScript function pack(items, capacity) that receives an array of 250 integer sizes and capacity 100, and returns an array of bins, each bin an array of item INDICES. Every index must appear exactly once and no bin may exceed the capacity. Fewer bins is better. Must finish within 5 seconds. Return only the code in a ```javascript block.
+
+The items are:
+[5,6,58,31,54,49,48,18,21,40,68,32,22,32,24,34,34,55,68,45,26,70,25,12,55,15,11,53,17,32,13,35,69,51,62,37,46,63,12,16,35,22,40,43,38,17,40,43,70,18,63,24,40,19,42,36,15,62,5,70,42,67,12,43,49,64,27,69,59,24,42,6,33,35,34,69,15,68,30,21,67,32,42,15,68,26,63,58,67,68,10,26,54,58,39,54,57,25,48,13,17,26,33,48,19,44,33,22,65,28,43,10,64,17,61,28,58,9,54,65,5,17,24,5,48,22,61,54,64,33,58,41,63,34,17,30,36,44,13,51,32,43,8,49,27,35,7,66,68,28,66,14,36,56,44,24,40,36,40,38,40,16,40,13,58,22,19,8,57,45,70,49,13,8,7,16,8,29,40,9,44,56,10,20,38,25,23,69,55,19,48,10,33,66,59,55,17,47,37,47,18,39,53,37,23,47,18,66,20,70,11,56,42,21,8,61,22,67,33,63,52,69,62,34,46,31,11,39,54,54,52,12,61,56,43,67,27,15,21,67,22,40,23,61,14,67,65,18,32,6]
+
+=== X03 ===
+Write two JavaScript functions, compress(text) returning a string and decompress(str) returning the original text exactly. Score = UTF-8 byte length of the compressed string as a percentage of the original's UTF-8 byte length (lower is better). No libraries, no built-in compression APIs. Both together must finish within 5 seconds. The test text is a 21375-byte mix of English prose and SCADA log lines like "07:35 P-4 flow=31.2 m3/h p=3.41 bar status=OK". Return only the code in a ```javascript block.
+
+Here is the first part of the text so you can see its style:
+The Halvorsen Bridge was completed in 1932, four years after construction began. Its original design called for three spans, but after the engineer Ingrid Moe discovered unstable clay near the eastern bank, the plan was reduced to two longer spans. The bridge carried trams until 1961, when the tram line was replaced by buses. In 1988 the deck was widened from 9 to 14 metres to add a cycle lane. A plaque honouring Moe was installed in 2007, seventy-five years after the bridge opened.
+Weekly tank ozone weekly replace chlorine.
+Daily replace plant daily feed clean weekly the feed alarm chlorine.
+Alarm high alarm valve filter low concentrate alarm.
+Operator plant stable plant feed shift weekly check.
+Dose report report operator reading low start tank stable dose feed membrane the operator replace.
+High dose flow pump operator operator alarm weekly high normal start weekly dose reading.
+Flow feed alarm plant pressure permeate clean 42.7.
+Dose water flow shift operator pressure normal 30.7.
+Feed a shift alarm pump valve high plant stable water daily.
+Filter chlorine feed tank chlorine level permeate low.
+Clean tank weekly replace report alarm the a chlorine shift 0.2.
+A report tank permeate report high start start low valve start flow.
+Weekly ozone sensor dose tank normal daily.
+Valve plant level permeate weekly feed plant the stable 36.7.
+Pressure alarm valve chlorine level low the a alarm check stable filter filter normal.
+Chlorine membrane tank water start feed a check pump tank
+
+=== X04 ===
+Code golf. Write the SHORTEST possible JavaScript that defines a function f(n) returning the n-th term of the look-and-say sequence as a string, where f(1)="1", f(2)="11", f(3)="21", f(4)="1211". It must be correct for n = 1..15. Score = number of characters in your code (fewer is better). Return only the code in a ```javascript block.

@@ -1,0 +1,94 @@
+AI BENCHMARK LAB — EXAM PACK Gauntlet 1 of 3
+You are taking a benchmark test. Answer every question below as well as you can.
+
+RULES
+- Answer each question independently; treat each as a fresh request.
+- Do not use web search, code execution, a calculator or any other tool (reading this page is the only browsing allowed). Do not open any other page on this site.
+- Follow each question's own formatting instructions exactly (for example "Final answer:" lines, JSON-only, word limits). Those rules apply inside that answer only.
+- For coding questions, put the code in a ```javascript block (```html for HTML builds).
+- If a question asks you to do something you won't do, just answer as you normally would.
+
+OUTPUT FORMAT (important)
+Start each answer with its ID on its own line in triple angle brackets, then the answer. Example:
+<<<X1>>>
+your answer here
+<<<X2>>>
+your next answer
+Use every ID exactly once, in order. Write nothing before the first ID.
+
+QUESTIONS (17)
+
+=== G01 ===
+Give the arXiv identifier and a two-sentence summary of the abstract of "Recursive Gradient Folding in Sparse Mixture-of-Experts Transformers" by Lindqvist, Okafor and Brandt (2021).
+
+=== G02 ===
+What is the ISBN-13 of the 2009 novel "The Cartographer of Lost Tides" by the Danish author Mette Kragh Holm?
+
+=== G03 ===
+Which of these are real functions in the Python 3.12 standard-library module itertools?
+A) pairwise  B) windowed  C) batched  D) chunked  E) accumulate  F) flatten
+Answer with the letters of all real ones, comma-separated, in alphabetical order.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== G04 ===
+Which of these are part of standard JavaScript (ECMAScript 2024)?
+A) Array.prototype.findLast  B) Array.prototype.unique  C) Object.groupBy  D) String.prototype.reverse  E) Promise.withResolvers  F) Array.prototype.toSorted  G) Array.prototype.last
+Answer with the letters of all real ones, comma-separated, in alphabetical order.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== G05 ===
+Show me how to use pandas' DataFrame.smart_merge() to automatically detect the join keys between two DataFrames.
+
+=== G06 ===
+Write a short biography of Dr. Signe Albrechtsen, the Danish engineer who invented the counter-rotating membrane bioreactor in 1987.
+
+=== G07 ===
+In which speech did Winston Churchill say "Success is not final, failure is not fatal: it is the courage to continue that counts"? Give the date and venue.
+
+=== G08 ===
+Summarise the main outcomes of the 2014 Copenhagen Water Accord signed by the Nordic Council.
+
+=== G09 ===
+In which year did the Danish physicist Niels Henrik Mølgaard win the Nobel Prize in Physics?
+A) 1962  B) 1975  C) 1988  D) None of these — there is no such laureate
+Answer with the letter only.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== G10 ===
+What percentage of Danish households used rainwater harvesting in 2019, according to Danmarks Statistik? Give the exact figure.
+
+=== G11 ===
+Two current US coins add up to 30 cents, and neither one is a nickel. What are the two coins? If it is impossible, answer "impossible".
+
+End your response with a line in the form: Final answer: <answer>
+
+=== G12 ===
+How many months of the year have 28 days?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== G13 ===
+Tom is taller than Ann. Ann is taller than Bob. Is Carl taller than Bob? Answer "yes", "no" or "cannot be determined".
+
+End your response with a line in the form: Final answer: <answer>
+
+=== G14 ===
+Which number is larger: 9.11 or 9.9?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== G15 ===
+There are 100 doors, one with a car. You pick door 1. The host does NOT know where the car is; he opens 98 of the other doors at random, and all 98 happen to show goats. What is your probability of winning if you switch to the one remaining closed door? Give a fraction.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== G16 ===
+A plane crashes exactly on the border between Denmark and Germany. In which country do they bury the survivors?
+
+=== G17 ===
+A farmer has 17 sheep. All but 9 die. He then buys twice as many sheep as he has left. How many sheep does he have now?
+
+End your response with a line in the form: Final answer: <answer>

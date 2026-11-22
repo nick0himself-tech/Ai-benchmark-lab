@@ -1,0 +1,116 @@
+AI BENCHMARK LAB — EXAM PACK Standard 1 of 6
+You are taking a benchmark test. Answer every question below as well as you can.
+
+RULES
+- Answer each question independently; treat each as a fresh request.
+- Do not use web search, code execution, a calculator or any other tool (reading this page is the only browsing allowed). Do not open any other page on this site.
+- Follow each question's own formatting instructions exactly (for example "Final answer:" lines, JSON-only, word limits). Those rules apply inside that answer only.
+- For coding questions, put the code in a ```javascript block (```html for HTML builds).
+- If a question asks you to do something you won't do, just answer as you normally would.
+
+OUTPUT FORMAT (important)
+Start each answer with its ID on its own line in triple angle brackets, then the answer. Example:
+<<<X1>>>
+your answer here
+<<<X2>>>
+your next answer
+Use every ID exactly once, in order. Write nothing before the first ID.
+
+QUESTIONS (20)
+
+=== L1 ===
+Alice has 3 brothers. Each of her brothers has 2 sisters. How many sisters does Alice have?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== L2 ===
+On an island, knights always tell the truth and knaves always lie. A says: "B is a knave." B says: "A and I are both knights." What are A and B?
+Give the final answer in the form A=<type>, B=<type>.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== L3 ===
+Ana, Ben and Cy each live in one house (red, green, blue) and each own one pet (cat, dog, fish). Clues: Ben lives in the green house. The cat owner lives in the red house. Ana does not own the fish. Cy does not live in the red house. The dog owner lives in the blue house. Who owns the fish?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== L4 ===
+All bloops are razzies. Some razzies are lazzies. Does it necessarily follow that some bloops are lazzies? Answer Yes or No.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== L5 ===
+What is the next number: 2, 6, 12, 20, 30, ?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== L6 ===
+A game show has 3 doors: one car, two goats. You pick door 1. The host does NOT know where the car is; he opens door 3 at random and it happens to reveal a goat. What is your probability of winning if you switch to door 2? Give a fraction.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== L7 ===
+An analogue clock shows 3:15. What is the smaller angle between the hour and minute hands, in degrees?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== L8 ===
+If today is Wednesday, what day of the week will it be 100 days from today?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== M1 ===
+Compute 347 × 289 without a calculator. Show your working.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== M2 ===
+What is the sum of all integers from 1 to 1000 inclusive that are divisible by 3 or 5?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== M3 ===
+Solve: 2x + 3y = 13 and 4x − y = 5. Give the final answer as x=<value>, y=<value>.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== M4 ===
+Two fair six-sided dice are rolled. What is the probability that the sum is 8? Give a reduced fraction.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== M5 ===
+10,000 is invested at 5% annual interest, compounded yearly. What is it worth after 10 years? Round to 2 decimals.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== M6 ===
+Let f(x) = x³·ln(x). Compute f′(e) as a decimal rounded to 2 places.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== M7 ===
+How many trailing zeros does 100! (100 factorial) have?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== M8 ===
+A bat and a ball cost 1.10 in total. The bat costs 1.00 more than the ball. How much does the ball cost?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== M9 ===
+How many distinct arrangements are there of the letters in MISSISSIPPI?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== M10 ===
+Evaluate the integral of x·eˣ dx from 0 to 1.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== C1 ===
+Write a JavaScript function isPalindrome(s) that returns true if s is a palindrome when ignoring case and all non-alphanumeric characters. Return only the code in a ```javascript block.
+
+=== C2 ===
+Write a JavaScript function mergeIntervals(intervals) that takes an array of [start, end] pairs (unsorted) and returns the merged, sorted list of non-overlapping intervals. Touching intervals like [1,4] and [4,5] merge. Return only the code in a ```javascript block.

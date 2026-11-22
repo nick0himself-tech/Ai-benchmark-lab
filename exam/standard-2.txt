@@ -1,0 +1,162 @@
+AI BENCHMARK LAB — EXAM PACK Standard 2 of 6
+You are taking a benchmark test. Answer every question below as well as you can.
+
+RULES
+- Answer each question independently; treat each as a fresh request.
+- Do not use web search, code execution, a calculator or any other tool (reading this page is the only browsing allowed). Do not open any other page on this site.
+- Follow each question's own formatting instructions exactly (for example "Final answer:" lines, JSON-only, word limits). Those rules apply inside that answer only.
+- For coding questions, put the code in a ```javascript block (```html for HTML builds).
+- If a question asks you to do something you won't do, just answer as you normally would.
+
+OUTPUT FORMAT (important)
+Start each answer with its ID on its own line in triple angle brackets, then the answer. Example:
+<<<X1>>>
+your answer here
+<<<X2>>>
+your next answer
+Use every ID exactly once, in order. Write nothing before the first ID.
+
+QUESTIONS (20)
+
+=== C3 ===
+Write a JavaScript function romanToInt(s) converting a Roman numeral string (I–MMMCMXCIX) to an integer. Return only the code in a ```javascript block.
+
+=== C4 ===
+Write a JavaScript function longestUnique(s) returning the length of the longest substring without repeating characters. It must run in O(n). Return only the code in a ```javascript block.
+
+=== C5 ===
+Write a JavaScript function topoSort(n, edges) where nodes are 0..n-1 and edges is an array of [u, v] meaning u must come before v. Return an array with a valid ordering, or null if there is a cycle. Return only the code in a ```javascript block.
+
+=== C6 ===
+Write a JavaScript function parseCSVLine(line) that splits one CSV line into fields. Fields may be wrapped in double quotes; quoted fields may contain commas, and a doubled quote "" inside a quoted field means a literal quote. Return only the code in a ```javascript block.
+
+=== C7 ===
+Write a JavaScript function editDistance(a, b) returning the Levenshtein distance between two strings. Return only the code in a ```javascript block.
+
+=== C8 ===
+Write a JavaScript function nQueens(n) returning the number of distinct solutions to the n-queens puzzle. nQueens(8) must finish in under a second. Return only the code in a ```javascript block.
+
+=== D1 ===
+Find and fix all bugs in this Python function:
+
+def average(nums):
+    total = 0
+    for i in range(1, len(nums)):
+        total += nums[i]
+    return total / len(nums)
+
+=== D2 ===
+This function returns an empty array. Why, and how do you fix it?
+
+async function loadAll(ids) {
+  const results = [];
+  ids.forEach(async id => {
+    results.push(await fetchItem(id));
+  });
+  return results;
+}
+
+=== D3 ===
+Review this Python code for security problems:
+
+@app.route("/user")
+def user():
+    name = request.args.get("name")
+    q = f"SELECT * FROM users WHERE name = '{name}'"
+    row = db.execute(q).fetchone()
+    return f"<h1>Hello {row['name']}</h1>"
+
+=== D4 ===
+Why does calling this twice print [1] then [1, 2]?
+
+def add(item, bucket=[]):
+    bucket.append(item)
+    return bucket
+
+print(add(1))
+print(add(2))
+
+=== D5 ===
+What is the time complexity of this code, and how would you make it faster?
+
+def has_pair(nums, target):
+    for i in range(len(nums)):
+        for j in range(i + 1, len(nums)):
+            if nums[i] + nums[j] == target:
+                return True
+    return False
+
+=== D6 ===
+Two threads each run this 1,000,000 times on a shared counter, but the final value is often less than 2,000,000. Explain and fix.
+
+counter = 0
+def work():
+    global counter
+    for _ in range(1_000_000):
+        counter += 1
+
+=== R1 ===
+Read the passage and answer the question using only the passage.
+
+PASSAGE:
+The Halvorsen Bridge was completed in 1932, four years after construction began. Its original design called for three spans, but after the engineer Ingrid Moe discovered unstable clay near the eastern bank, the plan was reduced to two longer spans. The bridge carried trams until 1961, when the tram line was replaced by buses. In 1988 the deck was widened from 9 to 14 metres to add a cycle lane. A plaque honouring Moe was installed in 2007, seventy-five years after the bridge opened.
+
+QUESTION: In what year did construction begin?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== R2 ===
+Read the passage and answer the question using only the passage.
+
+PASSAGE:
+The Halvorsen Bridge was completed in 1932, four years after construction began. Its original design called for three spans, but after the engineer Ingrid Moe discovered unstable clay near the eastern bank, the plan was reduced to two longer spans. The bridge carried trams until 1961, when the tram line was replaced by buses. In 1988 the deck was widened from 9 to 14 metres to add a cycle lane. A plaque honouring Moe was installed in 2007, seventy-five years after the bridge opened.
+
+QUESTION: How many spans does the bridge have?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== R3 ===
+Read the passage and answer the question using only the passage.
+
+PASSAGE:
+The Halvorsen Bridge was completed in 1932, four years after construction began. Its original design called for three spans, but after the engineer Ingrid Moe discovered unstable clay near the eastern bank, the plan was reduced to two longer spans. The bridge carried trams until 1961, when the tram line was replaced by buses. In 1988 the deck was widened from 9 to 14 metres to add a cycle lane. A plaque honouring Moe was installed in 2007, seventy-five years after the bridge opened.
+
+QUESTION: By how many metres was the deck widened?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== R4 ===
+Read the passage and answer the question using only the passage.
+
+PASSAGE:
+The Halvorsen Bridge was completed in 1932, four years after construction began. Its original design called for three spans, but after the engineer Ingrid Moe discovered unstable clay near the eastern bank, the plan was reduced to two longer spans. The bridge carried trams until 1961, when the tram line was replaced by buses. In 1988 the deck was widened from 9 to 14 metres to add a cycle lane. A plaque honouring Moe was installed in 2007, seventy-five years after the bridge opened.
+
+QUESTION: For how many years did the bridge carry trams?
+
+End your response with a line in the form: Final answer: <answer>
+
+=== R5 ===
+Read the passage and answer the question using only the passage.
+
+PASSAGE:
+The Halvorsen Bridge was completed in 1932, four years after construction began. Its original design called for three spans, but after the engineer Ingrid Moe discovered unstable clay near the eastern bank, the plan was reduced to two longer spans. The bridge carried trams until 1961, when the tram line was replaced by buses. In 1988 the deck was widened from 9 to 14 metres to add a cycle lane. A plaque honouring Moe was installed in 2007, seventy-five years after the bridge opened.
+
+QUESTION: Does the passage state why the trams were replaced by buses? Answer Yes or No.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== R6 ===
+Read the passage and answer the question using only the passage.
+
+PASSAGE:
+The Halvorsen Bridge was completed in 1932, four years after construction began. Its original design called for three spans, but after the engineer Ingrid Moe discovered unstable clay near the eastern bank, the plan was reduced to two longer spans. The bridge carried trams until 1961, when the tram line was replaced by buses. In 1988 the deck was widened from 9 to 14 metres to add a cycle lane. A plaque honouring Moe was installed in 2007, seventy-five years after the bridge opened.
+
+QUESTION: Is the passage internally consistent about when the plaque was installed relative to the opening? Answer Yes or No.
+
+End your response with a line in the form: Final answer: <answer>
+
+=== I1 ===
+Write exactly 3 bullet points about the ocean. Each must start with "- " and be under 10 words. Output nothing else.
+
+=== I2 ===
+Write one sentence of at least 12 words about autumn without using the letter "e" anywhere. Output only the sentence.
