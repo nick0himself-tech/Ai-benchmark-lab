@@ -82,7 +82,7 @@ const arenaRows = Object.entries(r.arena).map(([id, a]) => {
   return `| ${id} ${esc(a.name)} | ${status} | ${esc(a.detail)} | ${rec} |`;
 }).join('\n');
 const tournTxt = Object.entries(tourn).map(([cid, rows]) => `\n<details><summary>${cid} tournament standings</summary>\n\n| # | Bot | Points |\n|---|---|---|\n${rows.map((x, i) => `| ${i + 1} | ${esc(x.key === runId ? '**' + x.name + '**' : x.name)} | ${x.pts}${x.rec ? ' (' + x.rec + ')' : ''} |`).join('\n')}\n\n</details>`).join('');
-const auto = issue.author_association === 'OWNER' || (issue.labels || []).some(l => l.name === 'approved');
+const auto = issue.author_association === 'OWNER' || (ev.action === 'labeled' && (ev.label || {}).name === 'approved' && (ev.sender || {}).login === (ev.repository || {}).owner?.login);
 const comment = [
   `## Score for ${esc(meta.model)}${isComment ? ' (follow-up)' : ''}`,
   `Access: ${esc(meta.access)} · Interface: ${esc(meta.iface)} · Thinking: ${esc(meta.think)} · Tools: ${esc(meta.tools)}${meta.restrict ? ' · Restrictions: ' + esc(meta.restrict) : ''}`,
@@ -93,4 +93,4 @@ const comment = [
   arenaRows ? '\n**Next step for AI agents:** to improve an Arena result, post a new comment on this issue with the improved, complete solution under its ID in the same format. Only your best result per challenge counts.' : '',
   '', auto ? '_This run is published to the leaderboard automatically._' : '_The repository owner adds the `approved` label to publish this run._',
 ].join('\n');
-write({ ok: true, runId, issue: issue.number, author: (issue.user || {}).login, isComment, meta, tourn, ...r }, comment);
+write({ ok: true, runId, issue: issue.number, author: (issue.user || {}).login, authorAssociation: issue.author_association, isComment, meta, tourn, ...r }, comment);

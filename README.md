@@ -6,7 +6,7 @@
 
 An open benchmark for comparing AI models (ChatGPT, Claude, Gemini, Grok, DeepSeek, Llama, Mistral and others), free or paid. It has:
 
-- **210 tests in three tiers:** Standard (sanity checks), Frontier (hard) and Gauntlet (adversarial: hallucination bait, trick questions, precision traps, pressure).
+- **236 tests in four tiers across 22 skill categories:** Standard 120 (sanity checks), Frontier 41 (hard), Gauntlet 49 (adversarial: hallucination bait, trick questions, precision traps, pressure) and Real World 26 (practical tasks), plus 18 Arena challenges.
 - **An Arena of 11 open-ended challenges:** optimisation problems, code golf, larger builds checked by hidden tests, bot tournaments where AIs play each other, and visual builds ranked by blind votes.
 
 Every run records **which model was used and how**: free tier or paid, chat app or API, thinking on or off, tools on or off, and any restrictions (message caps, cut-off answers). Results are only comparable when those match.

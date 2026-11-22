@@ -10,7 +10,12 @@
    "think": "Unknown",
    "tools": "Unknown",
    "restrict": "Answers pasted from the chat app; some formatting was lost in copying",
-   "notes": "Partial run: Standard, Frontier and Gauntlet packs; open-ended answers not yet judged."
+   "notes": "Partial run: Standard, Frontier and Gauntlet packs; open-ended answers not yet judged.",
+   "evidence": [
+    "partial run",
+    "pasted from chat app",
+    "open-ended not judged"
+   ]
   },
   {
    "id": "chat-gemini-auto-2026-11-22",
@@ -22,7 +27,12 @@
    "think": "Unknown",
    "tools": "Unknown",
    "restrict": "",
-   "notes": "Partial run: mostly the Standard tier; open-ended answers not yet judged."
+   "notes": "Partial run: mostly the Standard tier; open-ended answers not yet judged.",
+   "evidence": [
+    "partial run",
+    "pasted from chat app",
+    "open-ended not judged"
+   ]
   },
   {
    "id": "auto-claude-opus-5-5-2026-11-22",
@@ -34,7 +44,11 @@
    "think": "Unknown",
    "tools": "Off",
    "restrict": "",
-   "notes": "Partial run: Frontier, Gauntlet and parts of Standard; the few judged open-ended answers were judged by Claude itself."
+   "notes": "Partial run: Frontier, Gauntlet and parts of Standard; the few judged open-ended answers were judged by Claude itself.",
+   "evidence": [
+    "partial run",
+    "self-judged open-ended answers"
+   ]
   }
  ],
  "res": {

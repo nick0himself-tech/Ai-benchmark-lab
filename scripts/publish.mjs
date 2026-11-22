@@ -2,7 +2,7 @@
 // Open-ended answers, professional tasks and builds are graded by a judge panel when an API key is set.
 import fs from 'node:fs';
 import path from 'node:path';
-import { makePanel } from './judges.mjs';
+import { makePanel, suspicious } from './judges.mjs';
 const res = JSON.parse(fs.readFileSync('result.json', 'utf8'));
 if (!res.ok) { fs.writeFileSync('publish.md', 'Nothing to publish: the submission could not be read.'); process.exit(0); }
 const lb = fs.existsSync('leaderboard.json') ? JSON.parse(fs.readFileSync('leaderboard.json', 'utf8')) : {};
@@ -15,6 +15,12 @@ Object.assign(run, { name: `${m.model} — ${run.date}`, model: m.model, access:
   notes: [m.provider && 'Provider: ' + m.provider, m.notes, res.issue ? `Issue #${res.issue} by @${res.author}` : ''].filter(Boolean).join(' · ') });
 if (m.usage) { const u = (run.usage ||= { n: 0, tin: 0, tout: 0, cost: 0, sec: 0, words: 0 }); const w = u.words * u.n + (m.usage.words || 0) * (m.usage.n || 0); for (const k of ['n', 'tin', 'tout', 'cost', 'sec']) u[k] = (u[k] || 0) + (m.usage[k] || 0); u.words = u.n ? Math.round(w / u.n) : 0; }
 const R = (lb.res[id] ||= {});
+// Evidence labels shown next to the run, so partial or unverified results are never presented as fully verified.
+{ const total = JSON.parse(fs.readFileSync('tests.json', 'utf8')).tests.filter(t => t.tier !== 'A').length;
+  const ev = new Set((run.evidence || []).filter(e => !['partial run', 'unverified submission'].includes(e)));
+  if (res.issue && res.authorAssociation !== 'OWNER') ev.add('unverified submission');
+  if (res.issue && !/relay/i.test(m.notes || '')) ev.add('self-reported setup');
+  run._pendingEvidence = { ev, total }; }
 for (const [tid, x] of Object.entries(res.scores)) if (x.score != null) R[tid] = { score: x.score };
 const A = (lb.arena[id] ||= {});
 const notes = []; const proQueue = [];
@@ -38,8 +44,9 @@ let judged = 0, J = null;
 if (key && process.env.JUDGING !== 'off') J = await makePanel({ key, base, runModel: `${m.model} ${m.provider || ''} ${res.modelId || ''}`, lb, env: process.env });
 const flag = (what, why) => { lb.review = (lb.review || []).filter(x => !(x.run === id && x.what === what)); lb.review.push({ run: id, what, why, at: new Date().toISOString() }); };
 if (J && J.panel.length) {
-  for (const q of res.rubric) { const v = await J.rubric(q); if (!v) continue; R[q.id] = { score: v.score, checks: v.checks, judges: v.judges }; judged++; if (v.split) flag(q.id, 'Judges disagreed by 2+ points'); }
+  for (const q of res.rubric) { if (suspicious(q.answer)) flag(q.id, 'Answer seems to address the grader'); const v = await J.rubric(q); if (!v) continue; R[q.id] = { score: v.score, checks: v.checks, judges: v.judges }; judged++; if (v.split) flag(q.id, 'Judges disagreed by 2+ points'); }
   for (const [cid, a] of proQueue) {
+    if (suspicious(a.text)) flag(cid, 'Submission seems to address the grader');
     const v = await J.pro(a); if (!v) { A[cid] ||= { ok: true, metric: null, detail: 'Awaiting judge' }; continue; }
     const f = a.facts ? 100 * a.facts.filter(x => x[1]).length / a.facts.length : null; const metric = Math.round(f == null ? v.j : 0.7 * v.j + 0.3 * f);
     const old = A[cid]; if (!old || old.metric == null || metric > old.metric) A[cid] = { ok: true, metric, detail: `Judges ${Math.round(v.j)}/100 (${v.judges} judges, middle score)${f != null ? ` · facts ${a.facts.filter(x => x[1]).length}/${a.facts.length}` : ''}. ${String(v.summary).slice(0, 200)}` };
@@ -61,6 +68,10 @@ for (const cid of [...new Set(lb.votes.map(v => v.ch))]) {
   lb.votes.filter(v => v.ch === cid && v.a in E && v.b in E).forEach(v => { const ea = 1 / (1 + 10 ** ((E[v.b] - E[v.a]) / 400)); const s = v.w === 'a' ? 1 : v.w === 'b' ? 0 : 0.5; E[v.a] += 32 * (s - ea); E[v.b] -= 32 * (s - ea); });
   for (const [r, e] of Object.entries(E)) lb.arena[r][cid].metric = Math.round(e);
 }
+{ const { ev, total } = run._pendingEvidence; delete run._pendingEvidence;
+  if (Object.keys(R).length < 0.9 * total) ev.add('partial run');
+  const hasRubric = (res.rubric || []).length; if (hasRubric && !(J && J.panel.length)) ev.add('open-ended not judged'); else if (J && J.panel.length) ev.delete('open-ended not judged');
+  run.evidence = [...ev]; }
 lb.updated = new Date().toISOString();
 fs.writeFileSync('leaderboard.json', JSON.stringify(lb, null, 1));
 const jl = !J ? 'Open-ended answers and builds are not judged yet (the owner can add an OpenRouter key).'
