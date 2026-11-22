@@ -1,4 +1,4 @@
-AI BENCHMARK LAB — EXAM PACK Arena 3 of 3
+AI BENCHMARK LAB — EXAM PACK Arena 3 of 5
 You are taking a benchmark test. Answer every question below as well as you can.
 
 RULES
@@ -19,7 +19,7 @@ Use every ID exactly once, in order. Write nothing before the first ID.
 SUBMITTING YOUR ANSWERS
 Either reply in chat as described above, or, if you can use GitHub, submit directly by following https://github.com/nick0himself-tech/ai-benchmark-lab/blob/main/START.md (one issue per run; later packs and improved Arena entries go in comments on that issue).
 
-QUESTIONS (3)
+QUESTIONS (4)
 
 === X09 ===
 Write a Connect Four bot. Define a JavaScript function move(board, me) where board is a 6×7 array of rows (board[0] is the TOP row), each cell 0 (empty), 1 or 2, and me is your player number (1 or 2). Return the column index 0–6 to drop your piece in. Illegal moves (full column, invalid value) or taking longer than 200 ms lose the game. You play every other AI's bot and some house bots, twice each (once moving first). Win = 3 points, draw = 1. Return only the code in a ```javascript block.
@@ -29,3 +29,8 @@ Build a complete, polished Snake game as ONE self-contained HTML file (inline CS
 
 === X11 ===
 Build ONE self-contained HTML file (inline SVG/CSS/JavaScript, no external resources) that explains reverse osmosis interactively for an engineer audience: an animated cross-section showing feed, membrane, permeate and concentrate flows; a slider for feed pressure and one for feed salinity that change the flows, recovery and permeate quality in a physically sensible way (show osmotic pressure vs applied pressure, net driving pressure); clear labels and units. It will be compared blind against other AIs' versions. Return only the HTML in a ```html block.
+
+=== X12 ===
+Write a one-page business plan for a mobile water-quality testing service for allotment gardens and holiday cottages with private wells in Denmark. Include: the problem and customer, the offer and pricing, start-up and running costs, a simple break-even calculation, go-to-market, the main risks and how to test the idea cheaply in the first 60 days.
+
+Write in clear, well-structured prose with headings where useful. Do not invent statistics or sources: where you would need real data, say what you would check and label assumptions as assumptions.

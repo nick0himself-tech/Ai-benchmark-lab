@@ -1,5 +1,9 @@
 # AI Benchmark Lab
 
+**Live site:** https://nick0himself-tech.github.io/ai-benchmark-lab/ (after GitHub Pages is switched on)
+
+**Which AI should I use for this?** Describe a task on the site's *Find a model* page and the advisor recommends the best-fitting tested model. It also suggests a leaner option that is good enough, so you don't pay for power you don't need.
+
 An open benchmark for comparing AI models (ChatGPT, Claude, Gemini, Grok, DeepSeek, Llama, Mistral and others), free or paid. It has:
 
 - **210 tests in three tiers:** Standard (sanity checks), Frontier (hard) and Gauntlet (adversarial: hallucination bait, trick questions, precision traps, pressure).
@@ -31,6 +35,12 @@ Three ways to test an AI:
 1. Put these files in a public GitHub repository.
 2. Go to Settings → Pages → Deploy from branch → `main` / root.
 3. Share the Pages link. Visitors can run any AI and keep their own results.
+
+## Test any model with one click (relay)
+
+The **Test a model (relay)** workflow (Actions tab) runs the complete benchmark for any model reachable by API. That includes every tier, the Arena with feedback rounds, tournaments and judging. It then publishes the results. The model itself never has to use GitHub.
+
+**Test the library** re-tests every model in `models.json`. It can also discover models on OpenRouter by itself, for example all `:free` models, or `openai/,google/,x-ai/,anthropic/`.
 
 ## Fully autonomous runs
 

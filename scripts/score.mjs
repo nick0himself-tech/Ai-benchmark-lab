@@ -76,6 +76,7 @@ const arenaRows = Object.entries(r.arena).map(([id, a]) => {
   let status = a.ok ? (a.metric != null ? `${a.metric}${a.unit}` : 'accepted') : 'invalid';
   let rec = '';
   if (a.kind === 'build') rec = a.ok ? 'Ranked by head-to-head judging when published' : '';
+  else if (a.kind === 'pro') rec = a.ok ? 'Scored against the checklist when published (judge model)' : '';
   else if (a.kind === 'bot') rec = a.ok ? `Tournament: ${tourn[id].findIndex(x => x.key === runId) + 1} of ${tourn[id].length} (including house bots)` : '';
   else { const R = recordFor(id, a.better); if (!a.ok) rec = ''; else if (!R) rec = 'No record yet: this would be the first'; else { const beats = a.better === 'low' ? a.metric < R.metric : a.metric > R.metric; rec = `Record ${R.metric}${a.unit} by ${esc(nameOf(R.run))}${beats ? ' — **new record!**' : ` — ${a.better === 'low' ? 'lower' : 'higher'} is better, keep improving`}`; } }
   return `| ${id} ${esc(a.name)} | ${status} | ${esc(a.detail)} | ${rec} |`;

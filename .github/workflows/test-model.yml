@@ -1,0 +1,88 @@
+name: Test a model (relay)
+
+# Runs the complete benchmark for any model reachable by API (it does not need to use GitHub itself):
+# every question tier, Arena challenges with feedback rounds, tournaments, judging, then publishes to the leaderboard.
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Model ID exactly as the provider names it (OpenRouter: see openrouter.ai/models; many have free ':free' versions)"
+        required: true
+      label:
+        description: "Name shown on the leaderboard, e.g. 'Gemini 3 Flash' (optional)"
+        required: false
+      provider:
+        description: "openrouter, openai, xai, google, anthropic, deepseek, mistral or groq"
+        default: "openrouter"
+        required: true
+      access:
+        description: "API (free tier) or API (pay per use)"
+        default: "API (pay per use)"
+        required: true
+      tiers:
+        description: "S Standard, F Frontier, G Gauntlet, R Real World, A Arena"
+        default: "SFGRA"
+        required: true
+      rounds:
+        description: "Arena improvement rounds per challenge (1–5)"
+        default: "3"
+        required: true
+      reasoning:
+        description: "Reasoning effort for models that support it: low, medium, high (optional)"
+        required: false
+
+concurrency:
+  group: leaderboard
+  cancel-in-progress: false
+
+jobs:
+  relay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install --no-save --no-package-lock playwright-core@1.49.1
+      - name: Make sure a browser is available
+        run: |
+          if [ ! -x /usr/bin/google-chrome ] && [ ! -x /usr/bin/chromium ]; then npx --yes playwright@1.49.1 install --with-deps chromium; fi
+      - name: Run the model through the benchmark
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          RELAY_MODEL: ${{ inputs.model }}
+          RELAY_LABEL: ${{ inputs.label }}
+          RELAY_PROVIDER: ${{ inputs.provider }}
+          RELAY_ACCESS: ${{ inputs.access }}
+          RELAY_TIERS: ${{ inputs.tiers }}
+          RELAY_ROUNDS: ${{ inputs.rounds }}
+          RELAY_REASONING: ${{ inputs.reasoning }}
+        run: node scripts/relay.mjs
+      - name: Publish (judge open-ended answers and builds if JUDGE_MODEL is set)
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          JUDGE_API_KEY: ${{ secrets.JUDGE_API_KEY }}
+          JUDGE_MODEL: ${{ vars.JUDGE_MODEL }}
+          JUDGE_BASE_URL: ${{ vars.JUDGE_BASE_URL }}
+        run: node scripts/publish.mjs
+      - name: Commit results
+        env:
+          LABEL: ${{ inputs.label || inputs.model }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add leaderboard.json submissions
+          git diff --cached --quiet || git commit -m "Leaderboard: relay run for $LABEL"
+          git pull --rebase origin main && git push
+      - name: Summary
+        run: cat publish.md >> "$GITHUB_STEP_SUMMARY"

@@ -1,6 +1,6 @@
 {
  "format": "ai-bench-tests/v1",
- "count": 221,
+ "count": 254,
  "tests": [
   {
    "id": "L1",
@@ -2318,6 +2318,292 @@
    ]
   },
   {
+   "id": "R01",
+   "tier": "R",
+   "category": "real",
+   "name": "Scale a recipe",
+   "difficulty": 1,
+   "type": "exact",
+   "turns": [
+    "A recipe for 4 people uses 300 g flour, 2 eggs and 250 ml milk. How much flour (g) and milk (ml) do I need for 10 people? Answer as <flour>, <milk>.\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R02",
+   "tier": "R",
+   "category": "real",
+   "name": "Oven temperature",
+   "difficulty": 1,
+   "type": "num",
+   "turns": [
+    "My recipe says 350 °F. My oven only shows °C in steps of 10. What should I set it to?\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R03",
+   "tier": "R",
+   "category": "real",
+   "name": "Fuel cost of a trip",
+   "difficulty": 1,
+   "type": "num",
+   "turns": [
+    "I drive 420 km. My car uses 6.5 L per 100 km and fuel costs 14.20 DKK per litre. What does the fuel cost, in DKK, to 2 decimals?\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R04",
+   "tier": "R",
+   "category": "real",
+   "name": "Heater electricity",
+   "difficulty": 1,
+   "type": "num",
+   "turns": [
+    "A 2 kW heater runs 3.5 hours a day for 30 days. Electricity costs 2.45 DKK/kWh. What is the cost in DKK?\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R05",
+   "tier": "R",
+   "category": "real",
+   "name": "Loan payment",
+   "difficulty": 2,
+   "type": "num",
+   "turns": [
+    "I borrow 200,000 DKK at 6% annual interest, repaid in equal monthly payments over 5 years (monthly compounding). What is the monthly payment, to 2 decimals?\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R06",
+   "tier": "R",
+   "category": "real",
+   "name": "Splitting a bill",
+   "difficulty": 2,
+   "type": "num",
+   "turns": [
+    "Four friends get a restaurant bill of 1,240 DKK before service. Ana's dishes cost 220 DKK and she pays only for her own; the other three split the rest equally. A 10% service charge is added to everyone's share proportionally. How much does each of the other three pay?\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R07",
+   "tier": "R",
+   "category": "real",
+   "name": "Time zones and DST",
+   "difficulty": 3,
+   "type": "exact",
+   "turns": [
+    "I have a call at 15:00 Copenhagen time on Tuesday 10 March 2026. What time is that in New York? Give HH:MM (24-hour).\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R08",
+   "tier": "R",
+   "category": "real",
+   "name": "Business-day delivery",
+   "difficulty": 2,
+   "type": "exact",
+   "turns": [
+    "A parcel ships on Monday 21 December 2026 with \"3 business days\" delivery. Business days are Monday–Friday excluding public holidays; 24, 25 and 26 December are holidays. Delivery counts from the day after shipping. On which date does it arrive? Give the day and month.\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R09",
+   "tier": "R",
+   "category": "real",
+   "name": "Paint calculation",
+   "difficulty": 2,
+   "type": "num",
+   "turns": [
+    "A room is 4.2 m × 3.5 m with 2.6 m high walls. There is one window (1.2 m²) and one door (0.9 m × 2.0 m). I paint the walls (not the ceiling) with two coats. Paint covers 10 m² per litre and is sold in 2.5 L cans. How many cans do I need?\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R10",
+   "tier": "R",
+   "category": "real",
+   "name": "Spreadsheet formula",
+   "difficulty": 2,
+   "type": "fn",
+   "turns": [
+    "Write one Excel formula for cell D2 that shows \"Late\" if the delivery date in C2 is after the due date in B2, \"On time\" otherwise, and stays blank if C2 is empty. Reply with the formula only."
+   ]
+  },
+  {
+   "id": "R11",
+   "tier": "R",
+   "category": "real",
+   "name": "Email triage",
+   "difficulty": 2,
+   "type": "exact",
+   "turns": [
+    "It is Monday morning. Which of these emails need a response or action TODAY? Answer with the numbers in ascending order, comma-separated.\n1. Newsletter: \"10 productivity tips\"\n2. Your manager: \"Can you send me the Q3 figures by 3 pm today?\"\n3. Supplier: \"Final notice: invoice 4471 is 30 days overdue; payment due today to avoid a late fee\"\n4. Colleague: \"Lunch sometime next week?\"\n5. IT: \"Your password expires in 14 days\"\n6. Client: \"We've moved tomorrow's meeting to 9:00 — please confirm you can make it\"\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R12",
+   "tier": "R",
+   "category": "real",
+   "name": "Lease notice period",
+   "difficulty": 2,
+   "type": "exact",
+   "turns": [
+    "My lease says: \"Notice period: three months, to the end of a calendar month.\" I give notice on 15 May. What is the last day of my tenancy?\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R13",
+   "tier": "R",
+   "category": "real",
+   "name": "Warranty window",
+   "difficulty": 1,
+   "type": "exact",
+   "turns": [
+    "I bought a washing machine on 3 February 2025 with a 2-year warranty. It breaks on 10 February 2027. Is it still under warranty? Answer yes or no.\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R14",
+   "tier": "R",
+   "category": "real",
+   "name": "Budget left over",
+   "difficulty": 1,
+   "type": "num",
+   "turns": [
+    "My net income is 32,000 DKK a month. Fixed costs: rent 9,500, utilities 1,200, transport 900, insurance 650, phone 250. I want to save 15% of my income. How much is left for everything else?\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R15",
+   "tier": "R",
+   "category": "real",
+   "name": "Cheapest way to buy",
+   "difficulty": 3,
+   "type": "num",
+   "turns": [
+    "I need exactly 2.25 kg of coffee. Option A: 1.5 kg bags at 42 DKK. Option B: 750 g bags at 19.50 DKK with \"buy 2, get the 3rd free\". Mixing is allowed. What is the lowest total price in DKK to get at least 2.25 kg?\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R16",
+   "tier": "R",
+   "category": "real",
+   "name": "Parking fee with cap",
+   "difficulty": 2,
+   "type": "num",
+   "turns": [
+    "Parking: first 2 hours free, then 15 DKK per started hour, maximum 90 DKK per day. I park from 08:10 to 16:55 the same day. What do I pay?\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R17",
+   "tier": "R",
+   "category": "real",
+   "name": "Will it fit?",
+   "difficulty": 2,
+   "type": "exact",
+   "turns": [
+    "Can 40 boxes measuring 30 × 40 × 25 cm fit inside a van cargo area of 2.4 m × 1.2 m × 1.3 m (boxes can be rotated, no squashing)? Answer yes or no.\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R18",
+   "tier": "R",
+   "category": "real",
+   "name": "Backward planning",
+   "difficulty": 2,
+   "type": "exact",
+   "turns": [
+    "Dinner is at 19:00. The roast needs 1 h 40 min in the oven, then 20 min resting before serving. The oven takes 15 minutes to preheat. When must I start preheating? Give HH:MM.\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R19",
+   "tier": "R",
+   "category": "real",
+   "name": "Password strength",
+   "difficulty": 1,
+   "type": "exact",
+   "turns": [
+    "Which password is strongest against guessing?\nA) P@ssw0rd!  B) Tr0ub4dor&3  C) correct-horse-battery-staple-lamp  D) 19870315\nAnswer with the letter.\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R20",
+   "tier": "R",
+   "category": "real",
+   "name": "Walking time",
+   "difficulty": 1,
+   "type": "num",
+   "turns": [
+    "Roughly how many minutes does it take an average adult to walk 5 km at a normal pace?\n\nEnd your response with a line in the form: Final answer: <answer>"
+   ]
+  },
+  {
+   "id": "R21",
+   "tier": "R",
+   "category": "real",
+   "name": "Kitchen fire",
+   "difficulty": 2,
+   "type": "rubric",
+   "turns": [
+    "The oil in my frying pan just caught fire. What do I do, right now?"
+   ]
+  },
+  {
+   "id": "R22",
+   "tier": "R",
+   "category": "real",
+   "name": "Wifi troubleshooting",
+   "difficulty": 2,
+   "type": "rubric",
+   "turns": [
+    "My laptop says \"Connected, no internet\", but my phone works fine on the same wifi. What should I try, in order?"
+   ]
+  },
+  {
+   "id": "R23",
+   "tier": "R",
+   "category": "real",
+   "name": "Spot the scam",
+   "difficulty": 2,
+   "type": "rubric",
+   "turns": [
+    "I got this SMS: \"DHL: Your parcel is on hold. Pay the 12 DKK customs fee within 24 h: dhl-delivery-dk.info/pay\". Is it real? What should I do?"
+   ]
+  },
+  {
+   "id": "R24",
+   "tier": "R",
+   "category": "real",
+   "name": "Supplier price rise email",
+   "difficulty": 3,
+   "type": "rubric",
+   "turns": [
+    "Our long-time supplier just announced a 12% price increase from next month. We buy about 400,000 DKK a year from them. Write a short, firm but friendly reply to negotiate."
+   ]
+  },
+  {
+   "id": "R25",
+   "tier": "R",
+   "category": "real",
+   "name": "Workplace judgement",
+   "difficulty": 2,
+   "type": "rubric",
+   "turns": [
+    "A colleague I like asks me to clock in for them tomorrow because they'll be 45 minutes late. What should I do?"
+   ]
+  },
+  {
+   "id": "R26",
+   "tier": "R",
+   "category": "real",
+   "name": "Explain a bill to a customer",
+   "difficulty": 3,
+   "type": "rubric",
+   "turns": [
+    "A customer emails angrily: their quarterly water bill went from 1,100 DKK to 2,350 DKK. Their meter readings show consumption went from 18 m³ to 41 m³ in the same season. Write the reply."
+   ]
+  },
+  {
    "id": "X01",
    "tier": "A",
    "category": "arena",
@@ -2436,6 +2722,83 @@
    "type": "arena",
    "turns": [
     "Build ONE self-contained HTML file (inline SVG/CSS/JavaScript, no external resources) that explains reverse osmosis interactively for an engineer audience: an animated cross-section showing feed, membrane, permeate and concentrate flows; a slider for feed pressure and one for feed salinity that change the flows, recovery and permeate quality in a physically sensible way (show osmotic pressure vs applied pressure, net driving pressure); clear labels and units. It will be compared blind against other AIs' versions. Return only the HTML in a ```html block."
+   ]
+  },
+  {
+   "id": "X12",
+   "tier": "A",
+   "category": "arena",
+   "name": "Business plan: water testing for allotments",
+   "difficulty": 3,
+   "type": "arena",
+   "turns": [
+    "Write a one-page business plan for a mobile water-quality testing service for allotment gardens and holiday cottages with private wells in Denmark. Include: the problem and customer, the offer and pricing, start-up and running costs, a simple break-even calculation, go-to-market, the main risks and how to test the idea cheaply in the first 60 days.\n\nWrite in clear, well-structured prose with headings where useful. Do not invent statistics or sources: where you would need real data, say what you would check and label assumptions as assumptions."
+   ]
+  },
+  {
+   "id": "X13",
+   "tier": "A",
+   "category": "arena",
+   "name": "Market research brief: home water filters",
+   "difficulty": 3,
+   "type": "arena",
+   "turns": [
+    "Prepare a market research brief on the market for home drinking-water filters (jugs, tap filters, under-sink RO) in Denmark, for a start-up deciding whether to enter. You do not have internet access. Give: the key research questions, what you can reasonably say from general knowledge (clearly marked), what must be verified and exactly where (named types of sources), a short customer survey (8–10 questions), segments to compare, and a decision framework for go/no-go.\n\nWrite in clear, well-structured prose with headings where useful. Do not invent statistics or sources: where you would need real data, say what you would check and label assumptions as assumptions."
+   ]
+  },
+  {
+   "id": "X14",
+   "tier": "A",
+   "category": "arena",
+   "name": "Project plan: install an RO unit in 12 weeks",
+   "difficulty": 3,
+   "type": "arena",
+   "turns": [
+    "A food factory needs a 10 m³/h reverse-osmosis unit installed and commissioned within 12 weeks from order. Write the project plan: phases and week-by-week schedule, dependencies and critical path, long-lead items, roles, acceptance tests and commissioning, top risks with mitigations, and what the client must provide.\n\nWrite in clear, well-structured prose with headings where useful. Do not invent statistics or sources: where you would need real data, say what you would check and label assumptions as assumptions."
+   ]
+  },
+  {
+   "id": "X15",
+   "tier": "A",
+   "category": "arena",
+   "name": "Data report: half-year sales",
+   "difficulty": 3,
+   "type": "arena",
+   "turns": [
+    "Here is half-year sales data (units and unit price in DKK by region and month). Write a short management report: total revenue, revenue by region and which leads, the monthly trend from January to June (with the % change), the weakest month, notable patterns, and three recommended actions. Show the key figures in a small table.\n\nmonth,region,units,price_dkk\nJan,North,195,49\nJan,South,223,52\nJan,East,199,47\nJan,West,195,55\nFeb,North,210,49\nFeb,South,230,52\nFeb,East,128,47\nFeb,West,127,55\nMar,North,211,49\nMar,South,201,52\nMar,East,237,47\nMar,West,127,55\nApr,North,104,49\nApr,South,194,52\nApr,East,157,47\nApr,West,116,55\nMay,North,103,49\nMay,South,217,52\nMay,East,90,47\nMay,West,232,55\nJun,North,181,49\nJun,South,195,52\nJun,East,237,47\nJun,West,120,55\n\nWrite in clear, well-structured prose with headings where useful. Do not invent statistics or sources: where you would need real data, say what you would check and label assumptions as assumptions."
+   ]
+  },
+  {
+   "id": "X16",
+   "tier": "A",
+   "category": "arena",
+   "name": "Customer message: service outage",
+   "difficulty": 3,
+   "type": "arena",
+   "turns": [
+    "Our online booking system was down for 4 hours yesterday (09:10–13:15) during a peak period because a database update failed. About 1,200 customers could not book; some double bookings occurred when it came back. Write the email to affected customers.\n\nWrite in clear, well-structured prose with headings where useful. Do not invent statistics or sources: where you would need real data, say what you would check and label assumptions as assumptions."
+   ]
+  },
+  {
+   "id": "X17",
+   "tier": "A",
+   "category": "arena",
+   "name": "Decision memo: build or buy a CRM",
+   "difficulty": 3,
+   "type": "arena",
+   "turns": [
+    "A 15-person engineering consultancy must choose between building a simple in-house CRM (they have one part-time developer) and buying a SaaS CRM. Write a one-page decision memo with options, a weighted scoring matrix, a 3-year cost comparison with stated assumptions, risks, and a clear recommendation.\n\nWrite in clear, well-structured prose with headings where useful. Do not invent statistics or sources: where you would need real data, say what you would check and label assumptions as assumptions."
+   ]
+  },
+  {
+   "id": "X18",
+   "tier": "A",
+   "category": "arena",
+   "name": "Lesson plan: reverse osmosis for teenagers",
+   "difficulty": 3,
+   "type": "arena",
+   "turns": [
+    "Write a 45-minute lesson plan teaching reverse osmosis to 15-year-olds, including a safe hands-on experiment with cheap materials, learning objectives, timings, questions to check understanding, and how to support weaker and stronger students.\n\nWrite in clear, well-structured prose with headings where useful. Do not invent statistics or sources: where you would need real data, say what you would check and label assumptions as assumptions."
    ]
   }
  ]

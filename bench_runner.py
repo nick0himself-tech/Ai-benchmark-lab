@@ -51,7 +51,8 @@ def chat(base, key, model, messages, extra):
             content = msg.get("content")
             if isinstance(content, list):  # some APIs return content parts
                 content = "".join(p.get("text", "") for p in content if isinstance(p, dict))
-            return content or ""
+            u = out.get("usage") or {}
+            return content or "", {"tin": u.get("prompt_tokens") or 0, "tout": u.get("completion_tokens") or 0, "cost": u.get("cost") or 0}
         except urllib.error.HTTPError as e:
             detail = e.read().decode(errors="replace")[:300]
             if e.code in (429, 500, 502, 503, 504, 529) and attempt < 5:
@@ -64,14 +65,18 @@ def chat(base, key, model, messages, extra):
 
 def run_test(t, base, key, model, extra):
     messages, transcript = [], []
+    use = {"tin": 0, "tout": 0, "cost": 0.0, "sec": 0.0}
     for turn in t["turns"]:
         messages.append({"role": "user", "content": turn})
-        reply = chat(base, key, model, messages, extra)
+        t0 = time.time()
+        reply, u = chat(base, key, model, messages, extra)
+        use["sec"] += time.time() - t0
+        for k in ("tin", "tout", "cost"): use[k] += u[k] or 0
         messages.append({"role": "assistant", "content": reply})
         transcript.append((turn, reply))
     if len(t["turns"]) == 1:
-        return transcript[0][1]
-    return "\n\n".join(f"USER: {u}\n\nASSISTANT: {a}" for u, a in transcript)
+        return transcript[0][1], use
+    return "\n\n".join(f"USER: {u}\n\nASSISTANT: {a}" for u, a in transcript), use
 
 def main():
     here = os.path.dirname(os.path.abspath(__file__))
@@ -140,9 +145,9 @@ def main():
         print(f"Resuming {out_path}: {len(result['answers'])} answers already saved.")
     todo = [t for t in sel if t["id"] not in result["answers"]]
 
-    extra = {}
+    extra = {"usage": {"include": True}} if a.provider == "openrouter" else {}
     if a.reasoning:
-        extra = {"reasoning": {"effort": a.reasoning}} if a.provider == "openrouter" else {"reasoning_effort": a.reasoning}
+        extra.update({"reasoning": {"effort": a.reasoning}} if a.provider == "openrouter" else {"reasoning_effort": a.reasoning})
 
     lock = threading.Lock()
     def save():
@@ -159,7 +164,9 @@ def main():
             with lock:
                 done += 1
                 try:
-                    result["answers"][t["id"]] = f.result()
+                    ans, use = f.result()
+                    result["answers"][t["id"]] = ans
+                    result.setdefault("usage", {})[t["id"]] = use
                     result["errors"].pop(t["id"], None)
                     status = "ok"
                 except Exception as e:
@@ -167,8 +174,13 @@ def main():
                     status = f"FAILED ({str(e)[:80]})"
                 save()
                 print(f"[{done}/{len(todo)}] {t['id']} {t['name']}: {status}")
+    us = result.get("usage", {}).values()
+    result["usage_total"] = {"n": len(result.get("usage", {})), "tin": sum(u["tin"] for u in us), "tout": sum(u["tout"] for u in us),
+                             "cost": round(sum(u["cost"] for u in us), 6), "sec": round(sum(u["sec"] for u in us), 1)}
     save()
     n_err = len(result["errors"])
+    ut = result["usage_total"]
+    print(f"Usage: {ut['tin']} input + {ut['tout']} output tokens" + (f", cost ${ut['cost']:.4f}" if ut['cost'] else "") + f", {ut['sec']:.0f} s of model time.")
     print(f"\nDone in {time.time() - t0:.0f} s. {len(result['answers'])} answers saved to {out_path}"
           + (f"; {n_err} failed (run the same command again to retry them)." if n_err else "."))
     print("Load that file in the AI Benchmark Lab page: Auto-run section -> Load results file.")

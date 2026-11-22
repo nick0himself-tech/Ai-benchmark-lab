@@ -1,0 +1,76 @@
+name: Test the library
+
+# Re-tests every model listed in models.json through the relay. Run it by hand, or remove the '#'
+# in front of the two schedule lines to re-test the whole library automatically each month.
+on:
+  workflow_dispatch:
+    inputs:
+      discover:
+        description: "Also test models found on OpenRouter whose ID contains any of these (comma-separated), e.g. ':free' or 'openai/,google/,x-ai/,anthropic/'. Leave empty to use only models.json."
+        required: false
+      limit:
+        description: "Maximum number of discovered models (newest first)"
+        default: "10"
+        required: true
+      tiers:
+        description: "Tiers to run for every model (S, F, G, R, A)"
+        default: "SFGRA"
+        required: true
+#  schedule:
+#    - cron: "17 3 1 * *"
+
+jobs:
+  list:
+    runs-on: ubuntu-latest
+    outputs:
+      models: ${{ steps.m.outputs.models }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: m
+        env:
+          DISCOVER: ${{ inputs.discover }}
+          LIMIT: ${{ inputs.limit }}
+        run: echo "models=$(node scripts/pick-models.mjs)" >> "$GITHUB_OUTPUT"
+  test:
+    needs: list
+    if: needs.list.outputs.models != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    permissions:
+      contents: write
+    strategy:
+      max-parallel: 1
+      fail-fast: false
+      matrix:
+        m: ${{ fromJSON(needs.list.outputs.models) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install --no-save --no-package-lock playwright-core@1.49.1
+      - run: |
+          if [ ! -x /usr/bin/google-chrome ] && [ ! -x /usr/bin/chromium ]; then npx --yes playwright@1.49.1 install --with-deps chromium; fi
+      - name: Relay
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          RELAY_MODEL: ${{ matrix.m.id }}
+          RELAY_LABEL: ${{ matrix.m.label }}
+          RELAY_ACCESS: ${{ matrix.m.access || 'API (pay per use)' }}
+          RELAY_TIERS: ${{ inputs.tiers || 'SFGRA' }}
+          RELAY_ROUNDS: "3"
+        run: git pull --ff-only origin main && node scripts/relay.mjs
+      - name: Publish
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          JUDGE_MODEL: ${{ vars.JUDGE_MODEL }}
+        run: node scripts/publish.mjs
+      - name: Commit
+        env:
+          LABEL: ${{ matrix.m.label }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add leaderboard.json submissions
+          git diff --cached --quiet || git commit -m "Leaderboard: library run for $LABEL"
+          git pull --rebase origin main && git push
