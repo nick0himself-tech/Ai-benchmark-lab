@@ -21,12 +21,13 @@ async function chat(messages) {
     const t0 = Date.now();
     try {
       const r = await fetch(`${base}/chat/completions`, { method: 'POST', headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model, messages, ...extra }) });
-      if ([429, 500, 502, 503, 504, 529].includes(r.status) && k < 5) { await sleep(d); continue; }
+      if (r.status === 429) { const t = await r.text(); if (/per[- ]day|daily|requests-per-day|free-models-per-day/i.test(t)) { const e = new Error('Daily request limit reached'); e.daily = true; throw e; } if (k < 5) { await sleep(Math.max(d, 15000)); continue; } throw new Error('HTTP 429: ' + t.slice(0, 200)); }
+      if ([500, 502, 503, 504, 529].includes(r.status) && k < 5) { await sleep(d); continue; }
       const j = await r.json(); if (!r.ok) throw new Error(`HTTP ${r.status}: ${JSON.stringify(j).slice(0, 200)}`);
       let c = j.choices[0].message.content; if (Array.isArray(c)) c = c.map(p => p.text || '').join('');
       const u = j.usage || {}; usage.tin += u.prompt_tokens || 0; usage.tout += u.completion_tokens || 0; usage.cost += u.cost || 0; usage.sec += (Date.now() - t0) / 1000;
       return c || '';
-    } catch (e) { if (k < 5) { await sleep(d); continue; } throw e; }
+    } catch (e) { if (e.daily) throw e; if (k < 5) { await sleep(d); continue; } throw e; }
   }
 }
 const bank = JSON.parse(fs.readFileSync('tests.json', 'utf8')).tests;
@@ -34,7 +35,11 @@ const lb = fs.existsSync('leaderboard.json') ? JSON.parse(fs.readFileSync('leade
 lb.models ||= []; lb.arena ||= {};
 const date = new Date().toISOString().slice(0, 10);
 const slug = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 50);
-const runId = `relay-${slug(label)}-${slug(E.RELAY_ACCESS || 'api')}-${reasoning || 'std'}-${date}`;
+const stem = `relay-${slug(label)}-${slug(E.RELAY_ACCESS || 'api')}-${reasoning || 'std'}-`;
+const recent = lb.models.filter(m => m.id.startsWith(stem) && (Date.now() - Date.parse(m.date || 0)) < 21 * 864e5).sort((a, b) => (b.date || '').localeCompare(a.date || ''))[0];
+const runId = recent ? recent.id : stem + date;
+const done = new Set(Object.keys((lb.res || {})[runId] || {})), doneArena = new Set(Object.keys((lb.arena || {})[runId] || {}).filter(k => lb.arena[runId][k].ok));
+let stopped = false;
 const nameOf = id => (lb.models.find(m => m.id === id) || {}).name || id;
 
 const exe = ['/usr/bin/google-chrome', '/usr/bin/google-chrome-stable', '/usr/bin/chromium'].find(p => fs.existsSync(p));
@@ -45,34 +50,35 @@ await page.waitForFunction(() => window.__bench && window.__bench.scoreAnswers, 
 const score = a => page.evaluate(x => window.__bench.scoreAnswers(x), a);
 
 // 1. Question tiers, a few at a time.
-const qs = bank.filter(t => t.tier !== 'A' && tiers.includes(t.tier));
+const qs = bank.filter(t => t.tier !== 'A' && tiers.includes(t.tier) && !done.has(t.id));
 const answers = {}; let words = 0;
 console.log(`Relay: ${label} (${model}) — ${qs.length} questions, Arena ${tiers.includes('A') ? `with ${rounds} rounds` : 'skipped'}`);
-for (let i = 0; i < qs.length; i += 4) {
-  await Promise.all(qs.slice(i, i + 4).map(async t => {
+for (let i = 0; i < qs.length && !stopped; i += 3) {
+  await Promise.all(qs.slice(i, i + 3).map(async t => {
     try {
       const msgs = []; const log = [];
       for (const turn of t.turns) { msgs.push({ role: 'user', content: turn }); const a = await chat(msgs); msgs.push({ role: 'assistant', content: a }); log.push([turn, a]); }
       answers[t.id] = t.turns.length === 1 ? log[0][1] : log.map(([u, a]) => `USER: ${u}\n\nASSISTANT: ${a}`).join('\n\n');
       usage.n++; words += answers[t.id].split(/\s+/).filter(Boolean).length;
-    } catch (e) { console.log(`  ${t.id} failed: ${e.message}`); }
+    } catch (e) { if (e.daily) stopped = true; console.log(`  ${t.id} failed: ${e.message}`); }
   }));
-  console.log(`  answered ${Math.min(i + 4, qs.length)} / ${qs.length}`);
+  console.log(`  answered ${Math.min(i + 3, qs.length)} / ${qs.length}`);
 }
 const r = await score(answers);
 
 // 2. Arena with feedback rounds, like a human coach would give.
 const tourn = {};
-if (tiers.includes('A')) {
+if (tiers.includes('A') && !stopped) {
   const chs = await page.evaluate(() => window.__bench.challenges());
   for (const ch of chs) {
+    if (stopped || doneArena.has(ch.id)) continue;
     const rec = (() => { const rows = Object.entries(lb.arena).filter(([run]) => run !== runId).map(([run, m]) => ({ run, a: m[ch.id] })).filter(x => x.a && x.a.ok && typeof x.a.metric === 'number');
       rows.sort((x, y) => ch.better === 'low' ? x.a.metric - y.a.metric : y.a.metric - x.a.metric); return rows[0] ? `${rows[0].a.metric}${ch.unit} by ${nameOf(rows[0].run)}` : null; })();
     const msgs = [{ role: 'user', content: (rec ? `CURRENT RECORD: ${rec}. Your goal is to beat it (${ch.better === 'low' ? 'lower' : 'higher'} is better).\n\n` : '') + ch.p }];
     let best = null;
     const iterate = ['opt', 'golf', 'suite'].includes(ch.kind) ? rounds : 1;
     for (let k = 0; k < iterate; k++) {
-      let ans; try { ans = await chat(msgs); } catch (e) { console.log(`  ${ch.id} failed: ${e.message}`); break; }
+      let ans; try { ans = await chat(msgs); } catch (e) { if (e.daily) stopped = true; console.log(`  ${ch.id} failed: ${e.message}`); break; }
       const s = (await score({ [ch.id]: ans })).arena[ch.id];
       const better = s.ok && (!best || !best.ok || (s.metric != null && (best.metric == null || (ch.better === 'low' ? s.metric < best.metric : s.metric > best.metric))));
       if (!best || better) best = s;
@@ -92,5 +98,7 @@ if (tiers.includes('A')) {
 await browser.close();
 usage.cost = Math.round(usage.cost * 1e6) / 1e6; usage.sec = Math.round(usage.sec); usage.words = usage.n ? Math.round(words / usage.n) : 0;
 const meta = { model: label, provider: `${provider}: ${model}`, access: E.RELAY_ACCESS || 'API (pay per use)', iface: 'API', think: reasoning ? (reasoning === 'high' ? 'On (high effort)' : 'On') : 'Off', tools: 'Off', restrict: '', notes: 'Run by the relay workflow', usage };
+if (!Object.keys(answers).length && !Object.keys(r.arena).length) { console.log(stopped ? 'Daily limit reached before any new answers; will resume next run.' : 'Nothing left to do for this model.'); fs.writeFileSync('result.json', JSON.stringify({ ok: false })); process.exit(0); }
+if (stopped) meta.notes += ' · paused at the daily request limit; resumes on the next run';
 fs.writeFileSync('result.json', JSON.stringify({ ok: true, runId, issue: null, author: 'relay', isComment: false, meta, tourn, ...r }, null, 1));
 console.log(`Done. ${Object.keys(r.scores).length} auto-scored, ${r.rubric.length} open-ended, ${Object.keys(r.arena).length} Arena. Usage: ${JSON.stringify(usage)}`);

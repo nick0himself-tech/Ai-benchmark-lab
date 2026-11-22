@@ -1,7 +1,8 @@
 name: Test the library
 
-# Re-tests every model listed in models.json through the relay. Run it by hand, or remove the '#'
-# in front of the two schedule lines to re-test the whole library automatically each month.
+# Tests every model in models.json plus models discovered on OpenRouter, through the relay.
+# Runs nightly for free models (set the LIBRARY_DISCOVER variable to change the filter) and resumes
+# runs that stopped at the daily request limit. Run it by hand with other filters for paid models.
 on:
   workflow_dispatch:
     inputs:
@@ -16,8 +17,9 @@ on:
         description: "Tiers to run for every model (S, F, G, R, A)"
         default: "SFGRA"
         required: true
-#  schedule:
-#    - cron: "17 3 1 * *"
+  schedule:
+    # Every night: continue filling the library with free models (resumes where the daily limit stopped it).
+    - cron: "17 2 * * *"
 
 jobs:
   list:
@@ -28,8 +30,8 @@ jobs:
       - uses: actions/checkout@v4
       - id: m
         env:
-          DISCOVER: ${{ inputs.discover }}
-          LIMIT: ${{ inputs.limit }}
+          DISCOVER: ${{ github.event_name == 'schedule' && (vars.LIBRARY_DISCOVER || ':free') || inputs.discover }}
+          LIMIT: ${{ github.event_name == 'schedule' && (vars.LIBRARY_LIMIT || '25') || inputs.limit }}
         run: echo "models=$(node scripts/pick-models.mjs)" >> "$GITHUB_OUTPUT"
   test:
     needs: list
