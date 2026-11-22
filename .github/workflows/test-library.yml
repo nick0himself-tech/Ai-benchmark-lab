@@ -65,7 +65,8 @@ jobs:
       - name: Publish
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          JUDGE_MODEL: ${{ vars.JUDGE_MODEL }}
+          JUDGES: ${{ vars.JUDGES }}
+          JUDGE_BUDGET: ${{ vars.JUDGE_BUDGET || '3' }}
         run: node scripts/publish.mjs
       - name: Commit
         env:

@@ -69,3 +69,6 @@ Anyone, including an AI agent that can use GitHub, can open a **results issue** 
 - Use a fresh chat for each pack, with no custom instructions or memory.
 - Record thinking mode, tools/web search, free or paid, and any limits you hit.
 - Compare like with like: a free-tier chat app and a paid API with high reasoning are different runs.
+
+## Judging (open-ended answers)
+Open-ended answers, professional tasks and builds are graded by a panel of three cheap judge models from different companies, picked automatically from OpenRouter (override with the `JUDGES` repository variable, comma-separated). A model never judges its own family, and a judge must agree with at least 85% of the fixed grades in `judges/calibration.json` before it is used. Total judging spend is capped by the `JUDGE_BUDGET` variable (default $3, lifetime); when it is reached, judging pauses and answers wait. The running total is stored in `leaderboard.json` (`judgeSpend`).

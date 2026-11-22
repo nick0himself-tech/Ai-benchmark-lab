@@ -67,7 +67,8 @@ jobs:
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           JUDGE_API_KEY: ${{ secrets.JUDGE_API_KEY }}
-          JUDGE_MODEL: ${{ vars.JUDGE_MODEL }}
+          JUDGES: ${{ vars.JUDGES }}
+          JUDGE_BUDGET: ${{ vars.JUDGE_BUDGET || '3' }}
           JUDGE_BASE_URL: ${{ vars.JUDGE_BASE_URL }}
         run: node scripts/publish.mjs
       - name: Commit leaderboard

@@ -100,5 +100,5 @@ usage.cost = Math.round(usage.cost * 1e6) / 1e6; usage.sec = Math.round(usage.se
 const meta = { model: label, provider: `${provider}: ${model}`, access: E.RELAY_ACCESS || 'API (pay per use)', iface: 'API', think: reasoning ? (reasoning === 'high' ? 'On (high effort)' : 'On') : 'Off', tools: 'Off', restrict: '', notes: 'Run by the relay workflow', usage };
 if (!Object.keys(answers).length && !Object.keys(r.arena).length) { console.log(stopped ? 'Daily limit reached before any new answers; will resume next run.' : 'Nothing left to do for this model.'); fs.writeFileSync('result.json', JSON.stringify({ ok: false })); process.exit(0); }
 if (stopped) meta.notes += ' · paused at the daily request limit; resumes on the next run';
-fs.writeFileSync('result.json', JSON.stringify({ ok: true, runId, issue: null, author: 'relay', isComment: false, meta, tourn, ...r }, null, 1));
+fs.writeFileSync('result.json', JSON.stringify({ ok: true, modelId: model, runId, issue: null, author: 'relay', isComment: false, meta, tourn, ...r }, null, 1));
 console.log(`Done. ${Object.keys(r.scores).length} auto-scored, ${r.rubric.length} open-ended, ${Object.keys(r.arena).length} Arena. Usage: ${JSON.stringify(usage)}`);

@@ -1,7 +1,8 @@
 // Publishes a scored submission to leaderboard.json and submissions/.
-// Builds are ranked by head-to-head judging (Elo) when JUDGE_MODEL and an API key are set.
+// Open-ended answers, professional tasks and builds are graded by a judge panel when an API key is set.
 import fs from 'node:fs';
 import path from 'node:path';
+import { makePanel } from './judges.mjs';
 const res = JSON.parse(fs.readFileSync('result.json', 'utf8'));
 if (!res.ok) { fs.writeFileSync('publish.md', 'Nothing to publish: the submission could not be read.'); process.exit(0); }
 const lb = fs.existsSync('leaderboard.json') ? JSON.parse(fs.readFileSync('leaderboard.json', 'utf8')) : {};
@@ -30,36 +31,30 @@ for (const [cid, a] of Object.entries(res.arena)) {
   else notes.push(`${cid}: kept your earlier, better result (${old.metric}).`);
 }
 
-// Judging: open-ended answers and head-to-head build votes.
-const key = process.env.OPENROUTER_API_KEY || process.env.JUDGE_API_KEY, model = process.env.JUDGE_MODEL;
+// Judging: a panel of three qualified judges from other companies, with a hard spending cap (see judges.mjs).
+const key = process.env.OPENROUTER_API_KEY || process.env.JUDGE_API_KEY;
 const base = process.env.JUDGE_BASE_URL || 'https://openrouter.ai/api/v1';
-const ask = async prompt => { const r = await fetch(`${base}/chat/completions`, { method: 'POST', headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model, messages: [{ role: 'user', content: prompt }] }) });
-  const j = await r.json(); const t = j.choices[0].message.content; return JSON.parse(t.slice(t.indexOf('{'), t.lastIndexOf('}') + 1)); };
-let judged = 0;
-if (!(key && model)) for (const [cid] of proQueue) A[cid] ||= { ok: true, metric: null, detail: 'Awaiting judge' };
-if (key && model) {
-  for (const q of res.rubric) {
-    try { const v = await ask(`You are an impartial, strict grader. For each numbered criterion decide whether the ANSWER meets it. Judge only what is written; do not reward length.\n\nQUESTION:\n${q.prompt}\n\nANSWER:\n${q.answer}\n\nCRITERIA:\n${q.criteria.map((c, i) => `${i + 1}. ${c}`).join('\n')}\n\nReply with JSON only: {"met":[${q.criteria.map(() => '0 or 1').join(',')}]}`);
-      const met = q.criteria.map((_, i) => !!+((v.met || [])[i])); R[q.id] = { score: Math.round(3 * met.filter(Boolean).length / q.criteria.length), checks: met }; judged++; } catch (e) {}
-  }
+let judged = 0, J = null;
+if (key && process.env.JUDGING !== 'off') J = await makePanel({ key, base, runModel: `${m.model} ${m.provider || ''} ${res.modelId || ''}`, lb, env: process.env });
+const flag = (what, why) => { lb.review = (lb.review || []).filter(x => !(x.run === id && x.what === what)); lb.review.push({ run: id, what, why, at: new Date().toISOString() }); };
+if (J && J.panel.length) {
+  for (const q of res.rubric) { const v = await J.rubric(q); if (!v) continue; R[q.id] = { score: v.score, checks: v.checks, judges: v.judges }; judged++; if (v.split) flag(q.id, 'Judges disagreed by 2+ points'); }
   for (const [cid, a] of proQueue) {
-    try { const v = await ask(`You are an expert, demanding reviewer scoring a submission against a checklist. Score each criterion from 0 (absent or wrong) to 10 (excellent). Penalise invented statistics, internal inconsistencies and padding.\n\nBRIEF:\n${a.brief}\n\nSUBMISSION:\n${a.text}\n\nCRITERIA:\n${a.crit.map((c, i) => `${i + 1}. ${c}`).join('\n')}\n\nReply with JSON only: {"scores":[${a.crit.map(() => '0-10').join(',')}],"summary":"one sentence"}`);
-      const sc = a.crit.map((_, i) => Math.max(0, Math.min(10, +((v.scores || [])[i]) || 0))); const j = sc.reduce((p, q) => p + q, 0) / a.crit.length * 10;
-      const f = a.facts ? 100 * a.facts.filter(x => x[1]).length / a.facts.length : null; const metric = Math.round(f == null ? j : 0.7 * j + 0.3 * f);
-      const old = A[cid]; if (!old || old.metric == null || metric > old.metric) A[cid] = { ok: true, metric, detail: `Judge ${Math.round(j)}/100${f != null ? ` · facts ${a.facts.filter(x => x[1]).length}/${a.facts.length}` : ''}. ${String(v.summary || '').slice(0, 200)}` };
-    } catch (e) {}
+    const v = await J.pro(a); if (!v) { A[cid] ||= { ok: true, metric: null, detail: 'Awaiting judge' }; continue; }
+    const f = a.facts ? 100 * a.facts.filter(x => x[1]).length / a.facts.length : null; const metric = Math.round(f == null ? v.j : 0.7 * v.j + 0.3 * f);
+    const old = A[cid]; if (!old || old.metric == null || metric > old.metric) A[cid] = { ok: true, metric, detail: `Judges ${Math.round(v.j)}/100 (${v.judges} judges, middle score)${f != null ? ` · facts ${a.facts.filter(x => x[1]).length}/${a.facts.length}` : ''}. ${String(v.summary).slice(0, 200)}` };
+    if (v.split) flag(cid, 'Judges were more than 30 points apart');
   }
   for (const [cid, a] of Object.entries(res.arena)) {
-    if (a.kind !== 'build' || !a.ok) continue;
+    if (a.kind !== 'build' || !a.ok || J.stopped()) continue;
     const others = fs.existsSync('submissions') ? fs.readdirSync('submissions').filter(r => r !== id && fs.existsSync(path.join('submissions', r, cid + '.txt'))) : [];
-    for (const other of others.sort(() => Math.random() - 0.5).slice(0, 4)) {
+    for (const other of others.sort(() => Math.random() - 0.5).slice(0, 3)) {
       const swap = Math.random() < 0.5; const [x, y] = swap ? [other, id] : [id, other];
-      const code = r => fs.readFileSync(path.join('submissions', r, cid + '.txt'), 'utf8').slice(0, 60000);
-      try { const v = await ask(`You are judging two anonymous entries in a coding competition. The brief was:\n\n${a.brief || a.name}\n\nENTRY A (HTML):\n${code(x)}\n\nENTRY B (HTML):\n${code(y)}\n\nJudge by reading the code: which entry better meets every requirement, works without bugs, and would look and feel more polished? Reply with JSON only: {"winner":"A" or "B" or "tie","reason":"one sentence"}`);
-        lb.votes.push({ ch: cid, a: x, b: y, w: v.winner === 'A' ? 'a' : v.winner === 'B' ? 'b' : 't', who: model, at: Date.now(), why: String(v.reason || '').slice(0, 200) }); } catch (e) {}
+      const code = r => fs.readFileSync(path.join('submissions', r, cid + '.txt'), 'utf8').slice(0, 40000);
+      const v = await J.pair(a.brief || a.name, code(x), code(y)); if (v) lb.votes.push({ ch: cid, a: x, b: y, w: v.w, who: v.who, at: Date.now(), why: v.why });
     }
   }
-}
+} else for (const [cid] of proQueue) A[cid] ||= { ok: true, metric: null, detail: 'Awaiting judge' };
 // Elo for every build challenge.
 for (const cid of [...new Set(lb.votes.map(v => v.ch))]) {
   const E = {}; Object.entries(lb.arena).forEach(([r, mm]) => { if (mm[cid]?.ok) E[r] = 1000; });
@@ -68,4 +63,7 @@ for (const cid of [...new Set(lb.votes.map(v => v.ch))]) {
 }
 lb.updated = new Date().toISOString();
 fs.writeFileSync('leaderboard.json', JSON.stringify(lb, null, 1));
-fs.writeFileSync('publish.md', [`Published to the leaderboard as **${run.name}**.`, key && model ? `Judge ${model}: ${judged} of ${res.rubric.length} open-ended answers judged; build votes updated.` : 'Open-ended answers and builds are not judged yet (the owner can set JUDGE_MODEL and an API key).', ...notes].join(' '));
+const jl = !J ? 'Open-ended answers and builds are not judged yet (the owner can add an OpenRouter key).'
+  : !J.panel.length ? `No qualified judges available${J.stopped() ? ' (judging budget used up)' : ''}; open-ended answers wait for judging. ${J.log.join(' ')}`
+  : `Judges: ${J.panel.join(', ')}. ${judged} of ${res.rubric.length} open-ended answers judged. Judging spend so far $${J.spend.total.toFixed(2)} of $${J.budget.toFixed(2)}${J.stopped() ? ' — budget reached, judging paused' : ''}. ${J.log.join(' ')}`;
+fs.writeFileSync('publish.md', [`Published to the leaderboard as **${run.name}**.`, jl, ...notes].join(' '));
