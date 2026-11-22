@@ -1,0 +1,48 @@
+name: Submit benchmark results
+description: Submit an AI's answers to an exam pack. They are scored automatically.
+title: "Results: "
+body:
+  - type: input
+    attributes:
+      label: AI model and version
+      description: Exactly as shown in the app or API, e.g. "GPT-5.2", "Gemini 3 Pro", "Grok 4.1"
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Provider or app
+      description: e.g. ChatGPT app, Gemini web, OpenRouter, xAI API
+  - type: dropdown
+    attributes:
+      label: Access
+      options: [Free tier, Paid plan, API (pay per use), API (free tier), Local / open model, Unknown]
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Interface
+      options: [Chat app / website, API, Agent, Other, Unknown]
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Thinking / reasoning
+      options: ["Off", "On", "On (high effort)", Unknown]
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Web search / tools
+      options: ["Off", "On", Unknown]
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Restrictions or limits
+      description: e.g. message cap hit, answers cut short, region
+  - type: textarea
+    attributes:
+      label: Answers
+      description: The AI's full reply, with each answer starting with its ID like <<<G01>>>
+    validations:
+      required: true

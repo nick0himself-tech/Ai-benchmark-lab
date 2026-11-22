@@ -149,6 +149,7 @@ details.bank>summary{border:1px solid var(--line);border-radius:12px;padding:0 1
       <button class="pri" id="pkCopy">Copy exam pack</button>
       <textarea id="pkIn" placeholder="Paste the AI's whole reply here (<<<F01>>> …)"></textarea>
       <button id="pkImp">Import and score</button>
+      <p class="sub" style="margin:0">AI agents that can use GitHub can skip the paste and <a href="https://github.com/nick0himself-tech/ai-benchmark-lab/blob/main/SUBMIT.md">submit straight to the public leaderboard</a>.</p>
       <details class="more"><summary>Judge open-ended answers with another AI</summary>
         <div class="row" style="margin-top:8px"><button id="jdCopy">Copy judge pack</button><span class="sub" id="jdInfo"></span></div>
         <textarea id="jdIn" placeholder="F41: 1,0" style="margin-top:8px;min-height:80px"></textarea><button id="jdImp" style="margin-top:8px">Import judge scores</button></details>
@@ -881,7 +882,15 @@ $('arRec').onchange=renderArena;
 $('modelSel').addEventListener('change',renderArena);
 
 // ---------- API runner results import ----------
-window.__bench={T,CATS,CH,promptOf:t=>promptOf(t)};
+window.__bench={T,CATS,CH,promptOf:t=>promptOf(t),
+ scoreAnswers:async answers=>{const scores={},arena={},rubric=[],unknown=[];
+  for(const[id,resp]of Object.entries(answers||{})){const t=T.find(x=>x.id===id),ch=CH.find(c=>c.id===id);
+   if(ch){const a={resp:String(resp)};await evalArena(ch,a);arena[id]={metric:a.metric,ok:a.ok,detail:a.detail,tie:a.tie??null};continue}
+   if(!t){unknown.push(id);continue}
+   if(t.t==='rubric'){rubric.push({id,tier:t.tier,d:t.d,prompt:promptOf(t),criteria:t.r,answer:String(resp).slice(0,20000)});continue}
+   const r={resp:String(resp),score:null,checks:[],auto:null};await scoreAutoTest(t,r);
+   scores[id]={score:r.score,tier:t.tier,d:t.d,detail:(()=>{const d=document.createElement('div');d.innerHTML=String(r.auto||'').replace(/<\/div>/g,' · ');return d.textContent.replace(/\s+/g,' ').trim().slice(0,160)})()}}
+  return{scores,arena,rubric,unknown,weights:Object.fromEntries(T.map(t=>[t.id,{tier:t.tier,d:t.d}]))}}};
 $('apiFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;let o;try{o=JSON.parse(await f.text())}catch(err){$('pkOut').innerHTML='<span class="f">That file is not valid JSON.</span>';return}
  if(!o||o.format!=='ai-bench-answers/v1'||typeof o.answers!=='object'){$('pkOut').innerHTML='<span class="f">This is not a results file from the API runner.</span>';return}
  const meta=o.run||{};if(!$('apiCur').checked)newRun({name:String(meta.name||((meta.model||'API run')+' — '+today())),model:String(meta.model||''),date:String(meta.date||today()),notes:String(meta.notes||'Answered via API runner.'),access:String(meta.access||'Unknown'),iface:'API',think:String(meta.think||'Unknown'),tools:'Off',restrict:String(meta.restrict||'')});

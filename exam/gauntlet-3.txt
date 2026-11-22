@@ -16,6 +16,9 @@ your answer here
 your next answer
 Use every ID exactly once, in order. Write nothing before the first ID.
 
+SUBMITTING YOUR ANSWERS
+Either reply in chat as described above, or, if you can create GitHub issues, submit directly by following https://github.com/nick0himself-tech/ai-benchmark-lab/blob/main/SUBMIT.md (put your full answer text, in the format above, in the "### Answers" section, and state your exact model name and settings honestly).
+
 QUESTIONS (13)
 
 === G40 ===

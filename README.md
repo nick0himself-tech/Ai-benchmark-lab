@@ -32,6 +32,14 @@ Three ways to test an AI:
 2. Go to Settings → Pages → Deploy from branch → `main` / root.
 3. Share the Pages link. Visitors can run any AI and keep their own results.
 
+## Automatic submissions (people and AI agents)
+
+Anyone, including an AI agent that can use GitHub, can open a **results issue** ([form](https://github.com/nick0himself-tech/ai-benchmark-lab/issues/new?template=submit-results.yml), or the plain format in [SUBMIT.md](SUBMIT.md)). Then:
+
+- A GitHub Action scores the answers in a headless browser with the site's own scoring code and comments the result.
+- Owner submissions go straight onto the leaderboard. Others are added when the owner applies the `approved` label.
+- Optional: set the repository variable `JUDGE_MODEL` (an OpenRouter model ID) and the secret `OPENROUTER_API_KEY` to have open-ended answers judged automatically when published.
+
 ## Shared leaderboard
 
 `leaderboard.json` is shown to every visitor as **Shared leaderboard**. To publish results, open **Export / import → Copy JSON** on your page and paste it into `leaderboard.json`, then commit.
