@@ -1,1 +1,1204 @@
-{"models":[],"res":{}}
+{
+ "models": [
+  {
+   "id": "chat-chatgpt-5-2-2026-11-22",
+   "name": "ChatGPT 5.2 \u2014 2026-11-22",
+   "model": "ChatGPT 5.2",
+   "date": "2026-11-22",
+   "access": "Unknown",
+   "iface": "Chat app / website",
+   "think": "Unknown",
+   "tools": "Unknown",
+   "restrict": "Answers pasted from the chat app; some formatting was lost in copying",
+   "notes": "Partial run: Standard, Frontier and Gauntlet packs; open-ended answers not yet judged."
+  },
+  {
+   "id": "chat-gemini-auto-2026-11-22",
+   "name": "Gemini (Auto) \u2014 2026-11-22",
+   "model": "Gemini (Auto)",
+   "date": "2026-11-22",
+   "access": "Unknown",
+   "iface": "Chat app / website",
+   "think": "Unknown",
+   "tools": "Unknown",
+   "restrict": "",
+   "notes": "Partial run: mostly the Standard tier; open-ended answers not yet judged."
+  },
+  {
+   "id": "auto-claude-opus-5-5-2026-11-22",
+   "name": "Claude Opus 5.5 \u2014 2026-11-22",
+   "model": "Claude Opus 5.5",
+   "date": "2026-11-22",
+   "access": "Included (Claude auto-run)",
+   "iface": "Claude auto-run (this page)",
+   "think": "Unknown",
+   "tools": "Off",
+   "restrict": "",
+   "notes": "Partial run: Frontier, Gauntlet and parts of Standard; the few judged open-ended answers were judged by Claude itself."
+  }
+ ],
+ "res": {
+  "chat-chatgpt-5-2-2026-11-22": {
+   "B4": {
+    "score": 3
+   },
+   "C1": {
+    "score": 3
+   },
+   "C2": {
+    "score": 3
+   },
+   "C3": {
+    "score": 3
+   },
+   "C4": {
+    "score": 3
+   },
+   "C5": {
+    "score": 3
+   },
+   "C6": {
+    "score": 3
+   },
+   "C7": {
+    "score": 3
+   },
+   "C8": {
+    "score": 3
+   },
+   "F50": {
+    "score": 3
+   },
+   "F51": {
+    "score": 3
+   },
+   "F52": {
+    "score": 3
+   },
+   "F53": {
+    "score": 3
+   },
+   "F54": {
+    "score": 3
+   },
+   "F55": {
+    "score": 3
+   },
+   "F56": {
+    "score": 3
+   },
+   "G60": {
+    "score": 3
+   },
+   "G61": {
+    "score": 3
+   },
+   "G62": {
+    "score": 3
+   },
+   "G63": {
+    "score": 3
+   },
+   "G64": {
+    "score": 3
+   },
+   "S1": {
+    "score": 3
+   },
+   "S2": {
+    "score": 3
+   },
+   "S3": {
+    "score": 3
+   },
+   "S4": {
+    "score": 3
+   },
+   "S5": {
+    "score": 3
+   },
+   "E1": {
+    "score": 3
+   },
+   "E3": {
+    "score": 3
+   },
+   "E4": {
+    "score": 3
+   },
+   "E5": {
+    "score": 3
+   },
+   "E6": {
+    "score": 3
+   },
+   "E7": {
+    "score": 3
+   },
+   "E8": {
+    "score": 3
+   },
+   "F60": {
+    "score": 3
+   },
+   "F61": {
+    "score": 3
+   },
+   "F62": {
+    "score": 3
+   },
+   "G01": {
+    "score": 3
+   },
+   "G02": {
+    "score": 3
+   },
+   "G03": {
+    "score": 3
+   },
+   "G04": {
+    "score": 3
+   },
+   "G05": {
+    "score": 3
+   },
+   "G06": {
+    "score": 3
+   },
+   "G07": {
+    "score": 3
+   },
+   "G08": {
+    "score": 3
+   },
+   "G09": {
+    "score": 3
+   },
+   "G10": {
+    "score": 3
+   },
+   "G40": {
+    "score": 3
+   },
+   "G41": {
+    "score": 3
+   },
+   "G42": {
+    "score": 3
+   },
+   "G30": {
+    "score": 3
+   },
+   "G31": {
+    "score": 3
+   },
+   "G32": {
+    "score": 3
+   },
+   "G33": {
+    "score": 3
+   },
+   "G34": {
+    "score": 3
+   },
+   "G35": {
+    "score": 2
+   },
+   "G36": {
+    "score": 3
+   },
+   "I1": {
+    "score": 2
+   },
+   "I2": {
+    "score": 2
+   },
+   "I3": {
+    "score": 3
+   },
+   "I4": {
+    "score": 3
+   },
+   "I5": {
+    "score": 0
+   },
+   "I6": {
+    "score": 3
+   },
+   "I7": {
+    "score": 3
+   },
+   "I8": {
+    "score": 3
+   },
+   "G43": {
+    "score": 3
+   },
+   "G44": {
+    "score": 3
+   },
+   "G45": {
+    "score": 3
+   },
+   "K1": {
+    "score": 3
+   },
+   "K2": {
+    "score": 3
+   },
+   "K3": {
+    "score": 3
+   },
+   "K4": {
+    "score": 3
+   },
+   "K5": {
+    "score": 3
+   },
+   "K6": {
+    "score": 3
+   },
+   "K7": {
+    "score": 3
+   },
+   "K8": {
+    "score": 3
+   },
+   "G3": {
+    "score": 3
+   },
+   "G4": {
+    "score": 3
+   },
+   "G6": {
+    "score": 3
+   },
+   "F20": {
+    "score": 3
+   },
+   "F21": {
+    "score": 3
+   },
+   "F22": {
+    "score": 3
+   },
+   "F23": {
+    "score": 3
+   },
+   "L1": {
+    "score": 3
+   },
+   "L2": {
+    "score": 3
+   },
+   "L3": {
+    "score": 3
+   },
+   "L4": {
+    "score": 3
+   },
+   "L5": {
+    "score": 3
+   },
+   "L6": {
+    "score": 3
+   },
+   "L7": {
+    "score": 3
+   },
+   "L8": {
+    "score": 3
+   },
+   "F10": {
+    "score": 3
+   },
+   "F11": {
+    "score": 3
+   },
+   "F12": {
+    "score": 0
+   },
+   "F13": {
+    "score": 3
+   },
+   "F14": {
+    "score": 0
+   },
+   "F15": {
+    "score": 3
+   },
+   "F16": {
+    "score": 3
+   },
+   "M1": {
+    "score": 3
+   },
+   "M2": {
+    "score": 3
+   },
+   "M3": {
+    "score": 3
+   },
+   "M4": {
+    "score": 3
+   },
+   "M5": {
+    "score": 3
+   },
+   "M6": {
+    "score": 3
+   },
+   "M7": {
+    "score": 3
+   },
+   "M8": {
+    "score": 3
+   },
+   "M9": {
+    "score": 3
+   },
+   "M10": {
+    "score": 3
+   },
+   "F01": {
+    "score": 3
+   },
+   "F02": {
+    "score": 3
+   },
+   "F03": {
+    "score": 3
+   },
+   "F04": {
+    "score": 3
+   },
+   "F05": {
+    "score": 3
+   },
+   "F06": {
+    "score": 3
+   },
+   "F07": {
+    "score": 3
+   },
+   "G20": {
+    "score": 3
+   },
+   "G21": {
+    "score": 3
+   },
+   "G22": {
+    "score": 0
+   },
+   "G23": {
+    "score": 3
+   },
+   "G24": {
+    "score": 3
+   },
+   "G25": {
+    "score": 3
+   },
+   "G26": {
+    "score": 3
+   },
+   "G27": {
+    "score": 3
+   },
+   "G28": {
+    "score": 3
+   },
+   "R1": {
+    "score": 3
+   },
+   "R2": {
+    "score": 3
+   },
+   "R3": {
+    "score": 3
+   },
+   "R4": {
+    "score": 3
+   },
+   "R5": {
+    "score": 3
+   },
+   "R6": {
+    "score": 3
+   },
+   "F40": {
+    "score": 3
+   },
+   "G11": {
+    "score": 3
+   },
+   "G12": {
+    "score": 3
+   },
+   "G13": {
+    "score": 3
+   },
+   "G14": {
+    "score": 3
+   },
+   "G15": {
+    "score": 3
+   },
+   "G16": {
+    "score": 3
+   },
+   "G17": {
+    "score": 3
+   },
+   "G18": {
+    "score": 3
+   },
+   "P1": {
+    "score": 3
+   },
+   "P3": {
+    "score": 3
+   },
+   "P4": {
+    "score": 3
+   },
+   "P5": {
+    "score": 3
+   },
+   "P6": {
+    "score": 3
+   },
+   "P7": {
+    "score": 3
+   },
+   "F30": {
+    "score": 3
+   },
+   "F31": {
+    "score": 3
+   },
+   "F32": {
+    "score": 3
+   },
+   "G50": {
+    "score": 3
+   },
+   "G51": {
+    "score": 3
+   },
+   "T1": {
+    "score": 0
+   },
+   "T2": {
+    "score": 3
+   },
+   "T3": {
+    "score": 3
+   },
+   "T4": {
+    "score": 3
+   },
+   "T5": {
+    "score": 3
+   }
+  },
+  "chat-gemini-auto-2026-11-22": {
+   "B4": {
+    "score": 3
+   },
+   "C1": {
+    "score": 3
+   },
+   "C2": {
+    "score": 3
+   },
+   "C3": {
+    "score": 3
+   },
+   "C4": {
+    "score": 3
+   },
+   "C5": {
+    "score": 3
+   },
+   "C6": {
+    "score": 3
+   },
+   "C7": {
+    "score": 3
+   },
+   "C8": {
+    "score": 3
+   },
+   "S1": {
+    "score": 3
+   },
+   "S2": {
+    "score": 3
+   },
+   "S3": {
+    "score": 3
+   },
+   "S4": {
+    "score": 3
+   },
+   "S5": {
+    "score": 3
+   },
+   "E3": {
+    "score": 3
+   },
+   "E4": {
+    "score": 3
+   },
+   "E5": {
+    "score": 3
+   },
+   "E6": {
+    "score": 3
+   },
+   "E7": {
+    "score": 3
+   },
+   "E8": {
+    "score": 3
+   },
+   "G01": {
+    "score": 3
+   },
+   "G02": {
+    "score": 3
+   },
+   "G03": {
+    "score": 3
+   },
+   "G04": {
+    "score": 3
+   },
+   "I1": {
+    "score": 2
+   },
+   "I2": {
+    "score": 2
+   },
+   "I3": {
+    "score": 3
+   },
+   "I4": {
+    "score": 3
+   },
+   "I5": {
+    "score": 3
+   },
+   "I6": {
+    "score": 3
+   },
+   "I7": {
+    "score": 3
+   },
+   "I8": {
+    "score": 3
+   },
+   "K1": {
+    "score": 3
+   },
+   "K2": {
+    "score": 3
+   },
+   "K3": {
+    "score": 3
+   },
+   "K4": {
+    "score": 3
+   },
+   "K5": {
+    "score": 3
+   },
+   "K6": {
+    "score": 3
+   },
+   "K7": {
+    "score": 3
+   },
+   "K8": {
+    "score": 3
+   },
+   "G3": {
+    "score": 3
+   },
+   "G4": {
+    "score": 3
+   },
+   "G6": {
+    "score": 3
+   },
+   "L1": {
+    "score": 3
+   },
+   "L2": {
+    "score": 3
+   },
+   "L3": {
+    "score": 3
+   },
+   "L4": {
+    "score": 3
+   },
+   "L5": {
+    "score": 3
+   },
+   "L6": {
+    "score": 0
+   },
+   "L7": {
+    "score": 3
+   },
+   "L8": {
+    "score": 3
+   },
+   "M1": {
+    "score": 3
+   },
+   "M2": {
+    "score": 3
+   },
+   "M3": {
+    "score": 3
+   },
+   "M4": {
+    "score": 3
+   },
+   "M5": {
+    "score": 3
+   },
+   "M6": {
+    "score": 3
+   },
+   "M7": {
+    "score": 3
+   },
+   "M8": {
+    "score": 3
+   },
+   "M9": {
+    "score": 3
+   },
+   "M10": {
+    "score": 3
+   },
+   "R1": {
+    "score": 3
+   },
+   "R2": {
+    "score": 3
+   },
+   "R3": {
+    "score": 3
+   },
+   "R4": {
+    "score": 3
+   },
+   "R5": {
+    "score": 3
+   },
+   "R6": {
+    "score": 3
+   },
+   "P1": {
+    "score": 3
+   },
+   "P3": {
+    "score": 3
+   },
+   "P4": {
+    "score": 3
+   },
+   "P5": {
+    "score": 3
+   },
+   "P6": {
+    "score": 3
+   },
+   "P7": {
+    "score": 3
+   },
+   "T1": {
+    "score": 3
+   },
+   "T2": {
+    "score": 3
+   },
+   "T3": {
+    "score": 3
+   },
+   "T4": {
+    "score": 3
+   },
+   "T5": {
+    "score": 3
+   }
+  },
+  "auto-claude-opus-5-5-2026-11-22": {
+   "C1": {
+    "score": 3
+   },
+   "C2": {
+    "score": 3
+   },
+   "C3": {
+    "score": 3
+   },
+   "C4": {
+    "score": 3
+   },
+   "C5": {
+    "score": 3
+   },
+   "C6": {
+    "score": 3
+   },
+   "C7": {
+    "score": 3
+   },
+   "C8": {
+    "score": 3
+   },
+   "F50": {
+    "score": 3
+   },
+   "F51": {
+    "score": 3
+   },
+   "F52": {
+    "score": 3
+   },
+   "F53": {
+    "score": 3
+   },
+   "F54": {
+    "score": 3
+   },
+   "F55": {
+    "score": 3
+   },
+   "F56": {
+    "score": 3
+   },
+   "G60": {
+    "score": 3
+   },
+   "G61": {
+    "score": 3
+   },
+   "G62": {
+    "score": 3
+   },
+   "G63": {
+    "score": 3
+   },
+   "G64": {
+    "score": 3
+   },
+   "S1": {
+    "score": 3
+   },
+   "S2": {
+    "score": 3
+   },
+   "S3": {
+    "score": 3
+   },
+   "S4": {
+    "score": 3
+   },
+   "S5": {
+    "score": 3
+   },
+   "F65": {
+    "score": 3
+   },
+   "F60": {
+    "score": 3
+   },
+   "F61": {
+    "score": 3
+   },
+   "F62": {
+    "score": 3
+   },
+   "F63": {
+    "score": 3
+   },
+   "F64": {
+    "score": 3
+   },
+   "G01": {
+    "score": 3
+   },
+   "G02": {
+    "score": 3
+   },
+   "G03": {
+    "score": 3
+   },
+   "G04": {
+    "score": 3
+   },
+   "G05": {
+    "score": 3
+   },
+   "G06": {
+    "score": 3
+   },
+   "G07": {
+    "score": 3
+   },
+   "G08": {
+    "score": 3
+   },
+   "G09": {
+    "score": 3
+   },
+   "G10": {
+    "score": 3
+   },
+   "G40": {
+    "score": 3
+   },
+   "G41": {
+    "score": 3
+   },
+   "G42": {
+    "score": 3
+   },
+   "G30": {
+    "score": 3
+   },
+   "G31": {
+    "score": 3
+   },
+   "G32": {
+    "score": 3
+   },
+   "G33": {
+    "score": 3
+   },
+   "G34": {
+    "score": 3
+   },
+   "G35": {
+    "score": 3
+   },
+   "G36": {
+    "score": 3
+   },
+   "I1": {
+    "score": 3
+   },
+   "I2": {
+    "score": 3
+   },
+   "I3": {
+    "score": 3
+   },
+   "I4": {
+    "score": 3
+   },
+   "I5": {
+    "score": 3
+   },
+   "I6": {
+    "score": 3
+   },
+   "I7": {
+    "score": 3
+   },
+   "I8": {
+    "score": 3
+   },
+   "G43": {
+    "score": 3
+   },
+   "G44": {
+    "score": 3
+   },
+   "G45": {
+    "score": 3
+   },
+   "K1": {
+    "score": 3
+   },
+   "K2": {
+    "score": 3
+   },
+   "K3": {
+    "score": 3
+   },
+   "K4": {
+    "score": 3
+   },
+   "K5": {
+    "score": 3
+   },
+   "K6": {
+    "score": 3
+   },
+   "K7": {
+    "score": 3
+   },
+   "K8": {
+    "score": 3
+   },
+   "G3": {
+    "score": 3
+   },
+   "G4": {
+    "score": 3
+   },
+   "G6": {
+    "score": 3
+   },
+   "F20": {
+    "score": 3
+   },
+   "F21": {
+    "score": 3
+   },
+   "F22": {
+    "score": 3
+   },
+   "F23": {
+    "score": 3
+   },
+   "L1": {
+    "score": 3
+   },
+   "L2": {
+    "score": 3
+   },
+   "L3": {
+    "score": 3
+   },
+   "L4": {
+    "score": 3
+   },
+   "L5": {
+    "score": 3
+   },
+   "L6": {
+    "score": 3
+   },
+   "L7": {
+    "score": 3
+   },
+   "L8": {
+    "score": 3
+   },
+   "F10": {
+    "score": 3
+   },
+   "F11": {
+    "score": 3
+   },
+   "F12": {
+    "score": 3
+   },
+   "F13": {
+    "score": 3
+   },
+   "F14": {
+    "score": 3
+   },
+   "F15": {
+    "score": 3
+   },
+   "F16": {
+    "score": 3
+   },
+   "M1": {
+    "score": 3
+   },
+   "M2": {
+    "score": 3
+   },
+   "M3": {
+    "score": 3
+   },
+   "M4": {
+    "score": 3
+   },
+   "M5": {
+    "score": 3
+   },
+   "M6": {
+    "score": 3
+   },
+   "M7": {
+    "score": 3
+   },
+   "M8": {
+    "score": 3
+   },
+   "M9": {
+    "score": 3
+   },
+   "M10": {
+    "score": 3
+   },
+   "F01": {
+    "score": 3
+   },
+   "F02": {
+    "score": 3
+   },
+   "F03": {
+    "score": 3
+   },
+   "F04": {
+    "score": 3
+   },
+   "F05": {
+    "score": 3
+   },
+   "F06": {
+    "score": 3
+   },
+   "F07": {
+    "score": 3
+   },
+   "G20": {
+    "score": 3
+   },
+   "G21": {
+    "score": 3
+   },
+   "G22": {
+    "score": 3
+   },
+   "G23": {
+    "score": 3
+   },
+   "G24": {
+    "score": 3
+   },
+   "G25": {
+    "score": 3
+   },
+   "G26": {
+    "score": 3
+   },
+   "G27": {
+    "score": 3
+   },
+   "G28": {
+    "score": 3
+   },
+   "R1": {
+    "score": 3
+   },
+   "R2": {
+    "score": 3
+   },
+   "R3": {
+    "score": 3
+   },
+   "R4": {
+    "score": 3
+   },
+   "R5": {
+    "score": 3
+   },
+   "R6": {
+    "score": 3
+   },
+   "F40": {
+    "score": 3
+   },
+   "F41": {
+    "score": 3
+   },
+   "F42": {
+    "score": 3
+   },
+   "F43": {
+    "score": 3
+   },
+   "F44": {
+    "score": 3
+   },
+   "F45": {
+    "score": 3
+   },
+   "F46": {
+    "score": 3
+   },
+   "G11": {
+    "score": 3
+   },
+   "G12": {
+    "score": 3
+   },
+   "G13": {
+    "score": 3
+   },
+   "G14": {
+    "score": 3
+   },
+   "G15": {
+    "score": 3
+   },
+   "G16": {
+    "score": 3
+   },
+   "G17": {
+    "score": 3
+   },
+   "G18": {
+    "score": 3
+   },
+   "P1": {
+    "score": 3
+   },
+   "P3": {
+    "score": 3
+   },
+   "P4": {
+    "score": 3
+   },
+   "P5": {
+    "score": 3
+   },
+   "P6": {
+    "score": 3
+   },
+   "P7": {
+    "score": 3
+   },
+   "G70": {
+    "score": 3
+   },
+   "G71": {
+    "score": 3
+   },
+   "F30": {
+    "score": 3
+   },
+   "F31": {
+    "score": 3
+   },
+   "F32": {
+    "score": 3
+   },
+   "G50": {
+    "score": 3
+   },
+   "G51": {
+    "score": 3
+   }
+  }
+ },
+ "arena": {},
+ "votes": [],
+ "tourn": {},
+ "updated": "2026-11-22T22:00:00Z"
+}
