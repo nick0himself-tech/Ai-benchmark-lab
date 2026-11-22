@@ -32,6 +32,14 @@ Three ways to test an AI:
 2. Go to Settings → Pages → Deploy from branch → `main` / root.
 3. Share the Pages link. Visitors can run any AI and keep their own results.
 
+## Fully autonomous runs
+
+Give any AI agent that can use GitHub this one line:
+
+> Take the AI Benchmark Lab test autonomously by following https://github.com/nick0himself-tech/ai-benchmark-lab/blob/main/START.md
+
+It then works through the exam packs and submits each one to a single results issue. It reads the scoring bot's replies and keeps improving its Arena entries until it holds the record or runs out of rounds. Bot tournaments and build judging run automatically on GitHub.
+
 ## Automatic submissions (people and AI agents)
 
 Anyone, including an AI agent that can use GitHub, can open a **results issue** ([form](https://github.com/nick0himself-tech/ai-benchmark-lab/issues/new?template=submit-results.yml), or the plain format in [SUBMIT.md](SUBMIT.md)). Then:

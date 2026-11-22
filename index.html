@@ -126,7 +126,7 @@ details.bank>summary{border:1px solid var(--line);border-radius:12px;padding:0 1
   </div>
   <h2 style="margin-top:36px">Leaderboard</h2>
   <div class="card scroll"><table id="board"></table></div>
-  <div id="shBand" style="display:none;margin-top:36px"><h2>Shared leaderboard</h2><p class="sub" id="shNote"></p><div class="card scroll"><table id="shTable"></table></div></div>
+  <div id="shBand" style="display:none;margin-top:36px"><h2>Shared leaderboard</h2><p class="sub" id="shNote"></p><div class="card scroll"><table id="shTable"></table></div><div id="shArena"></div></div>
 </div></section>
 
 <section class="view band" data-view="run" hidden><div class="wrap">
@@ -808,9 +808,7 @@ function botWorker(code){const src=`let mv=null;self.onmessage=e=>{const d=e.dat
  const call=(msg,ms)=>new Promise(r=>{const to=setTimeout(()=>{pend=null;r({timeout:true})},ms);pend=d=>{clearTimeout(to);r(d)};w.postMessage(msg)});
  return{init:()=>call({init:true,code},3000),move:(args,ms)=>call({args},ms),kill:()=>w.terminate()}}
 const c4win=(b,p)=>{for(let r=0;r<6;r++)for(let c=0;c<7;c++)for(const[dr,dc]of[[0,1],[1,0],[1,1],[1,-1]]){let k=0;for(;k<4;k++){const rr=r+dr*k,cc=c+dc*k;if(rr<0||rr>5||cc<0||cc>6||b[rr][cc]!==p)break}if(k===4)return true}return false};
-async function runTournament(ch,status){const bots=[];st.models.forEach(m=>{const a=st.arena[m.id]?.[ch.id];if(a&&a.ok)bots.push({key:m.id,name:m.name,code:extractCode(a.resp),run:true})});HOUSE[ch.game].forEach(([n,c])=>bots.push({key:'house:'+n,name:n+' (house)',code:c,run:false}));
- if(bots.filter(b=>b.run).length<1)return toast('Submit at least one AI bot first');
- const W={};for(const b of bots){b.w=botWorker(b.code);const r=await b.w.init();b.dead=!!(r.err||r.timeout);b.pts=0;b.n=0;b.w_=0;b.d_=0;b.l_=0}
+async function tournamentCore(ch,bots,status){const W={};for(const b of bots){b.w=botWorker(b.code);const r=await b.w.init();b.dead=!!(r.err||r.timeout);b.pts=0;b.n=0;b.w_=0;b.d_=0;b.l_=0}
  const rounds=ch.game==='ipd'?(190+Math.floor(Math.random()*21)):0;let games=0,total=bots.length*(bots.length-1)/2*(ch.game==='c4'?2:1);
  const restart=async b=>{b.w.kill();b.w=botWorker(b.code);await b.w.init()};
  for(let i=0;i<bots.length;i++)for(let j=i+1;j<bots.length;j++){const A=bots[i],B=bots[j];
@@ -823,6 +821,10 @@ async function runTournament(ch,status){const bots=[];st.models.forEach(m=>{cons
    if(res.draw){first.pts+=1;second.pts+=1;first.d_++;second.d_++}else{res.win.pts+=3;res.win.w_++;(res.win===first?second:first).l_++}first.n++;second.n++;games++;status(`Game ${games} of ${total}`)}}
  bots.forEach(b=>b.w.kill());
  const rows=bots.map(b=>({key:b.key,name:b.name,run:b.run,pts:ch.game==='ipd'?+(b.pts/Math.max(1,b.n)).toFixed(3):b.pts,rec:ch.game==='c4'?`${b.w_}-${b.d_}-${b.l_}`:'',dead:b.dead})).sort((a,b)=>b.pts-a.pts);
+ return rows}
+async function runTournament(ch,status){const bots=[];st.models.forEach(m=>{const a=st.arena[m.id]?.[ch.id];if(a&&a.ok)bots.push({key:m.id,name:m.name,code:extractCode(a.resp),run:true})});HOUSE[ch.game].forEach(([n,c])=>bots.push({key:'house:'+n,name:n+' (house)',code:c,run:false}));
+ if(bots.filter(b=>b.run).length<1)return toast('Submit at least one AI bot first');
+ const rows=await tournamentCore(ch,bots,status);
  st.tourn[ch.id]={at:new Date().toISOString(),rows};rows.filter(r=>r.run).forEach(r=>{const a=AS(r.key,ch.id);a.metric=r.pts});save();renderArena();renderTop()}
 // ---- Elo for builds ----
 function elo(chId){const R={};st.models.forEach(m=>{const a=st.arena[m.id]?.[chId];if(a&&a.ok)R[m.id]=1000});st.votes.filter(v=>v.ch===chId&&v.a in R&&v.b in R).forEach(v=>{const ea=1/(1+10**((R[v.b]-R[v.a])/400));const s=v.w==='a'?1:v.w==='b'?0:0.5;R[v.a]+=32*(s-ea);R[v.b]-=32*(s-ea)});return R}
@@ -885,12 +887,14 @@ $('modelSel').addEventListener('change',renderArena);
 window.__bench={T,CATS,CH,promptOf:t=>promptOf(t),
  scoreAnswers:async answers=>{const scores={},arena={},rubric=[],unknown=[];
   for(const[id,resp]of Object.entries(answers||{})){const t=T.find(x=>x.id===id),ch=CH.find(c=>c.id===id);
-   if(ch){const a={resp:String(resp)};await evalArena(ch,a);arena[id]={metric:a.metric,ok:a.ok,detail:a.detail,tie:a.tie??null};continue}
+   if(ch){const a={resp:String(resp)};await evalArena(ch,a);arena[id]={metric:a.metric,ok:a.ok,detail:a.detail,tie:a.tie??null,kind:ch.kind,better:ch.better,unit:ch.unit,name:ch.n,brief:ch.kind==='build'?ch.p:null,code:(ch.kind==='bot'||ch.kind==='build')&&a.ok?extractCode(a.resp,ch.kind==='build').slice(0,120000):null};continue}
    if(!t){unknown.push(id);continue}
    if(t.t==='rubric'){rubric.push({id,tier:t.tier,d:t.d,prompt:promptOf(t),criteria:t.r,answer:String(resp).slice(0,20000)});continue}
    const r={resp:String(resp),score:null,checks:[],auto:null};await scoreAutoTest(t,r);
    scores[id]={score:r.score,tier:t.tier,d:t.d,detail:(()=>{const d=document.createElement('div');d.innerHTML=String(r.auto||'').replace(/<\/div>/g,' · ');return d.textContent.replace(/\s+/g,' ').trim().slice(0,160)})()}}
-  return{scores,arena,rubric,unknown,weights:Object.fromEntries(T.map(t=>[t.id,{tier:t.tier,d:t.d}]))}}};
+  return{scores,arena,rubric,unknown,weights:Object.fromEntries(T.map(t=>[t.id,{tier:t.tier,d:t.d}]))}},
+ tournament:async(chId,bots)=>{const ch=CH.find(c=>c.id===chId);const all=bots.map(b=>({key:b.key,name:b.name,code:b.code,run:true}));HOUSE[ch.game].forEach(([n,c])=>all.push({key:'house:'+n,name:n+' (house)',code:c,run:false}));return await tournamentCore(ch,all,()=>{})},
+ challenges:()=>CH.map(c=>({id:c.id,n:c.n,kind:c.kind,better:c.better,unit:c.unit,p:c.p}))};
 $('apiFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;let o;try{o=JSON.parse(await f.text())}catch(err){$('pkOut').innerHTML='<span class="f">That file is not valid JSON.</span>';return}
  if(!o||o.format!=='ai-bench-answers/v1'||typeof o.answers!=='object'){$('pkOut').innerHTML='<span class="f">This is not a results file from the API runner.</span>';return}
  const meta=o.run||{};if(!$('apiCur').checked)newRun({name:String(meta.name||((meta.model||'API run')+' — '+today())),model:String(meta.model||''),date:String(meta.date||today()),notes:String(meta.notes||'Answered via API runner.'),access:String(meta.access||'Unknown'),iface:'API',think:String(meta.think||'Unknown'),tools:'Off',restrict:String(meta.restrict||'')});
@@ -904,8 +908,11 @@ let RO=false,SHARED=null;
 function ovrFrom(res,tier){let s=0,w=0,n=0;T.forEach(t=>{if(tier&&t.tier!==tier)return;const r=res&&res[t.id];if(r&&typeof r.score==='number'){s+=r.score*t.d;w+=3*t.d;n++}});return{pct:w?100*s/w:null,n}}
 function renderShared(){if(!SHARED||!SHARED.models.length){$('shBand').style.display='none';return}$('shBand').style.display='';const f=x=>x==null?'–':x.toFixed(1)+'%';
  const rows=SHARED.models.map(m=>{const r=SHARED.res[m.id]||{};return{m,S:ovrFrom(r,'S').pct,F:ovrFrom(r,'F').pct,G:ovrFrom(r,'G').pct,O:ovrFrom(r).pct,n:ovrFrom(r).n}}).sort((a,b)=>(b.O??-1)-(a.O??-1));
+ {const pts={};SHARED.models.forEach(m=>pts[m.id]={p:0,w:0,ranks:{}});CH.forEach(ch=>{const rows=SHARED.models.map(m=>({id:m.id,a:(SHARED.arena[m.id]||{})[ch.id]})).filter(x=>x.a&&x.a.ok&&typeof x.a.metric==='number').sort((x,y)=>ch.better==='low'?x.a.metric-y.a.metric:(y.a.metric-x.a.metric)||((x.a.tie??1e9)-(y.a.tie??1e9)));rows.forEach((x,i)=>{pts[x.id].p+=F1[i]||0;if(!i)pts[x.id].w++;pts[x.id].ranks[ch.id]=(i+1)+' · '+fmtM(ch,x.a.metric)})});
+  const ms=SHARED.models.filter(m=>Object.keys(pts[m.id].ranks).length).sort((a,b)=>pts[b.id].p-pts[a.id].p);
+  $('shArena').innerHTML=ms.length?`<h3 style="margin:22px 0 8px">Arena</h3><div class="card scroll"><table><thead><tr><th>#</th><th style="text-align:left">Run</th><th>Points</th><th>Wins</th>${CH.map(c=>`<th title="${esc(c.n)}">${c.id}</th>`).join('')}</tr></thead><tbody>${ms.map((m,i)=>`<tr><td>${i+1}</td><td style="text-align:left">${esc(m.name)}</td><td><b>${pts[m.id].p}</b></td><td>${pts[m.id].w}</td>${CH.map(c=>`<td>${esc(pts[m.id].ranks[c.id]||'–')}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`:'';}
  $('shTable').innerHTML=`<thead><tr><th>#</th><th style="text-align:left">Run</th><th style="text-align:left">AI</th><th>Date</th><th>Standard</th><th>Frontier</th><th>Gauntlet</th><th>Overall</th><th>Tests</th></tr></thead><tbody>`+rows.map((x,i)=>`<tr><td>${i+1}</td><td style="text-align:left;white-space:normal">${esc(x.m.name)}${runTag(x.m)?`<br><span class="sub">${esc(runTag(x.m))}</span>`:''}</td><td style="text-align:left">${esc(x.m.model)}</td><td>${esc(x.m.date)}</td><td>${f(x.S)}</td><td>${f(x.F)}</td><td>${f(x.G)}</td><td><b>${f(x.O)}</b></td><td>${x.n}</td></tr>`).join('')+'</tbody>'}
-function setSharedFrom(o,note){try{SHARED={models:(o.models||[]).map(cleanRun),res:o.res||{}};$('shNote').textContent=note;renderShared()}catch(e){}}
+function setSharedFrom(o,note){try{SHARED={models:(o.models||[]).map(cleanRun),res:o.res||{},arena:o.arena&&typeof o.arena==='object'?o.arena:{}};$('shNote').textContent=note;renderShared()}catch(e){}}
 if(!(window.claude&&window.claude.use)){fetch('leaderboard.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(o=>{if(o)setSharedFrom(o,'Published results from the benchmark owner. Your own runs below are saved in this browser only; use Export / import → Copy JSON to send them in.')}).catch(()=>{})}
 
 // ---------- cloud saving (artifact database) ----------
