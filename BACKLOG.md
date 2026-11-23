@@ -27,7 +27,7 @@ Source of truth for priorities is Issue #1. This file mirrors it for the daily m
 - [ ] Paid batch plan `PAID_PLAN.md`: 6–8 popular paid models, live OpenRouter prices, estimated cost of the core set each. Do not run.
 - [ ] Private split, only after `CORE_TOKEN` exists.
 
-## Deferred (Issue #1): Arena expansion, autonomous agent protocol work, nightly full-library runs, subscriptions and payments.
+## Deferred (Issue #1): Arena expansion, autonomous agent protocol work, nightly runs of paid models, subscriptions and payments. (Nightly free-model runs are on: $0, owner asked for the full free batch.)
 
 ## Log
 - 2026-11-22: Matrix reading guide; relay daily-limit pause/resume; judge panel with $3 cap (pushed to main before the PR protocol).

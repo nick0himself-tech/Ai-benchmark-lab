@@ -17,9 +17,10 @@ on:
         description: "Tiers to run for every model (S, F, G, R, A)"
         default: "SFGRA"
         required: true
-  # Nightly runs are paused until the advisor has been validated with real users (Issue #1). To resume, remove the '#'s:
-  # schedule:
-  #   - cron: "17 2 * * *"
+  # Nightly: FREE models only (':free', $0), resuming runs that stopped at the 50-requests/day limit.
+  # Paid models are never scheduled; they need a manual run approved by the owner.
+  schedule:
+    - cron: "17 2 * * *"
 
 jobs:
   list:
@@ -30,7 +31,7 @@ jobs:
       - uses: actions/checkout@v4
       - id: m
         env:
-          DISCOVER: ${{ github.event_name == 'schedule' && (vars.LIBRARY_DISCOVER || ':free') || inputs.discover }}
+          DISCOVER: ${{ github.event_name == 'schedule' && ':free' || inputs.discover }}
           LIMIT: ${{ github.event_name == 'schedule' && (vars.LIBRARY_LIMIT || '25') || inputs.limit }}
         run: echo "models=$(node scripts/pick-models.mjs)" >> "$GITHUB_OUTPUT"
   test:
