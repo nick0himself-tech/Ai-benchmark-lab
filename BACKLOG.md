@@ -10,11 +10,12 @@ Source of truth for priorities is Issue #1. This file mirrors it for the daily m
 - Report facts in PRs and issue comments: files, commands, results, limitations. No bare @mentions.
 
 ## Needs the owner
-- [ ] Add repository secret `OPENROUTER_API_KEY` (optionally a credit limit on the key at openrouter.ai).
+- [x] Add repository secret `OPENROUTER_API_KEY` (optionally a credit limit on the key at openrouter.ai).
 - [ ] Decide: one-off $10 OpenRouter credit (raises the free cap from 50 to 1,000 requests/day).
-- [ ] Enable GitHub Pages (Settings → Pages → main / root).
-- [ ] Create a private repo (e.g. `ai-benchmark-core`) and a fine-grained read token saved as secret `CORE_TOKEN`.
-- [ ] Review and merge PR #2 (audit fixes) into `dev`, then `dev` into `main`.
+- [x] Enable GitHub Pages (Settings → Pages → main / root).
+- [x] Create a private repo (`ai-benchmark-core` exists).
+- [ ] Fine-grained read token for it, saved as secret `CORE_TOKEN`.
+- [x] Review and merge PR #2 (audit fixes) into `dev`, then `dev` into `main`.
 
 ## To do (in order; see Issue #1 for acceptance criteria)
 - [ ] Follow up review comments on open PRs and on Issue #1 (from ChatGPT or the owner) before starting new work.
@@ -32,3 +33,4 @@ Source of truth for priorities is Issue #1. This file mirrors it for the daily m
 ## Log
 - 2026-11-22: Matrix reading guide; relay daily-limit pause/resume; judge panel with $3 cap (pushed to main before the PR protocol).
 - 2026-11-23: Audit posted to Issue #1; PR #2 (approval loophole, evidence labels, judge-injection guard, SOURCES.md, counts, nightly paused, CONTRIBUTING.md).
+- 2026-11-23 (daily run): Fixed nightly library runs losing all answers: the Commit step failed on `git add submissions` when that folder did not exist (runs 45086543485 and 45104312898; 48 free answers for Ling 3.2 Flash were discarded). Same fix in test-model and score-submission workflows. Owner checklist updated.
