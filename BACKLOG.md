@@ -19,7 +19,7 @@ Source of truth for priorities is Issue #1. This file mirrors it for the daily m
 
 ## To do (in order; see Issue #1 for acceptance criteria)
 - [ ] Follow up review comments on open PRs and on Issue #1 (from ChatGPT or the owner) before starting new work.
-- [ ] Advisor v2: evidence-strength label per recommendation (test count, verification level); score bands instead of exact % when fewer than 10 tests; "cheapest good-enough" pick (cheapest within 5 points of the best); access-mode filter (app / API / free tier / local).
+- [x] Advisor v2: evidence-strength label per recommendation (test count, verification level); score bands instead of exact % when fewer than 10 tests; "cheapest good-enough" pick (cheapest within 5 points of the best); access-mode filter (app / API / free tier / local).
 - [ ] Catalogue facts: script that fetches the OpenRouter model list into `catalog.json` (id, name, prices, context, free/paid, release date, fetched date, source URL); advisor shows price from it with the source.
 - [ ] Core set proposal: list ~50 existing objectively graded tests for the first vertical (coding + practical calculations), with gaps; post as a PR adding `core/PROPOSAL.md` (IDs and categories only, never answers).
 - [ ] Repeatability: relay option `ATTEMPTS=3` for the core set, stored as passes out of 3, shown as "passed x/3".
@@ -34,3 +34,4 @@ Source of truth for priorities is Issue #1. This file mirrors it for the daily m
 - 2026-11-22: Matrix reading guide; relay daily-limit pause/resume; judge panel with $3 cap (pushed to main before the PR protocol).
 - 2026-11-23: Audit posted to Issue #1; PR #2 (approval loophole, evidence labels, judge-injection guard, SOURCES.md, counts, nightly paused, CONTRIBUTING.md).
 - 2026-11-23 (daily run): Fixed nightly library runs losing all answers: the Commit step failed on `git add submissions` when that folder did not exist (runs 45086543485 and 45104312898; 48 free answers for Ling 3.2 Flash were discarded). Same fix in test-model and score-submission workflows. Owner checklist updated.
+- 2026-11-23 (daily run): Advisor v2: evidence label per recommendation (Strong / Moderate / Limited from relevant test count, share checked automatically, and how the run was produced); score bands when under 10 tests; "Cheapest good enough" card (cheapest known price within 5 points of the best; unknown prices never win); new "Free tier" access filter. Price still comes from measured run cost until `catalog.json` exists.
