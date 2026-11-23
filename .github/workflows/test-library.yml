@@ -17,9 +17,9 @@ on:
         description: "Tiers to run for every model (S, F, G, R, A)"
         default: "SFGRA"
         required: true
-  schedule:
-    # Every night: continue filling the library with free models (resumes where the daily limit stopped it).
-    - cron: "17 2 * * *"
+  # Nightly runs are paused until the advisor has been validated with real users (Issue #1). To resume, remove the '#'s:
+  # schedule:
+  #   - cron: "17 2 * * *"
 
 jobs:
   list:
