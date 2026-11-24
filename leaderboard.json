@@ -2,7 +2,7 @@
  "models": [
   {
    "id": "chat-chatgpt-5-2-2026-11-22",
-   "name": "ChatGPT 5.2 \u2014 2026-11-22",
+   "name": "ChatGPT 5.2 — 2026-11-22",
    "model": "ChatGPT 5.2",
    "date": "2026-11-22",
    "access": "Unknown",
@@ -19,7 +19,7 @@
   },
   {
    "id": "chat-gemini-auto-2026-11-22",
-   "name": "Gemini (Auto) \u2014 2026-11-22",
+   "name": "Gemini (Auto) — 2026-11-22",
    "model": "Gemini (Auto)",
    "date": "2026-11-22",
    "access": "Unknown",
@@ -36,7 +36,7 @@
   },
   {
    "id": "auto-claude-opus-5-5-2026-11-22",
-   "name": "Claude Opus 5.5 \u2014 2026-11-22",
+   "name": "Claude Opus 5.5 — 2026-11-22",
    "model": "Claude Opus 5.5",
    "date": "2026-11-22",
    "access": "Included (Claude auto-run)",
@@ -48,6 +48,29 @@
    "evidence": [
     "partial run",
     "self-judged open-ended answers"
+   ]
+  },
+  {
+   "id": "relay-inclusionai-ling-3-2-flash-free-api-free-tier-std-2026-11-24",
+   "date": "2026-11-24",
+   "name": "inclusionAI: Ling 3.2 Flash (free) — 2026-11-24",
+   "model": "inclusionAI: Ling 3.2 Flash (free)",
+   "access": "API (free tier)",
+   "iface": "API",
+   "think": "Off",
+   "tools": "Off",
+   "restrict": "",
+   "notes": "Provider: openrouter: inclusionai/ling-3.2-flash:free · Run by the relay workflow · paused at the daily request limit; resumes on the next run",
+   "usage": {
+    "n": 51,
+    "tin": 3847,
+    "tout": 54053,
+    "cost": 0,
+    "sec": 569,
+    "words": 110
+   },
+   "evidence": [
+    "partial run"
    ]
   }
  ],
@@ -1209,10 +1232,293 @@
    "G51": {
     "score": 3
    }
+  },
+  "relay-inclusionai-ling-3-2-flash-free-api-free-tier-std-2026-11-24": {
+   "L2": {
+    "score": 3
+   },
+   "L5": {
+    "score": 3
+   },
+   "L4": {
+    "score": 3
+   },
+   "L6": {
+    "score": 3
+   },
+   "L7": {
+    "score": 3
+   },
+   "M3": {
+    "score": 3
+   },
+   "M4": {
+    "score": 3
+   },
+   "M2": {
+    "score": 3
+   },
+   "M5": {
+    "score": 3
+   },
+   "M6": {
+    "score": 3
+   },
+   "M7": {
+    "score": 3
+   },
+   "M9": {
+    "score": 3
+   },
+   "C1": {
+    "score": 3
+   },
+   "C4": {
+    "score": 3
+   },
+   "C7": {
+    "score": 3
+   },
+   "C8": {
+    "score": 3
+   },
+   "R3": {
+    "score": 3
+   },
+   "R2": {
+    "score": 3
+   },
+   "R4": {
+    "score": 3
+   },
+   "R6": {
+    "score": 3
+   },
+   "R5": {
+    "score": 3
+   },
+   "I1": {
+    "score": 3
+   },
+   "I2": {
+    "score": 3
+   },
+   "I4": {
+    "score": 3
+   },
+   "I3": {
+    "score": 3
+   },
+   "I6": {
+    "score": 3
+   },
+   "I5": {
+    "score": 3
+   },
+   "I7": {
+    "score": 3
+   },
+   "K1": {
+    "score": 3
+   },
+   "K2": {
+    "score": 3
+   },
+   "K3": {
+    "score": 3
+   },
+   "K6": {
+    "score": 3
+   },
+   "K8": {
+    "score": 3
+   },
+   "K7": {
+    "score": 3
+   },
+   "P1": {
+    "score": 3
+   },
+   "P4": {
+    "score": 3
+   },
+   "P5": {
+    "score": 3
+   },
+   "S2": {
+    "score": 3
+   },
+   "D1": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "D2": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "D4": {
+    "score": 2,
+    "checks": [
+     true,
+     true,
+     false
+    ],
+    "judges": 2
+   },
+   "D3": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "D5": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "D6": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "H1": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "H2": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "P2": {
+    "score": 3,
+    "checks": [
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "A1": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "A5": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "A3": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "G7": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   }
   }
  },
- "arena": {},
+ "arena": {
+  "relay-inclusionai-ling-3-2-flash-free-api-free-tier-std-2026-11-24": {}
+ },
  "votes": [],
  "tourn": {},
- "updated": "2026-11-22T22:00:00Z"
+ "updated": "2026-11-24T04:18:41.758Z",
+ "judgeSpend": {
+  "total": 0.046198,
+  "calls": 74
+ },
+ "judges": {
+  "google/gemini-3.8-flash": {
+   "acc": 13,
+   "at": 1795493852667,
+   "family": "google"
+  },
+  "openai/gpt-5.4-mini": {
+   "acc": 97,
+   "at": 1795493860573,
+   "family": "openai",
+   "votes": 13,
+   "withPanel": 13
+  },
+  "deepseek/deepseek-v4.1-flash-1017": {
+   "acc": 47,
+   "at": 1795493871166,
+   "family": "deepseek"
+  },
+  "anthropic/claude-haiku-5.5": {
+   "acc": 72,
+   "at": 1795493878877,
+   "family": "anthropic"
+  },
+  "mistralai/mistral-medium-3-5": {
+   "acc": 100,
+   "at": 1795493884695,
+   "family": "mistral",
+   "votes": 13,
+   "withPanel": 12
+  },
+  "qwen/qwen4-max": {
+   "acc": 72,
+   "at": 1795493903298,
+   "family": "qwen"
+  }
+ },
+ "review": []
 }
