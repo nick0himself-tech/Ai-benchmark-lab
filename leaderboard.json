@@ -62,12 +62,12 @@
    "restrict": "",
    "notes": "Provider: openrouter: inclusionai/ling-3.2-flash:free · Run by the relay workflow · paused at the daily request limit; resumes on the next run",
    "usage": {
-    "n": 51,
-    "tin": 3847,
-    "tout": 54053,
+    "n": 100,
+    "tin": 6999,
+    "tout": 221922,
     "cost": 0,
-    "sec": 569,
-    "words": 110
+    "sec": 1552,
+    "words": 104
    },
    "evidence": [
     "partial run"
@@ -1471,6 +1471,298 @@
      true
     ],
     "judges": 2
+   },
+   "L1": {
+    "score": 3
+   },
+   "L3": {
+    "score": 3
+   },
+   "M1": {
+    "score": 3
+   },
+   "C3": {
+    "score": 3
+   },
+   "R1": {
+    "score": 3
+   },
+   "I8": {
+    "score": 3
+   },
+   "C6": {
+    "score": 3
+   },
+   "K4": {
+    "score": 3
+   },
+   "K5": {
+    "score": 3
+   },
+   "P7": {
+    "score": 3
+   },
+   "P3": {
+    "score": 3
+   },
+   "P6": {
+    "score": 3
+   },
+   "G3": {
+    "score": 3
+   },
+   "G4": {
+    "score": 3
+   },
+   "G6": {
+    "score": 3
+   },
+   "S3": {
+    "score": 3
+   },
+   "S5": {
+    "score": 3
+   },
+   "E1": {
+    "score": 3
+   },
+   "E3": {
+    "score": 3
+   },
+   "E6": {
+    "score": 3
+   },
+   "T1": {
+    "score": 3
+   },
+   "T3": {
+    "score": 3
+   },
+   "B4": {
+    "score": 3
+   },
+   "F03": {
+    "score": 3
+   },
+   "F01": {
+    "score": 3
+   },
+   "F02": {
+    "score": 3
+   },
+   "H3": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "H5": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "H4": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "H6": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "A2": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "A4": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "W4": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "W2": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "G1": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "W6": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "G2": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "G5": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "X4": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "X3": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "X5": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "B2": {
+    "score": 2,
+    "checks": [
+     true,
+     true,
+     false
+    ],
+    "judges": 2
+   },
+   "B1": {
+    "score": 2,
+    "checks": [
+     true,
+     true,
+     false
+    ],
+    "judges": 2
+   },
+   "B3": {
+    "score": 1,
+    "checks": [
+     false,
+     true,
+     false
+    ],
+    "judges": 2
+   },
+   "B5": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "Y1": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "Y3": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "Y2": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "Y4": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
    }
   }
  },
@@ -1479,10 +1771,10 @@
  },
  "votes": [],
  "tourn": {},
- "updated": "2026-11-24T04:18:41.758Z",
+ "updated": "2026-11-25T04:19:25.729Z",
  "judgeSpend": {
-  "total": 0.046198,
-  "calls": 74
+  "total": 0.073932,
+  "calls": 120
  },
  "judges": {
   "google/gemini-3.8-flash": {
@@ -1494,8 +1786,8 @@
    "acc": 97,
    "at": 1795493860573,
    "family": "openai",
-   "votes": 13,
-   "withPanel": 13
+   "votes": 36,
+   "withPanel": 35
   },
   "deepseek/deepseek-v4.1-flash-1017": {
    "acc": 47,
@@ -1511,8 +1803,8 @@
    "acc": 100,
    "at": 1795493884695,
    "family": "mistral",
-   "votes": 13,
-   "withPanel": 12
+   "votes": 36,
+   "withPanel": 35
   },
   "qwen/qwen4-max": {
    "acc": 72,
