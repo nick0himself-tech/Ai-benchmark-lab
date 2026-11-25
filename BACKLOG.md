@@ -9,6 +9,9 @@ Source of truth for priorities is Issue #1. This file mirrors it for the daily m
 - Every site change: `node --check` on the page script, render at 390 px wide in headless Chrome, look at the screenshot.
 - Report facts in PRs and issue comments: files, commands, results, limitations. No bare @mentions.
 
+## Decisions
+- 2026-11-25 (owner): the GitHub site (https://nick0himself-tech.github.io/Ai-benchmark-lab/) and `leaderboard.json` are the official results. The Claude artifact copy is the owner's private place for manual test runs and is not synced automatically; manual runs reach the leaderboard via Export / import → Copy JSON.
+
 ## Needs the owner
 - [x] Add repository secret `OPENROUTER_API_KEY` (optionally a credit limit on the key at openrouter.ai).
 - [ ] Decide: one-off $10 OpenRouter credit (raises the free cap from 50 to 1,000 requests/day).
