@@ -1072,7 +1072,7 @@ $('apiFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;let o;try
  $('pkOut').innerHTML=`Loaded <b>${got.length}</b> answers into run <b>${esc(st.models.find(m=>m.id===st.active).name)}</b>. Auto-scored ${a}. ${got.length-a} rubric answers are waiting for a judge.${arN?` ${arN} Arena submissions scored.`:''}${errs.length?`<br><span class="f">Failed in the runner:</span> ${esc(errs.join(', '))}`:''}`;e.target.value=''};
 
 // ---------- shared (read-only) leaderboard for other visitors ----------
-let RO=false,SHARED=null;
+let RO=false,SHARED=null,CATALOG=null;
 function ovrFrom(res,tier){let s=0,w=0,n=0;T.forEach(t=>{if(tier&&t.tier!==tier)return;const r=res&&res[t.id];if(r&&typeof r.score==='number'){s+=r.score*t.d;w+=3*t.d;n++}});return{pct:w?100*s/w:null,n}}
 function renderShared(){if(!SHARED||!SHARED.models.length){$('shBand').style.display='none';return}$('shBand').style.display='';const f=x=>x==null?'–':x.toFixed(1)+'%';
  const rows=SHARED.models.map(m=>{const r=SHARED.res[m.id]||{};return{m,S:ovrFrom(r,'S').pct,F:ovrFrom(r,'F').pct,G:ovrFrom(r,'G').pct,R:ovrFrom(r,'R').pct,O:ovrFrom(r).pct,n:ovrFrom(r).n}}).sort((a,b)=>(b.O??-1)-(a.O??-1));
@@ -1083,6 +1083,11 @@ function renderShared(){if(!SHARED||!SHARED.models.length){$('shBand').style.dis
 function renderJudges(o){const j=o.judges||{},ks=Object.keys(j);if(!ks.length||!$('gJudges'))return;
  $('gJudges').innerHTML=`<div class="scroll"><table class="heat"><thead><tr><th style="text-align:left">Judge</th><th>Entry test</th><th>Agrees with panel</th><th>Status</th></tr></thead><tbody>${ks.sort((a,b)=>(j[b].acc||0)-(j[a].acc||0)).map(k=>{const x=j[k],ag=x.votes?Math.round(100*x.withPanel/x.votes):null;return`<tr><td style="text-align:left">${esc(k)}</td><td style="background:${heat(x.acc)}">${x.acc}%</td><td style="background:${heat(ag)}">${ag==null?'–':ag+'% of '+x.votes}</td><td>${x.acc>=85?'Qualified':'Not used'}</td></tr>`}).join('')}</tbody></table></div>${o.judgeSpend?`<p style="margin:8px 0 0">Judging cost so far: $${(+o.judgeSpend.total).toFixed(2)} over ${o.judgeSpend.calls} calls. ${(o.review||[]).length} answer(s) waiting for review.</p>`:''}`}
 function setSharedFrom(o,note){try{SHARED={models:(o.models||[]).map(cleanRun),res:o.res||{},arena:o.arena&&typeof o.arena==='object'?o.arena:{}};try{renderJudges(o)}catch(e){}$('shNote').textContent=note;renderShared()}catch(e){}}
+// API list prices from OpenRouter's public model list (catalog.json, refreshed weekly by a workflow). Missing file = no list prices.
+fetch('catalog.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(o=>{if(o&&Array.isArray(o.models)){CATALOG={source:o.source,fetched:o.fetched,by:new Map(o.models.map(m=>[m.id,m]))}}}).catch(()=>{});
+// A run is linked to a catalogue entry only through an explicit OpenRouter model ID (relay runs record it as "Provider: openrouter: <id>"). Chat-app runs are never guessed.
+const orId=m=>m.orId||((/openrouter:\s*([a-z0-9._\/:-]+)/i.exec((m.provider||'')+' '+(m.notes||''))||[])[1])||null;
+const catOf=m=>{const id=orId(m);return id&&CATALOG?CATALOG.by.get(id)||null:null};
 if(!(window.claude&&window.claude.use)){fetch('leaderboard.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(o=>{if(o)setSharedFrom(o,'Published results from the benchmark owner. Your own runs below are saved in this browser only; use Export / import → Copy JSON to send them in.')}).catch(()=>{})}
 
 // ---------- cloud saving (artifact database) ----------
@@ -1208,18 +1213,21 @@ const pctTxt=(v,n)=>v==null?'–':n<10?(v<60?'under 60%':v<85?'60–85%':'85%+')
 function advRun(){const w=advWeights();let pool=advPool();const out=$('advOut');
  if(!pool.length){out.innerHTML=`<div class="card"><b>No tested models yet.</b><p class="sub" style="margin:6px 0 0">Run a model through the benchmark (Test an AI) or load the shared leaderboard, and recommendations will appear here.</p></div>`;return}
  const cost=x=>x.m.usage&&x.m.usage.cost&&x.m.usage.n?x.m.usage.cost/x.m.usage.n:null;
- const isFree=x=>/free|local/i.test(x.m.access||'');
+ const isFree=x=>/free|local/i.test(x.m.access||'')||!!(x.cat&&x.cat.free);
+ // Estimated cost per answer from the API list price, using this run's own average tokens per answer (or 400 in / 700 out if unknown).
+ const estCost=x=>{const k=x.cat;if(!k||k.in==null||k.out==null)return null;const u=x.m.usage;const tin=u&&u.n&&u.tin?u.tin/u.n:400,tout=u&&u.n&&u.tout?u.tout/u.n:700;return(tin*k.in+tout*k.out)/1e6};
+ pool.forEach(x=>{x.cat=catOf(x.m)});
  const filters=[];if(adv.budget==='free'){pool=pool.filter(isFree);filters.push('free only')}
  if(adv.iface==='chat'){pool=pool.filter(x=>/chat/i.test(x.m.iface||''));filters.push('chat apps')}if(adv.iface==='api'){pool=pool.filter(x=>/api/i.test(x.m.iface||'')||/api/i.test(x.m.access||''));filters.push('API')}if(adv.iface==='freetier'){pool=pool.filter(x=>/free/i.test(x.m.access||''));filters.push('free tiers')}if(adv.iface==='local'){pool=pool.filter(x=>/local/i.test(x.m.access||''));filters.push('local models')}
  if(!pool.length){out.innerHTML=`<div class="card"><b>No tested model matches ${esc(filters.join(', '))}.</b><p class="sub" style="margin:6px 0 0">Loosen a requirement, or test a model that fits (for example a free OpenRouter model through the relay).</p></div>`;return}
  const tw=Object.values(w).reduce((a,b)=>a+b,0);
  const rows=pool.map(x=>{let s=0,cw=0;const per={},pn={};for(const[k,wt]of Object.entries(w)){const g=gScore(x.res,NEED_CATS[k]);let v=g?g.pct:null;if(k==='business'){const pv=PRO.map(p=>x.arena[p.id]).filter(a=>a&&a.ok&&typeof a.metric==='number').map(a=>a.metric);if(pv.length)v=v==null?pv.reduce((a,b)=>a+b,0)/pv.length:(v+pv.reduce((a,b)=>a+b,0)/pv.length)/2}
-   if(v!=null){s+=v*wt;cw+=wt;per[k]=v;pn[k]=g?g.n:0}}const cover=cw/tw;return{...x,fit:cw?s/cw:null,cover,per,pn,ev:advEvidence(x,w),c:cost(x)}}).filter(x=>x.fit!=null);
+   if(v!=null){s+=v*wt;cw+=wt;per[k]=v;pn[k]=g?g.n:0}}const cover=cw/tw;return{...x,fit:cw?s/cw:null,cover,per,pn,ev:advEvidence(x,w),c:cost(x),est:estCost(x)}}).filter(x=>x.fit!=null);
  if(!rows.length){out.innerHTML='<div class="card">Not enough test coverage for these needs yet.</div>';return}
  const freePref=adv.budget!=='free'&&/\b(free|gratis|no budget|cheap|low cost|budget)\b/i.test($('advText').value);if(freePref)filters.push('preferring free');
  rows.forEach(x=>{x.adj=x.fit*(0.75+0.25*x.cover)+(freePref&&isFree(x)?3:0)});rows.sort((a,b)=>b.adj-a.adj);const top=rows[0];
  // Cheapest good-enough: the cheapest model with a known price within 5 points of the best. Unknown prices never win.
- const price=x=>isFree(x)?0:x.c!=null?x.c:Infinity;
+ const price=x=>isFree(x)?0:x.c!=null?x.c:x.est!=null?x.est:Infinity;
  const cheap=rows.filter(x=>x.adj>=top.adj-5&&isFinite(price(x))).sort((a,b)=>price(a)-price(b)||b.adj-a.adj)[0];
  const lean=cheap&&cheap!==top&&price(cheap)<price(top)?cheap:null;
  let pick=top;if(adv.prio==='lean'&&lean)pick=lean;
@@ -1227,7 +1235,9 @@ function advRun(){const w=advWeights();let pool=advPool();const out=$('advOut');
  const label=k=>NEEDS.find(n=>n[0]===k)[1];const needList=Object.entries(w).sort((a,b)=>b[1]-a[1]).map(([k])=>label(k));
  const why=x=>{const p=Object.entries(x.per).sort((a,b)=>b[1]-a[1]);const strong=p.slice(0,2).map(([k,v])=>`${label(k).toLowerCase()} (${pctTxt(v,x.pn[k])})`);const weak=p.filter(([,v])=>v<60).map(([k,v])=>`${label(k).toLowerCase()} (${pctTxt(v,x.pn[k])})`);
    return`Strong on ${strong.join(' and ')}.${weak.length?` Weaker on ${weak.join(', ')}: double-check that part.`:''}${x.cover<0.7?' Some of your needs are not covered by its tests yet.':''}`};
- const priceTxt=x=>isFree(x)?'Price: $0 (free tier or local)':x.c!=null?`Price: $${(x.c*100).toFixed(2)} per 100 answers (measured cost of this test run)`:'Price: not known yet';
+ const usd=v=>v>=1?v.toFixed(2):v>=0.01?v.toFixed(3):v.toPrecision(2);
+ const listTxt=x=>x.cat&&!isFree(x)&&x.cat.in!=null&&x.cat.out!=null?`API list price $${usd(x.cat.in)} in / $${usd(x.cat.out)} out per 1M tokens (OpenRouter, fetched ${CATALOG.fetched})`:'';
+ const priceTxt=x=>[isFree(x)?'Price: $0 (free tier or local)':x.c!=null?`Price: $${(x.c*100).toFixed(2)} per 100 answers (measured cost of this test run)`:x.est!=null?`Price: about $${usd(x.est*100)} per 100 answers (estimated from the API list price)`:'Price: not known yet',listTxt(x)].filter(Boolean).join(' · ');
  const meta=x=>[runTag(x.m),x.words?`~${x.words} words per answer`:'',priceTxt(x)].filter(Boolean).join(' · ');
  const others=rows.filter(x=>x!==pick&&x!==lean).slice(0,3);
  const cmp=[pick,...others];const needKeys=Object.entries(w).sort((a,b)=>b[1]-a[1]).map(([k])=>k);const tw2=Object.values(w).reduce((a,b)=>a+b,0);
@@ -1242,11 +1252,11 @@ function advRun(){const w=advWeights();let pool=advPool();const out=$('advOut');
   <tr class="hm-fit"><td style="text-align:left"><b>Fit</b><br><span class="sub">weighted total</span></td><td>100%</td>${cmp.map(x=>`<td style="background:${heat(x.fit)}"><b>${pctTxt(x.fit,x.ev.n)}</b>${x.cover<1?`<br><span class="hm-v">${Math.round(x.cover*100)}% of needs tested</span>`:''}</td>`).join('')}</tr></tbody></table></div>
   <p class="sub" style="margin:8px 0 0">Two models within about 5 points are effectively tied: pick the cheaper or faster one. A <b>weak</b> cell on a high-weight row matters more than a weak cell on a low one.</p>
 
-  <details class="more"><summary>How this was calculated</summary><p class="sub">Fit for ${esc(pick.m.model||pick.m.name)} = ${needKeys.filter(k=>pick.per[k]!=null).map(k=>`${pick.per[k].toFixed(0)}% × ${Math.round(100*w[k]/tw2)}%`).join(' + ')}, divided by the share of weight that has test coverage (${Math.round(pick.cover*100)}%) = <b>${pick.fit.toFixed(0)}%</b>. The ranking also lowers models whose tests cover less of your needs (by up to 25%) and, if you asked for free, prefers free models slightly. Scores based on fewer than 10 tests are shown as a band (under 60%, 60–85%, 85%+) because one answer can swing them a lot. <b>Evidence</b> is Strong with 30+ relevant tests, mostly checked automatically, from a run nobody self-reported; Moderate with 10+; otherwise Limited. <b>Cheapest good enough</b> is the cheapest model with a known price within 5 points of the best. Weights come from the words in your description and the needs you ticked.</p></details></div>`;
+  <details class="more"><summary>How this was calculated</summary><p class="sub">Fit for ${esc(pick.m.model||pick.m.name)} = ${needKeys.filter(k=>pick.per[k]!=null).map(k=>`${pick.per[k].toFixed(0)}% × ${Math.round(100*w[k]/tw2)}%`).join(' + ')}, divided by the share of weight that has test coverage (${Math.round(pick.cover*100)}%) = <b>${pick.fit.toFixed(0)}%</b>. The ranking also lowers models whose tests cover less of your needs (by up to 25%) and, if you asked for free, prefers free models slightly. Scores based on fewer than 10 tests are shown as a band (under 60%, 60–85%, 85%+) because one answer can swing them a lot. <b>Evidence</b> is Strong with 30+ relevant tests, mostly checked automatically, from a run nobody self-reported; Moderate with 10+; otherwise Limited. <b>Cheapest good enough</b> is the cheapest model with a known price within 5 points of the best. Price is the measured cost of the test run when there is one; otherwise an estimate from the API list price in <a href="https://openrouter.ai/models" target="_blank" rel="noopener">OpenRouter's public model list</a>${CATALOG?` (fetched ${esc(CATALOG.fetched)})`:''}, using the run's own tokens per answer. Chat-app runs have no list price: their cost is the app subscription. Weights come from the words in your description and the needs you ticked.</p></details></div>`;
  out.innerHTML=`<p class="sub">Matched on: <b>${esc(needList.join(', '))}</b>${filters.length?` · filtered to ${esc(filters.join(', '))}`:''} · ${rows.length} tested model${rows.length>1?'s':''} considered.</p>
   <div class="advPick card"><div class="lab">Recommended</div><div class="advHead"><b>${esc(pick.m.model||pick.m.name)}</b><span class="advScore">${pctTxt(pick.fit,pick.ev.n)}<small> fit</small></span></div>${eviHtml(pick)}<p style="margin:6px 0">${esc(why(pick))}</p><p class="sub" style="margin:0">${esc(meta(pick))}</p>
   ${pick!==top?`<p class="sub" style="margin:8px 0 0">The strongest overall is ${esc(top.m.model||top.m.name)} (${pctTxt(top.fit,top.ev.n)}), but this one is within 5 points and costs less.</p>`:''}</div>
-  ${lean&&lean!==pick?`<div class="advCheap card" style="margin-top:12px"><div class="lab">Cheapest good enough</div><div class="advHead"><b>${esc(lean.m.model||lean.m.name)}</b><span class="advScore sm">${pctTxt(lean.fit,lean.ev.n)}</span></div>${eviHtml(lean)}<p class="sub" style="margin:6px 0 0">Within 5 points of the best match, and ${isFree(lean)?'free':top.c!=null&&top.c>0?`${Math.round(100*(1-lean.c/top.c))}% cheaper per answer`:'cheaper'}. ${esc(priceTxt(lean))}.</p></div>`:''}
+  ${lean&&lean!==pick?`<div class="advCheap card" style="margin-top:12px"><div class="lab">Cheapest good enough</div><div class="advHead"><b>${esc(lean.m.model||lean.m.name)}</b><span class="advScore sm">${pctTxt(lean.fit,lean.ev.n)}</span></div>${eviHtml(lean)}<p class="sub" style="margin:6px 0 0">Within 5 points of the best match, and ${isFree(lean)?'free':isFinite(price(top))&&price(top)>0?`${Math.round(100*(1-price(lean)/price(top)))}% cheaper per answer`:'cheaper'}. ${esc(priceTxt(lean))}.</p></div>`:''}
   ${others.length?`<div class="advAlt">${others.map(x=>`<div class="card"><div class="advHead"><b>${esc(x.m.model||x.m.name)}</b><span class="advScore sm">${pctTxt(x.fit,x.ev.n)}</span></div>${eviHtml(x)}<p class="sub" style="margin:6px 0 0">${esc(why(x))}</p><p class="sub" style="margin:4px 0 0">${esc(meta(x))}</p></div>`).join('')}</div>`:''}
   ${grid}<p class="sub" style="margin-top:12px">Results only compare fairly between runs with the same settings (shown under each name). See <a href="#guide">How it works</a> for what every number means.</p>`}
 $('advGo').onclick=()=>{advRun();$('advOut').scrollIntoView({behavior:'smooth',block:'start'})};
