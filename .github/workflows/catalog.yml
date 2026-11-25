@@ -1,0 +1,28 @@
+name: Refresh model catalogue
+
+# Weekly: copies OpenRouter's public model list (prices, context, free/paid) into catalog.json.
+# No API key and no model calls: this costs $0. The advisor shows these prices with source and date.
+on:
+  schedule:
+    - cron: "41 4 * * 1"
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: node scripts/catalog.mjs
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add catalog.json
+          git diff --cached --quiet || git commit -m "Catalogue: OpenRouter model list $(date -u +%F)"
+          git pull --rebase origin main && git push

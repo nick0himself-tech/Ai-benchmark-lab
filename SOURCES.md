@@ -15,7 +15,7 @@ Which external benchmark sources we can use, and how. Checked 23 Nov 2026. Re-ch
 
 ## Conclusion
 No free, current, legally clear source gives task-level quality scores for the models people actually choose between (ChatGPT, Claude, Gemini, popular API models). So:
-1. Use the **OpenRouter model list** for cost and access facts. It's free and current.
+1. Use the **OpenRouter model list** for cost and access facts. It's free and current. `scripts/catalog.mjs` stores only the models this project uses (not the whole list), with source and fetch date, in `catalog.json`.
 2. Use **our own runs** (free models via the relay, plus spot checks of paid models after approval) for quality evidence, labelled by how well verified they are.
 3. **Link out** to LiveBench and Artificial Analysis for broader context, and ask LiveBench for permission if we want their scores.
 
