@@ -62,12 +62,12 @@
    "restrict": "",
    "notes": "Provider: openrouter: inclusionai/ling-3.2-flash:free · Run by the relay workflow · paused at the daily request limit; resumes on the next run",
    "usage": {
-    "n": 100,
-    "tin": 6999,
-    "tout": 221922,
+    "n": 150,
+    "tin": 10838,
+    "tout": 348357,
     "cost": 0,
-    "sec": 1552,
-    "words": 104
+    "sec": 2452,
+    "words": 114
    },
    "evidence": [
     "partial run"
@@ -1763,6 +1763,215 @@
      true
     ],
     "judges": 2
+   },
+   "C2": {
+    "score": 3
+   },
+   "S1": {
+    "score": 3
+   },
+   "S4": {
+    "score": 3
+   },
+   "E7": {
+    "score": 3
+   },
+   "F04": {
+    "score": 3
+   },
+   "F06": {
+    "score": 3
+   },
+   "F05": {
+    "score": 3
+   },
+   "F10": {
+    "score": 3
+   },
+   "F12": {
+    "score": 3
+   },
+   "F13": {
+    "score": 3
+   },
+   "F15": {
+    "score": 3
+   },
+   "F14": {
+    "score": 3
+   },
+   "F16": {
+    "score": 3
+   },
+   "F20": {
+    "score": 3
+   },
+   "F21": {
+    "score": 3
+   },
+   "F22": {
+    "score": 3
+   },
+   "F23": {
+    "score": 3
+   },
+   "F40": {
+    "score": 3
+   },
+   "F32": {
+    "score": 3
+   },
+   "F52": {
+    "score": 3
+   },
+   "F53": {
+    "score": 3
+   },
+   "F55": {
+    "score": 3
+   },
+   "F54": {
+    "score": 3
+   },
+   "F56": {
+    "score": 3
+   },
+   "F61": {
+    "score": 3
+   },
+   "F60": {
+    "score": 3
+   },
+   "G03": {
+    "score": 3
+   },
+   "G05": {
+    "score": 2
+   },
+   "G06": {
+    "score": 3
+   },
+   "G08": {
+    "score": 3
+   },
+   "G10": {
+    "score": 3
+   },
+   "G09": {
+    "score": 3
+   },
+   "G11": {
+    "score": 3
+   },
+   "G12": {
+    "score": 3
+   },
+   "G14": {
+    "score": 3
+   },
+   "G13": {
+    "score": 3
+   },
+   "G17": {
+    "score": 3
+   },
+   "G15": {
+    "score": 3
+   },
+   "G18": {
+    "score": 0
+   },
+   "G20": {
+    "score": 3
+   },
+   "X2": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "X1": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "X6": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "E2": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "F42": {
+    "score": 2,
+    "checks": [
+     true,
+     false
+    ],
+    "judges": 2
+   },
+   "F41": {
+    "score": 3,
+    "checks": [
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "F43": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "F45": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "F46": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
+   },
+   "F65": {
+    "score": 3,
+    "checks": [
+     true,
+     true,
+     true
+    ],
+    "judges": 2
    }
   }
  },
@@ -1771,10 +1980,10 @@
  },
  "votes": [],
  "tourn": {},
- "updated": "2026-11-25T04:19:25.729Z",
+ "updated": "2026-11-26T04:19:09.760Z",
  "judgeSpend": {
-  "total": 0.073932,
-  "calls": 120
+  "total": 0.090289,
+  "calls": 140
  },
  "judges": {
   "google/gemini-3.8-flash": {
@@ -1786,8 +1995,8 @@
    "acc": 97,
    "at": 1795493860573,
    "family": "openai",
-   "votes": 36,
-   "withPanel": 35
+   "votes": 46,
+   "withPanel": 44
   },
   "deepseek/deepseek-v4.1-flash-1017": {
    "acc": 47,
@@ -1803,8 +2012,8 @@
    "acc": 100,
    "at": 1795493884695,
    "family": "mistral",
-   "votes": 36,
-   "withPanel": 35
+   "votes": 46,
+   "withPanel": 45
   },
   "qwen/qwen4-max": {
    "acc": 72,
