@@ -10,7 +10,12 @@ const P = { openrouter: ['https://openrouter.ai/api/v1', 'OPENROUTER_API_KEY'], 
   mistral: ['https://api.mistral.ai/v1', 'MISTRAL_API_KEY'], groq: ['https://api.groq.com/openai/v1', 'GROQ_API_KEY'] };
 const E = process.env;
 const provider = E.RELAY_PROVIDER || 'openrouter', model = E.RELAY_MODEL, label = E.RELAY_LABEL || model;
-const tiers = (E.RELAY_TIERS || 'SFGRA').toUpperCase(), rounds = Math.max(1, Math.min(5, +E.RELAY_ROUNDS || 3)), reasoning = E.RELAY_REASONING || '';
+// RELAY_SET=core limits the run to the core set (core/core-set.json); RELAY_ATTEMPTS (1–3) answers each item that many times
+// in separate conversations and stores every attempt's score, shown on the site as "passed x/3".
+const set = (E.RELAY_SET || 'all').toLowerCase() === 'core' ? 'core' : 'all';
+const attempts = Math.max(1, Math.min(3, Math.floor(+E.RELAY_ATTEMPTS || 1)));
+const coreIds = set === 'core' ? new Set(JSON.parse(fs.readFileSync('core/core-set.json', 'utf8')).ids) : null;
+const tiers = (set === 'core' ? 'SFGR' : (E.RELAY_TIERS || 'SFGRA')).toUpperCase(), rounds = Math.max(1, Math.min(5, +E.RELAY_ROUNDS || 3)), reasoning = E.RELAY_REASONING || '';
 const [base, keyEnv] = P[provider] || [E.RELAY_BASE_URL, 'RELAY_API_KEY']; const key = E[keyEnv];
 if (!model || !key) { console.error(`Missing model or API key (${keyEnv}).`); process.exit(1); }
 const extra = provider === 'openrouter' ? { usage: { include: true }, ...(reasoning ? { reasoning: { effort: reasoning } } : {}) } : (reasoning ? { reasoning_effort: reasoning } : {});
@@ -35,10 +40,13 @@ const lb = fs.existsSync('leaderboard.json') ? JSON.parse(fs.readFileSync('leade
 lb.models ||= []; lb.arena ||= {};
 const date = new Date().toISOString().slice(0, 10);
 const slug = s => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 50);
-const stem = `relay-${slug(label)}-${slug(E.RELAY_ACCESS || 'api')}-${reasoning || 'std'}-`;
+// Core-set and repeated runs get their own run ID, so they never mix with single-attempt full-library runs.
+const stem = `relay-${slug(label)}-${slug(E.RELAY_ACCESS || 'api')}-${reasoning || 'std'}-${set === 'core' ? 'core-' : ''}${attempts > 1 ? `x${attempts}-` : ''}`;
 const recent = lb.models.filter(m => m.id.startsWith(stem) && (Date.now() - Date.parse(m.date || 0)) < 21 * 864e5).sort((a, b) => (b.date || '').localeCompare(a.date || ''))[0];
 const runId = recent ? recent.id : stem + date;
-const done = new Set(Object.keys((lb.res || {})[runId] || {})), doneArena = new Set(Object.keys((lb.arena || {})[runId] || {}).filter(k => lb.arena[runId][k].ok));
+const prevRes = (lb.res || {})[runId] || {};
+const prevAtt = id => Array.isArray(prevRes[id]?.att) ? prevRes[id].att.length : (attempts > 1 ? 0 : (prevRes[id] ? 1 : 0));
+const done = new Set(Object.keys(prevRes).filter(id => prevAtt(id) >= attempts)), doneArena = new Set(Object.keys((lb.arena || {})[runId] || {}).filter(k => lb.arena[runId][k].ok));
 let stopped = false;
 const nameOf = id => (lb.models.find(m => m.id === id) || {}).name || id;
 
@@ -50,21 +58,32 @@ await page.waitForFunction(() => window.__bench && window.__bench.scoreAnswers, 
 const score = a => page.evaluate(x => window.__bench.scoreAnswers(x), a);
 
 // 1. Question tiers, a few at a time.
-const qs = bank.filter(t => t.tier !== 'A' && tiers.includes(t.tier) && !done.has(t.id));
-const answers = {}; let words = 0;
-console.log(`Relay: ${label} (${model}) — ${qs.length} questions, Arena ${tiers.includes('A') ? `with ${rounds} rounds` : 'skipped'}`);
+const qs = bank.filter(t => t.tier !== 'A' && tiers.includes(t.tier) && !done.has(t.id) && (!coreIds || coreIds.has(t.id)));
+const answers = {}, more = {}; let words = 0;
+console.log(`Relay: ${label} (${model}) — ${qs.length} questions${set === 'core' ? ' (core set)' : ''}${attempts > 1 ? `, ${attempts} attempts each` : ''}, Arena ${tiers.includes('A') ? `with ${rounds} rounds` : 'skipped'}`);
 for (let i = 0; i < qs.length && !stopped; i += 3) {
   await Promise.all(qs.slice(i, i + 3).map(async t => {
-    try {
-      const msgs = []; const log = [];
-      for (const turn of t.turns) { msgs.push({ role: 'user', content: turn }); const a = await chat(msgs); msgs.push({ role: 'assistant', content: a }); log.push([turn, a]); }
-      answers[t.id] = t.turns.length === 1 ? log[0][1] : log.map(([u, a]) => `USER: ${u}\n\nASSISTANT: ${a}`).join('\n\n');
-      usage.n++; words += answers[t.id].split(/\s+/).filter(Boolean).length;
-    } catch (e) { if (e.daily) stopped = true; console.log(`  ${t.id} failed: ${e.message}`); }
+    // Each attempt is a fresh conversation. Attempts already stored for this run (from an earlier, paused run) are not repeated.
+    const need = attempts - prevAtt(t.id);
+    for (let k = 0; k < need && !stopped; k++) {
+      try {
+        const msgs = []; const log = [];
+        for (const turn of t.turns) { msgs.push({ role: 'user', content: turn }); const a = await chat(msgs); msgs.push({ role: 'assistant', content: a }); log.push([turn, a]); }
+        const ans = t.turns.length === 1 ? log[0][1] : log.map(([u, a]) => `USER: ${u}\n\nASSISTANT: ${a}`).join('\n\n');
+        if (!(t.id in answers)) answers[t.id] = ans; else (more[t.id] ||= []).push(ans);
+        usage.n++; words += ans.split(/\s+/).filter(Boolean).length;
+      } catch (e) { if (e.daily) stopped = true; console.log(`  ${t.id} attempt ${k + 1} failed: ${e.message}`); break; }
+    }
   }));
   console.log(`  answered ${Math.min(i + 3, qs.length)} / ${qs.length}`);
 }
 const r = await score(answers);
+// Score of every new attempt per item (0–3 points each), in order. Rubric items are never repeated: they would need a judge.
+const att = {};
+if (attempts > 1) for (const [id, x] of Object.entries(r.scores)) {
+  if (x.score == null) continue; att[id] = [x.score];
+  for (const ans of more[id] || []) { const s = (await score({ [id]: ans })).scores[id]; if (s && s.score != null) att[id].push(s.score); }
+}
 
 // 2. Arena with feedback rounds, like a human coach would give.
 const tourn = {};
@@ -99,6 +118,8 @@ await browser.close();
 usage.cost = Math.round(usage.cost * 1e6) / 1e6; usage.sec = Math.round(usage.sec); usage.words = usage.n ? Math.round(words / usage.n) : 0;
 const meta = { model: label, provider: `${provider}: ${model}`, access: E.RELAY_ACCESS || 'API (pay per use)', iface: 'API', think: reasoning ? (reasoning === 'high' ? 'On (high effort)' : 'On') : 'Off', tools: 'Off', restrict: '', notes: 'Run by the relay workflow', usage };
 if (!Object.keys(answers).length && !Object.keys(r.arena).length) { console.log(stopped ? 'Daily limit reached before any new answers; will resume next run.' : 'Nothing left to do for this model.'); fs.writeFileSync('result.json', JSON.stringify({ ok: false })); process.exit(0); }
+if (set === 'core') meta.notes += ` · core set (${coreIds.size} items)`;
+if (attempts > 1) meta.notes += ` · ${attempts} attempts per item`;
 if (stopped) meta.notes += ' · paused at the daily request limit; resumes on the next run';
-fs.writeFileSync('result.json', JSON.stringify({ ok: true, modelId: model, runId, issue: null, author: 'relay', isComment: false, meta, tourn, ...r }, null, 1));
+fs.writeFileSync('result.json', JSON.stringify({ ok: true, modelId: model, runId, issue: null, author: 'relay', isComment: false, meta, tourn, set, attempts, att, ...r }, null, 1));
 console.log(`Done. ${Object.keys(r.scores).length} auto-scored, ${r.rubric.length} open-ended, ${Object.keys(r.arena).length} Arena. Usage: ${JSON.stringify(usage)}`);
