@@ -157,7 +157,9 @@ details.t{transition:box-shadow .15s}details.t:hover{box-shadow:0 4px 18px rgba(
 </div></section>
 
 <section class="view band" data-view="overview" hidden><div class="wrap">
-  <div class="top">
+  <div id="shBand" style="display:none;margin-bottom:28px"><h2>Published results</h2><p class="sub" id="shNote"></p><div class="card scroll"><table id="shTable"></table></div><div id="shRepeat"></div><div id="shArena"></div></div>
+  <details class="bank" id="mineBox" open><summary>Your own test runs (saved in this browser)</summary>
+  <div class="top" style="margin-top:16px">
     <div class="card">
       <div class="fig" id="radarBox"><svg id="radar" role="img" aria-label="Capability radar by category"></svg></div>
       <div class="chips" id="legend"></div>
@@ -170,7 +172,7 @@ details.t{transition:box-shadow .15s}details.t:hover{box-shadow:0 4px 18px rgba(
   </div>
   <h2 style="margin-top:36px">Leaderboard</h2><p class="sub" style="margin:-6px 0 10px">Score per skill category for each run. 100% means every answer in that category was fully correct; greener is better, blank means not tested. Tap a category on the left above to see what it measures, or read <a href="#guide">How it works</a>.</p>
   <div class="card scroll"><table id="board"></table></div>
-  <div id="shBand" style="display:none;margin-top:36px"><h2>Shared leaderboard</h2><p class="sub" id="shNote"></p><div class="card scroll"><table id="shTable"></table></div><div id="shArena"></div></div>
+  </details>
 </div></section>
 
 <section class="view band" data-view="run" hidden><div class="wrap">
@@ -1074,12 +1076,23 @@ $('apiFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;let o;try
 // ---------- shared (read-only) leaderboard for other visitors ----------
 let RO=false,SHARED=null,CATALOG=null;
 function ovrFrom(res,tier){let s=0,w=0,n=0;T.forEach(t=>{if(tier&&t.tier!==tier)return;const r=res&&res[t.id];if(r&&typeof r.score==='number'){s+=r.score*t.d;w+=3*t.d;n++}});return{pct:w?100*s/w:null,n}}
-function renderShared(){if(!SHARED||!SHARED.models.length){$('shBand').style.display='none';return}$('shBand').style.display='';const f=x=>x==null?'–':x.toFixed(1)+'%';
+function renderShared(){if(!SHARED||!SHARED.models.length){$('shBand').style.display='none';return}$('shBand').style.display='';
+ // Visitors with no scored answers of their own see the published results first; their empty run stays folded away.
+ {const mine=Object.values(st.res||{}).some(r=>Object.values(r||{}).some(x=>x&&x.score!=null));if(!mine)$('mineBox').open=false}
+const f=x=>x==null?'–':x.toFixed(1)+'%';
  const rows=SHARED.models.map(m=>{const r=SHARED.res[m.id]||{};return{m,S:ovrFrom(r,'S').pct,F:ovrFrom(r,'F').pct,G:ovrFrom(r,'G').pct,R:ovrFrom(r,'R').pct,O:ovrFrom(r).pct,n:ovrFrom(r).n}}).sort((a,b)=>(b.O??-1)-(a.O??-1));
  {const pts={};SHARED.models.forEach(m=>pts[m.id]={p:0,w:0,ranks:{}});CH.forEach(ch=>{const rows=SHARED.models.map(m=>({id:m.id,a:(SHARED.arena[m.id]||{})[ch.id]})).filter(x=>x.a&&x.a.ok&&typeof x.a.metric==='number').sort((x,y)=>ch.better==='low'?x.a.metric-y.a.metric:(y.a.metric-x.a.metric)||((x.a.tie??1e9)-(y.a.tie??1e9)));rows.forEach((x,i)=>{pts[x.id].p+=F1[i]||0;if(!i)pts[x.id].w++;pts[x.id].ranks[ch.id]=(i+1)+' · '+fmtM(ch,x.a.metric)})});
   const ms=SHARED.models.filter(m=>Object.keys(pts[m.id].ranks).length).sort((a,b)=>pts[b.id].p-pts[a.id].p);
   $('shArena').innerHTML=ms.length?`<h3 style="margin:22px 0 8px">Arena</h3><div class="card scroll"><table><thead><tr><th>#</th><th style="text-align:left">Run</th><th>Points</th><th>Wins</th>${CH.map(c=>`<th title="${esc(c.n)}">${c.id}</th>`).join('')}</tr></thead><tbody>${ms.map((m,i)=>`<tr><td>${i+1}</td><td style="text-align:left">${esc(m.name)}</td><td><b>${pts[m.id].p}</b></td><td>${pts[m.id].w}</td>${CH.map(c=>`<td>${esc(pts[m.id].ranks[c.id]||'–')}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`:'';}
- $('shTable').innerHTML=`<thead><tr><th>#</th><th style="text-align:left">Run</th><th style="text-align:left">AI</th><th>Date</th><th>Standard</th><th>Frontier</th><th>Gauntlet</th><th>Real world</th><th>Overall</th><th>Tests</th></tr></thead><tbody>`+rows.map((x,i)=>`<tr><td>${i+1}</td><td style="text-align:left;white-space:normal">${esc(x.m.name)}${runTag(x.m)?`<br><span class="sub">${esc(runTag(x.m))}</span>`:''}</td><td style="text-align:left">${esc(x.m.model)}</td><td>${esc(x.m.date)}</td><td>${f(x.S)}</td><td>${f(x.F)}</td><td>${f(x.G)}</td><td>${f(x.R)}</td><td><b>${f(x.O)}</b></td><td>${x.n}</td></tr>`).join('')+'</tbody>'}
+ renderRepeat();
+ $('shTable').innerHTML=`<thead><tr><th>#</th><th style="text-align:left">Run</th><th>Overall</th><th>Tests</th><th>Standard</th><th>Frontier</th><th>Gauntlet</th><th>Real world</th><th style="text-align:left">AI</th><th>Date</th></tr></thead><tbody>`+rows.map((x,i)=>`<tr><td>${i+1}</td><td style="text-align:left;white-space:normal;min-width:150px">${esc(x.m.name)}${runTag(x.m)?`<br><span class="sub">${esc(runTag(x.m))}</span>`:''}</td><td><b>${f(x.O)}</b></td><td>${x.n}</td><td>${f(x.S)}</td><td>${f(x.F)}</td><td>${f(x.G)}</td><td>${f(x.R)}</td><td style="text-align:left">${esc(x.m.model)}</td><td>${esc(x.m.date)}</td></tr>`).join('')+'</tbody>'}
+// Repeatability: runs that answered each item several times (relay RELAY_ATTEMPTS). "Passed" = full marks on that attempt.
+function renderRepeat(){const box=$('shRepeat');if(!box)return;
+ const rows=SHARED.models.filter(m=>m.attempts>1).map(m=>{const n=m.attempts,items=Object.entries(SHARED.res[m.id]||{}).filter(([,r])=>r&&Array.isArray(r.att)&&r.att.length).map(([id,r])=>{const a=r.att.slice(0,n).filter(v=>typeof v==='number');return{id,p:a.filter(v=>v>=3).length,k:a.length}}).filter(x=>x.k);
+  const full=items.filter(x=>x.k===n);return{m,n,items,all:full.filter(x=>x.p===n).length,some:full.filter(x=>x.p>0&&x.p<n).length,none:full.filter(x=>x.p===0).length,wait:items.length-full.length}}).filter(x=>x.items.length);
+ if(!rows.length){box.innerHTML='';return}
+ const chip=(i,n)=>`<span title="${esc((T.find(t=>t.id===i.id)||{}).n||i.id)}" style="display:inline-block;margin:0 6px 6px 0;padding:1px 8px;border-radius:10px;font-size:13px;background:${i.k<n?'#eee':i.p===n?'#d9f2dc':i.p?'#fff1c2':'#f8d7d7'};color:#222">${esc(i.id)} ${i.p}/${i.k<n?i.k+' so far':n}</span>`;
+ box.innerHTML=`<h3 style="margin:22px 0 4px">How reliable is each AI?</h3><p class="sub" style="margin:0 0 8px">Each question was asked ${rows[0].n===3?'3 times':'several times'} in separate chats. "Passed 3/3" means full marks every time.</p>${rows.map(x=>`<div class="card" style="margin-bottom:10px"><b>${esc(x.m.name)}</b>${x.m.set==='core'?' <span class="sub">· core set</span>':''}<p style="margin:6px 0">Passed every time: <b>${x.all}</b> · sometimes: <b>${x.some}</b> · never: <b>${x.none}</b>${x.wait?` · not finished: ${x.wait}`:''}</p><details><summary class="sub">Passed x/${x.n} per question</summary><div style="margin-top:8px">${x.items.sort((a,b)=>a.p/a.k-b.p/b.k||a.id.localeCompare(b.id,undefined,{numeric:true})).map(i=>chip(i,x.n)).join('')}</div></details></div>`).join('')}`}
 function renderJudges(o){const j=o.judges||{},ks=Object.keys(j);if(!ks.length||!$('gJudges'))return;
  $('gJudges').innerHTML=`<div class="scroll"><table class="heat"><thead><tr><th style="text-align:left">Judge</th><th>Entry test</th><th>Agrees with panel</th><th>Status</th></tr></thead><tbody>${ks.sort((a,b)=>(j[b].acc||0)-(j[a].acc||0)).map(k=>{const x=j[k],ag=x.votes?Math.round(100*x.withPanel/x.votes):null;return`<tr><td style="text-align:left">${esc(k)}</td><td style="background:${heat(x.acc)}">${x.acc}%</td><td style="background:${heat(ag)}">${ag==null?'–':ag+'% of '+x.votes}</td><td>${x.acc>=85?'Qualified':'Not used'}</td></tr>`}).join('')}</tbody></table></div>${o.judgeSpend?`<p style="margin:8px 0 0">Judging cost so far: $${(+o.judgeSpend.total).toFixed(2)} over ${o.judgeSpend.calls} calls. ${(o.review||[]).length} answer(s) waiting for review.</p>`:''}`}
 function setSharedFrom(o,note){try{SHARED={models:(o.models||[]).map(cleanRun),res:o.res||{},arena:o.arena&&typeof o.arena==='object'?o.arena:{}};try{renderJudges(o)}catch(e){}$('shNote').textContent=note;renderShared()}catch(e){}}
@@ -1091,7 +1104,7 @@ const catOf=m=>{const id=orId(m);return id&&CATALOG?CATALOG.by.get(id)||null:nul
 if(!(window.claude&&window.claude.use)){fetch('leaderboard.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(o=>{if(o)setSharedFrom(o,'Published results from the benchmark owner. Your own runs below are saved in this browser only; use Export / import → Copy JSON to send them in.')}).catch(()=>{})}
 
 // ---------- cloud saving (artifact database) ----------
-const cleanRun=r=>({id:String(r.id),name:String(r.name||''),model:String(r.model||''),date:String(r.date||''),notes:String(r.notes||''),applied:String(r.applied||''),access:String(r.access||''),iface:String(r.iface||''),think:String(r.think||''),tools:String(r.tools||''),restrict:String(r.restrict||''),evidence:Array.isArray(r.evidence)?r.evidence.map(String).slice(0,6):[],usage:r.usage&&typeof r.usage==='object'?{cost:+r.usage.cost||0,sec:+r.usage.sec||0,tin:+r.usage.tin||0,tout:+r.usage.tout||0,n:+r.usage.n||0,words:+r.usage.words||0}:null});
+const cleanRun=r=>({id:String(r.id),name:String(r.name||''),model:String(r.model||''),date:String(r.date||''),notes:String(r.notes||''),applied:String(r.applied||''),access:String(r.access||''),iface:String(r.iface||''),think:String(r.think||''),tools:String(r.tools||''),restrict:String(r.restrict||''),evidence:Array.isArray(r.evidence)?r.evidence.map(String).slice(0,6):[],usage:r.usage&&typeof r.usage==='object'?{cost:+r.usage.cost||0,sec:+r.usage.sec||0,tin:+r.usage.tin||0,tout:+r.usage.tout||0,n:+r.usage.n||0,words:+r.usage.words||0}:null,attempts:Math.max(1,Math.min(3,Math.floor(+r.attempts||1))),set:r.set==='core'?'core':''});
 let DB=null,synced={},syncT=null,syncing=false;
 function sanitize(h){if(!h)return null;const tp=document.createElement('template');tp.innerHTML=String(h);const ok=new Set(['DIV','SPAN','B','CODE','EM','BR']);
  const walk=n=>{[...n.childNodes].forEach(c=>{if(c.nodeType===1){if(!ok.has(c.tagName)){c.replaceWith(document.createTextNode(c.textContent));return}[...c.attributes].forEach(a=>{if(!(a.name==='class'&&/^(p|f)$/.test(a.value)))c.removeAttribute(a.name)});walk(c)}else if(c.nodeType!==3)c.remove()})};walk(tp.content);return tp.innerHTML}
