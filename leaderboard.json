@@ -72,6 +72,29 @@
    "evidence": [
     "partial run"
    ]
+  },
+  {
+   "id": "relay-baidu-ernie-5-5-flash-preview-free-api-free-tier-std-2026-11-27",
+   "date": "2026-11-27",
+   "name": "Baidu: ERNIE-5.5-Flash-Preview (free) — 2026-11-27",
+   "model": "Baidu: ERNIE-5.5-Flash-Preview (free)",
+   "access": "API (free tier)",
+   "iface": "API",
+   "think": "Off",
+   "tools": "Off",
+   "restrict": "",
+   "notes": "Provider: openrouter: baidu/ernie-5.5-flash-preview:free · Run by the relay workflow · paused at the daily request limit; resumes on the next run",
+   "usage": {
+    "n": 16,
+    "tin": 1176,
+    "tout": 4968,
+    "cost": 0,
+    "sec": 33,
+    "words": 54
+   },
+   "evidence": [
+    "partial run"
+   ]
   }
  ],
  "res": {
@@ -2136,6 +2159,56 @@
     ],
     "judges": 2
    }
+  },
+  "relay-baidu-ernie-5-5-flash-preview-free-api-free-tier-std-2026-11-27": {
+   "L1": {
+    "score": 3
+   },
+   "L3": {
+    "score": 3
+   },
+   "L2": {
+    "score": 3
+   },
+   "L4": {
+    "score": 3
+   },
+   "L5": {
+    "score": 3
+   },
+   "L6": {
+    "score": 3
+   },
+   "L8": {
+    "score": 3
+   },
+   "M1": {
+    "score": 3
+   },
+   "L7": {
+    "score": 3
+   },
+   "M4": {
+    "score": 3
+   },
+   "M3": {
+    "score": 3
+   },
+   "M2": {
+    "score": 3
+   },
+   "M7": {
+    "score": 3
+   },
+   "M6": {
+    "score": 3
+   },
+   "M5": {
+    "score": 3
+   },
+   "M8": {
+    "score": 3
+   }
   }
  },
  "arena": {
@@ -2146,11 +2219,12 @@
     "detail": "Tour length 10086.60 (13.9% better than nearest-neighbour)",
     "tie": null
    }
-  }
+  },
+  "relay-baidu-ernie-5-5-flash-preview-free-api-free-tier-std-2026-11-27": {}
  },
  "votes": [],
  "tourn": {},
- "updated": "2026-11-27T13:06:14.312Z",
+ "updated": "2026-11-27T13:07:12.116Z",
  "judgeSpend": {
   "total": 0.101555,
   "calls": 152
