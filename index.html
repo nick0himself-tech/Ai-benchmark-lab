@@ -92,6 +92,7 @@ details.bank>summary{border:1px solid var(--line);border-radius:12px;padding:0 1
 .seg2{display:flex;flex-wrap:wrap;gap:6px}.seg2 button{flex:1 1 auto}.seg2 button.on,.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .advPick{border:2px solid var(--ink);background:var(--bg)}.advHead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}.advHead b{font-size:22px}
 .advScore{font-size:40px;font-weight:800;line-height:1;background:var(--yel);color:#101418;padding:6px 12px;border-radius:12px}.advScore small{font-size:14px;font-weight:700}.advScore.sm{font-size:24px;background:var(--line);color:var(--ink)}
+.advFb{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}.advFb b{font-size:17px;margin-right:4px}.advFb .row{gap:8px}.advFb button{min-width:76px}.advFb p{flex-basis:100%;margin:0}
 .evi{display:inline-block;font-size:12px;font-weight:800;padding:2px 8px;border-radius:999px;border:1.5px solid var(--ink);margin-right:6px}.evi.strong{background:var(--yel);color:#101418;border-color:var(--yel)}.evi.limited{border-style:dashed}.advCheap{border:2px dashed var(--ink)}
 .advAlt{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px;margin-top:12px}.advAlt b{font-size:17px}
 .podium{display:flex;justify-content:center;align-items:flex-end;gap:10px;margin:18px 0 6px;min-height:150px}
@@ -1271,7 +1272,21 @@ function advRun(){const w=advWeights();let pool=advPool();const out=$('advOut');
   ${pick!==top?`<p class="sub" style="margin:8px 0 0">The strongest overall is ${esc(top.m.model||top.m.name)} (${pctTxt(top.fit,top.ev.n)}), but this one is within 5 points and costs less.</p>`:''}</div>
   ${lean&&lean!==pick?`<div class="advCheap card" style="margin-top:12px"><div class="lab">Cheapest good enough</div><div class="advHead"><b>${esc(lean.m.model||lean.m.name)}</b><span class="advScore sm">${pctTxt(lean.fit,lean.ev.n)}</span></div>${eviHtml(lean)}<p class="sub" style="margin:6px 0 0">Within 5 points of the best match, and ${isFree(lean)?'free':isFinite(price(top))&&price(top)>0?`${Math.round(100*(1-price(lean)/price(top)))}% cheaper per answer`:'cheaper'}. ${esc(priceTxt(lean))}.</p></div>`:''}
   ${others.length?`<div class="advAlt">${others.map(x=>`<div class="card"><div class="advHead"><b>${esc(x.m.model||x.m.name)}</b><span class="advScore sm">${pctTxt(x.fit,x.ev.n)}</span></div>${eviHtml(x)}<p class="sub" style="margin:6px 0 0">${esc(why(x))}</p><p class="sub" style="margin:4px 0 0">${esc(meta(x))}</p></div>`).join('')}</div>`:''}
-  ${grid}<p class="sub" style="margin-top:12px">Results only compare fairly between runs with the same settings (shown under each name). See <a href="#guide">How it works</a> for what every number means.</p>`}
+  ${fbHtml(needKeys[0])}${grid}<p class="sub" style="margin-top:12px">Results only compare fairly between runs with the same settings (shown under each name). See <a href="#guide">How it works</a> for what every number means.</p>`}
+// ---------- feedback prompt ("Did this help you decide?") ----------
+// Anonymous counts only: one GET to a GoatCounter event counter (no cookies) with the answer and the kind of task. Nothing typed is sent.
+// Off until the owner puts a GoatCounter site code in feedback.json. ?feedback=preview shows the prompt without sending anything.
+let FB=null;const FB_KEY='abl-feedback-v1',FB_DAYS=30;const FB_PREVIEW=/[?&]feedback=preview\b/.test(location.search);
+if(!(window.claude&&window.claude.use))fetch('feedback.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(o=>{const c=o&&String(o.goatcounter||'').trim().toLowerCase();if(c&&/^[a-z0-9][a-z0-9-]{1,48}[a-z0-9]$/.test(c))FB={code:c}}).catch(()=>{});
+const fbVoted=()=>{try{const v=JSON.parse(localStorage.getItem(FB_KEY));return v&&Date.now()-v.t<FB_DAYS*864e5?v:null}catch(e){return null}};
+function fbHtml(need){if(!FB&&!FB_PREVIEW)return'';const v=fbVoted();// one answer per browser per 30 days
+ if(v)return'';
+ return`<div class="advFb card" id="advFb" data-need="${esc(need||'any')}"><b>Did this help you decide?</b><div class="row"><button data-fb="yes">Yes</button><button data-fb="no">No</button></div><p class="sub">Anonymous: we only count yes or no and the kind of task. Nothing you typed is sent, no cookies.${FB_PREVIEW&&!FB?' (Preview: nothing will be counted.)':''}</p></div>`}
+$('advOut').addEventListener('click',e=>{const b=e.target.closest('[data-fb]');if(!b)return;const box=$('advFb');if(!box||fbVoted())return;const a=b.dataset.fb==='yes'?'yes':'no';
+ const need=/^[a-z]{2,10}$/.test(box.dataset.need)?box.dataset.need:'any';
+ if(FB){const q=new URLSearchParams({p:`/feedback/${a}/${need}`,t:`Advisor feedback: ${a}`,e:'true',rnd:Math.random().toString(36).slice(2)});new Image().src=`https://${FB.code}.goatcounter.com/count?${q}`}
+ try{localStorage.setItem(FB_KEY,JSON.stringify({a,t:Date.now()}))}catch(e){}
+ box.innerHTML=`<p><b>Thanks!</b> <span class="sub">${a==='yes'?'Glad it helped.':'Sorry it did not. That helps us improve it.'}${FB?'':' (Preview: not counted.)'}</span></p>`});
 $('advGo').onclick=()=>{advRun();$('advOut').scrollIntoView({behavior:'smooth',block:'start'})};
 $('advText').addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.metaKey||e.ctrlKey))advRun()});
 $('advAI').onclick=async()=>{if(!SAMPLE)return;const t=$('advText').value.trim();if(!t)return toast('Describe the task first');$('advAI').disabled=true;$('advAI').textContent='Reading…';
