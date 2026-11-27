@@ -92,6 +92,7 @@ details.bank>summary{border:1px solid var(--line);border-radius:12px;padding:0 1
 .seg2{display:flex;flex-wrap:wrap;gap:6px}.seg2 button{flex:1 1 auto}.seg2 button.on,.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .advPick{border:2px solid var(--ink);background:var(--bg)}.advHead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}.advHead b{font-size:22px}
 .advScore{font-size:40px;font-weight:800;line-height:1;background:var(--yel);color:#101418;padding:6px 12px;border-radius:12px}.advScore small{font-size:14px;font-weight:700}.advScore.sm{font-size:24px;background:var(--line);color:var(--ink)}
+.advFb{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}.advFb b{font-size:17px;margin-right:4px}.advFb .row{gap:8px}.advFb button{min-width:76px}.advFb p{flex-basis:100%;margin:0}
 .evi{display:inline-block;font-size:12px;font-weight:800;padding:2px 8px;border-radius:999px;border:1.5px solid var(--ink);margin-right:6px}.evi.strong{background:var(--yel);color:#101418;border-color:var(--yel)}.evi.limited{border-style:dashed}.advCheap{border:2px dashed var(--ink)}
 .advAlt{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px;margin-top:12px}.advAlt b{font-size:17px}
 .podium{display:flex;justify-content:center;align-items:flex-end;gap:10px;margin:18px 0 6px;min-height:150px}
@@ -157,7 +158,9 @@ details.t{transition:box-shadow .15s}details.t:hover{box-shadow:0 4px 18px rgba(
 </div></section>
 
 <section class="view band" data-view="overview" hidden><div class="wrap">
-  <div class="top">
+  <div id="shBand" style="display:none;margin-bottom:28px"><h2>Published results</h2><p class="sub" id="shNote"></p><div class="card scroll"><table id="shTable"></table></div><div id="shRepeat"></div><div id="shArena"></div></div>
+  <details class="bank" id="mineBox" open><summary>Your own test runs (saved in this browser)</summary>
+  <div class="top" style="margin-top:16px">
     <div class="card">
       <div class="fig" id="radarBox"><svg id="radar" role="img" aria-label="Capability radar by category"></svg></div>
       <div class="chips" id="legend"></div>
@@ -170,7 +173,7 @@ details.t{transition:box-shadow .15s}details.t:hover{box-shadow:0 4px 18px rgba(
   </div>
   <h2 style="margin-top:36px">Leaderboard</h2><p class="sub" style="margin:-6px 0 10px">Score per skill category for each run. 100% means every answer in that category was fully correct; greener is better, blank means not tested. Tap a category on the left above to see what it measures, or read <a href="#guide">How it works</a>.</p>
   <div class="card scroll"><table id="board"></table></div>
-  <div id="shBand" style="display:none;margin-top:36px"><h2>Shared leaderboard</h2><p class="sub" id="shNote"></p><div class="card scroll"><table id="shTable"></table></div><div id="shArena"></div></div>
+  </details>
 </div></section>
 
 <section class="view band" data-view="run" hidden><div class="wrap">
@@ -1074,12 +1077,23 @@ $('apiFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;let o;try
 // ---------- shared (read-only) leaderboard for other visitors ----------
 let RO=false,SHARED=null,CATALOG=null;
 function ovrFrom(res,tier){let s=0,w=0,n=0;T.forEach(t=>{if(tier&&t.tier!==tier)return;const r=res&&res[t.id];if(r&&typeof r.score==='number'){s+=r.score*t.d;w+=3*t.d;n++}});return{pct:w?100*s/w:null,n}}
-function renderShared(){if(!SHARED||!SHARED.models.length){$('shBand').style.display='none';return}$('shBand').style.display='';const f=x=>x==null?'–':x.toFixed(1)+'%';
+function renderShared(){if(!SHARED||!SHARED.models.length){$('shBand').style.display='none';return}$('shBand').style.display='';
+ // Visitors with no scored answers of their own see the published results first; their empty run stays folded away.
+ {const mine=Object.values(st.res||{}).some(r=>Object.values(r||{}).some(x=>x&&x.score!=null));if(!mine)$('mineBox').open=false}
+const f=x=>x==null?'–':x.toFixed(1)+'%';
  const rows=SHARED.models.map(m=>{const r=SHARED.res[m.id]||{};return{m,S:ovrFrom(r,'S').pct,F:ovrFrom(r,'F').pct,G:ovrFrom(r,'G').pct,R:ovrFrom(r,'R').pct,O:ovrFrom(r).pct,n:ovrFrom(r).n}}).sort((a,b)=>(b.O??-1)-(a.O??-1));
  {const pts={};SHARED.models.forEach(m=>pts[m.id]={p:0,w:0,ranks:{}});CH.forEach(ch=>{const rows=SHARED.models.map(m=>({id:m.id,a:(SHARED.arena[m.id]||{})[ch.id]})).filter(x=>x.a&&x.a.ok&&typeof x.a.metric==='number').sort((x,y)=>ch.better==='low'?x.a.metric-y.a.metric:(y.a.metric-x.a.metric)||((x.a.tie??1e9)-(y.a.tie??1e9)));rows.forEach((x,i)=>{pts[x.id].p+=F1[i]||0;if(!i)pts[x.id].w++;pts[x.id].ranks[ch.id]=(i+1)+' · '+fmtM(ch,x.a.metric)})});
   const ms=SHARED.models.filter(m=>Object.keys(pts[m.id].ranks).length).sort((a,b)=>pts[b.id].p-pts[a.id].p);
   $('shArena').innerHTML=ms.length?`<h3 style="margin:22px 0 8px">Arena</h3><div class="card scroll"><table><thead><tr><th>#</th><th style="text-align:left">Run</th><th>Points</th><th>Wins</th>${CH.map(c=>`<th title="${esc(c.n)}">${c.id}</th>`).join('')}</tr></thead><tbody>${ms.map((m,i)=>`<tr><td>${i+1}</td><td style="text-align:left">${esc(m.name)}</td><td><b>${pts[m.id].p}</b></td><td>${pts[m.id].w}</td>${CH.map(c=>`<td>${esc(pts[m.id].ranks[c.id]||'–')}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`:'';}
- $('shTable').innerHTML=`<thead><tr><th>#</th><th style="text-align:left">Run</th><th style="text-align:left">AI</th><th>Date</th><th>Standard</th><th>Frontier</th><th>Gauntlet</th><th>Real world</th><th>Overall</th><th>Tests</th></tr></thead><tbody>`+rows.map((x,i)=>`<tr><td>${i+1}</td><td style="text-align:left;white-space:normal">${esc(x.m.name)}${runTag(x.m)?`<br><span class="sub">${esc(runTag(x.m))}</span>`:''}</td><td style="text-align:left">${esc(x.m.model)}</td><td>${esc(x.m.date)}</td><td>${f(x.S)}</td><td>${f(x.F)}</td><td>${f(x.G)}</td><td>${f(x.R)}</td><td><b>${f(x.O)}</b></td><td>${x.n}</td></tr>`).join('')+'</tbody>'}
+ renderRepeat();
+ $('shTable').innerHTML=`<thead><tr><th>#</th><th style="text-align:left">Run</th><th>Overall</th><th>Tests</th><th>Standard</th><th>Frontier</th><th>Gauntlet</th><th>Real world</th><th style="text-align:left">AI</th><th>Date</th></tr></thead><tbody>`+rows.map((x,i)=>`<tr><td>${i+1}</td><td style="text-align:left;white-space:normal;min-width:150px">${esc(x.m.name)}${runTag(x.m)?`<br><span class="sub">${esc(runTag(x.m))}</span>`:''}</td><td><b>${f(x.O)}</b></td><td>${x.n}</td><td>${f(x.S)}</td><td>${f(x.F)}</td><td>${f(x.G)}</td><td>${f(x.R)}</td><td style="text-align:left">${esc(x.m.model)}</td><td>${esc(x.m.date)}</td></tr>`).join('')+'</tbody>'}
+// Repeatability: runs that answered each item several times (relay RELAY_ATTEMPTS). "Passed" = full marks on that attempt.
+function renderRepeat(){const box=$('shRepeat');if(!box)return;
+ const rows=SHARED.models.filter(m=>m.attempts>1).map(m=>{const n=m.attempts,items=Object.entries(SHARED.res[m.id]||{}).filter(([,r])=>r&&Array.isArray(r.att)&&r.att.length).map(([id,r])=>{const a=r.att.slice(0,n).filter(v=>typeof v==='number');return{id,p:a.filter(v=>v>=3).length,k:a.length}}).filter(x=>x.k);
+  const full=items.filter(x=>x.k===n);return{m,n,items,all:full.filter(x=>x.p===n).length,some:full.filter(x=>x.p>0&&x.p<n).length,none:full.filter(x=>x.p===0).length,wait:items.length-full.length}}).filter(x=>x.items.length);
+ if(!rows.length){box.innerHTML='';return}
+ const chip=(i,n)=>`<span title="${esc((T.find(t=>t.id===i.id)||{}).n||i.id)}" style="display:inline-block;margin:0 6px 6px 0;padding:1px 8px;border-radius:10px;font-size:13px;background:${i.k<n?'#eee':i.p===n?'#d9f2dc':i.p?'#fff1c2':'#f8d7d7'};color:#222">${esc(i.id)} ${i.p}/${i.k<n?i.k+' so far':n}</span>`;
+ box.innerHTML=`<h3 style="margin:22px 0 4px">How reliable is each AI?</h3><p class="sub" style="margin:0 0 8px">Each question was asked ${rows[0].n===3?'3 times':'several times'} in separate chats. "Passed 3/3" means full marks every time.</p>${rows.map(x=>`<div class="card" style="margin-bottom:10px"><b>${esc(x.m.name)}</b>${x.m.set==='core'?' <span class="sub">· core set</span>':''}<p style="margin:6px 0">Passed every time: <b>${x.all}</b> · sometimes: <b>${x.some}</b> · never: <b>${x.none}</b>${x.wait?` · not finished: ${x.wait}`:''}</p><details><summary class="sub">Passed x/${x.n} per question</summary><div style="margin-top:8px">${x.items.sort((a,b)=>a.p/a.k-b.p/b.k||a.id.localeCompare(b.id,undefined,{numeric:true})).map(i=>chip(i,x.n)).join('')}</div></details></div>`).join('')}`}
 function renderJudges(o){const j=o.judges||{},ks=Object.keys(j);if(!ks.length||!$('gJudges'))return;
  $('gJudges').innerHTML=`<div class="scroll"><table class="heat"><thead><tr><th style="text-align:left">Judge</th><th>Entry test</th><th>Agrees with panel</th><th>Status</th></tr></thead><tbody>${ks.sort((a,b)=>(j[b].acc||0)-(j[a].acc||0)).map(k=>{const x=j[k],ag=x.votes?Math.round(100*x.withPanel/x.votes):null;return`<tr><td style="text-align:left">${esc(k)}</td><td style="background:${heat(x.acc)}">${x.acc}%</td><td style="background:${heat(ag)}">${ag==null?'–':ag+'% of '+x.votes}</td><td>${x.acc>=85?'Qualified':'Not used'}</td></tr>`}).join('')}</tbody></table></div>${o.judgeSpend?`<p style="margin:8px 0 0">Judging cost so far: $${(+o.judgeSpend.total).toFixed(2)} over ${o.judgeSpend.calls} calls. ${(o.review||[]).length} answer(s) waiting for review.</p>`:''}`}
 function setSharedFrom(o,note){try{SHARED={models:(o.models||[]).map(cleanRun),res:o.res||{},arena:o.arena&&typeof o.arena==='object'?o.arena:{}};try{renderJudges(o)}catch(e){}$('shNote').textContent=note;renderShared()}catch(e){}}
@@ -1091,7 +1105,7 @@ const catOf=m=>{const id=orId(m);return id&&CATALOG?CATALOG.by.get(id)||null:nul
 if(!(window.claude&&window.claude.use)){fetch('leaderboard.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(o=>{if(o)setSharedFrom(o,'Published results from the benchmark owner. Your own runs below are saved in this browser only; use Export / import → Copy JSON to send them in.')}).catch(()=>{})}
 
 // ---------- cloud saving (artifact database) ----------
-const cleanRun=r=>({id:String(r.id),name:String(r.name||''),model:String(r.model||''),date:String(r.date||''),notes:String(r.notes||''),applied:String(r.applied||''),access:String(r.access||''),iface:String(r.iface||''),think:String(r.think||''),tools:String(r.tools||''),restrict:String(r.restrict||''),evidence:Array.isArray(r.evidence)?r.evidence.map(String).slice(0,6):[],usage:r.usage&&typeof r.usage==='object'?{cost:+r.usage.cost||0,sec:+r.usage.sec||0,tin:+r.usage.tin||0,tout:+r.usage.tout||0,n:+r.usage.n||0,words:+r.usage.words||0}:null});
+const cleanRun=r=>({id:String(r.id),name:String(r.name||''),model:String(r.model||''),date:String(r.date||''),notes:String(r.notes||''),applied:String(r.applied||''),access:String(r.access||''),iface:String(r.iface||''),think:String(r.think||''),tools:String(r.tools||''),restrict:String(r.restrict||''),evidence:Array.isArray(r.evidence)?r.evidence.map(String).slice(0,6):[],usage:r.usage&&typeof r.usage==='object'?{cost:+r.usage.cost||0,sec:+r.usage.sec||0,tin:+r.usage.tin||0,tout:+r.usage.tout||0,n:+r.usage.n||0,words:+r.usage.words||0}:null,attempts:Math.max(1,Math.min(3,Math.floor(+r.attempts||1))),set:r.set==='core'?'core':''});
 let DB=null,synced={},syncT=null,syncing=false;
 function sanitize(h){if(!h)return null;const tp=document.createElement('template');tp.innerHTML=String(h);const ok=new Set(['DIV','SPAN','B','CODE','EM','BR']);
  const walk=n=>{[...n.childNodes].forEach(c=>{if(c.nodeType===1){if(!ok.has(c.tagName)){c.replaceWith(document.createTextNode(c.textContent));return}[...c.attributes].forEach(a=>{if(!(a.name==='class'&&/^(p|f)$/.test(a.value)))c.removeAttribute(a.name)});walk(c)}else if(c.nodeType!==3)c.remove()})};walk(tp.content);return tp.innerHTML}
@@ -1258,7 +1272,21 @@ function advRun(){const w=advWeights();let pool=advPool();const out=$('advOut');
   ${pick!==top?`<p class="sub" style="margin:8px 0 0">The strongest overall is ${esc(top.m.model||top.m.name)} (${pctTxt(top.fit,top.ev.n)}), but this one is within 5 points and costs less.</p>`:''}</div>
   ${lean&&lean!==pick?`<div class="advCheap card" style="margin-top:12px"><div class="lab">Cheapest good enough</div><div class="advHead"><b>${esc(lean.m.model||lean.m.name)}</b><span class="advScore sm">${pctTxt(lean.fit,lean.ev.n)}</span></div>${eviHtml(lean)}<p class="sub" style="margin:6px 0 0">Within 5 points of the best match, and ${isFree(lean)?'free':isFinite(price(top))&&price(top)>0?`${Math.round(100*(1-price(lean)/price(top)))}% cheaper per answer`:'cheaper'}. ${esc(priceTxt(lean))}.</p></div>`:''}
   ${others.length?`<div class="advAlt">${others.map(x=>`<div class="card"><div class="advHead"><b>${esc(x.m.model||x.m.name)}</b><span class="advScore sm">${pctTxt(x.fit,x.ev.n)}</span></div>${eviHtml(x)}<p class="sub" style="margin:6px 0 0">${esc(why(x))}</p><p class="sub" style="margin:4px 0 0">${esc(meta(x))}</p></div>`).join('')}</div>`:''}
-  ${grid}<p class="sub" style="margin-top:12px">Results only compare fairly between runs with the same settings (shown under each name). See <a href="#guide">How it works</a> for what every number means.</p>`}
+  ${fbHtml(needKeys[0])}${grid}<p class="sub" style="margin-top:12px">Results only compare fairly between runs with the same settings (shown under each name). See <a href="#guide">How it works</a> for what every number means.</p>`}
+// ---------- feedback prompt ("Did this help you decide?") ----------
+// Anonymous counts only: one GET to a GoatCounter event counter (no cookies) with the answer and the kind of task. Nothing typed is sent.
+// Off until the owner puts a GoatCounter site code in feedback.json. ?feedback=preview shows the prompt without sending anything.
+let FB=null;const FB_KEY='abl-feedback-v1',FB_DAYS=30;const FB_PREVIEW=/[?&]feedback=preview\b/.test(location.search);
+if(!(window.claude&&window.claude.use))fetch('feedback.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(o=>{const c=o&&String(o.goatcounter||'').trim().toLowerCase();if(c&&/^[a-z0-9][a-z0-9-]{1,48}[a-z0-9]$/.test(c))FB={code:c}}).catch(()=>{});
+const fbVoted=()=>{try{const v=JSON.parse(localStorage.getItem(FB_KEY));return v&&Date.now()-v.t<FB_DAYS*864e5?v:null}catch(e){return null}};
+function fbHtml(need){if(!FB&&!FB_PREVIEW)return'';const v=fbVoted();// one answer per browser per 30 days
+ if(v)return'';
+ return`<div class="advFb card" id="advFb" data-need="${esc(need||'any')}"><b>Did this help you decide?</b><div class="row"><button data-fb="yes">Yes</button><button data-fb="no">No</button></div><p class="sub">Anonymous: we only count yes or no and the kind of task. Nothing you typed is sent, no cookies.${FB_PREVIEW&&!FB?' (Preview: nothing will be counted.)':''}</p></div>`}
+$('advOut').addEventListener('click',e=>{const b=e.target.closest('[data-fb]');if(!b)return;const box=$('advFb');if(!box||fbVoted())return;const a=b.dataset.fb==='yes'?'yes':'no';
+ const need=/^[a-z]{2,10}$/.test(box.dataset.need)?box.dataset.need:'any';
+ if(FB){const q=new URLSearchParams({p:`/feedback/${a}/${need}`,t:`Advisor feedback: ${a}`,e:'true',rnd:Math.random().toString(36).slice(2)});new Image().src=`https://${FB.code}.goatcounter.com/count?${q}`}
+ try{localStorage.setItem(FB_KEY,JSON.stringify({a,t:Date.now()}))}catch(e){}
+ box.innerHTML=`<p><b>Thanks!</b> <span class="sub">${a==='yes'?'Glad it helped.':'Sorry it did not. That helps us improve it.'}${FB?'':' (Preview: not counted.)'}</span></p>`});
 $('advGo').onclick=()=>{advRun();$('advOut').scrollIntoView({behavior:'smooth',block:'start'})};
 $('advText').addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.metaKey||e.ctrlKey))advRun()});
 $('advAI').onclick=async()=>{if(!SAMPLE)return;const t=$('advText').value.trim();if(!t)return toast('Describe the task first');$('advAI').disabled=true;$('advAI').textContent='Reading…';

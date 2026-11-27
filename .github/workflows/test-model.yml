@@ -30,6 +30,14 @@ on:
       reasoning:
         description: "Reasoning effort for models that support it: low, medium, high (optional)"
         required: false
+      set:
+        description: "all = every tier above; core = only the 52-item core set (core/core-set.json, no Arena, no judge cost)"
+        default: "all"
+        required: true
+      attempts:
+        description: "Answer each question 1–3 times in separate chats; 3 shows 'passed x/3' (uses 3× the requests)"
+        default: "1"
+        required: true
 
 concurrency:
   group: leaderboard
@@ -67,6 +75,8 @@ jobs:
           RELAY_TIERS: ${{ inputs.tiers }}
           RELAY_ROUNDS: ${{ inputs.rounds }}
           RELAY_REASONING: ${{ inputs.reasoning }}
+          RELAY_SET: ${{ inputs.set }}
+          RELAY_ATTEMPTS: ${{ inputs.attempts }}
         run: node scripts/relay.mjs
       - name: Publish (judge open-ended answers and builds with the judge panel)
         env:

@@ -21,7 +21,19 @@ const R = (lb.res[id] ||= {});
   if (res.issue && res.authorAssociation !== 'OWNER') ev.add('unverified submission');
   if (res.issue && !/relay/i.test(m.notes || '')) ev.add('self-reported setup');
   run._pendingEvidence = { ev, total }; }
-for (const [tid, x] of Object.entries(res.scores)) if (x.score != null) R[tid] = { score: x.score };
+// Repeated runs (relay RELAY_ATTEMPTS > 1): keep every attempt's score in `att` (0–3 each, at most `attempts` of them).
+// `score` is the mean of the attempts, so overall percentages stay comparable; "passed" means full marks on an attempt.
+const N = Math.max(1, Math.min(3, +res.attempts || 1));
+for (const [tid, x] of Object.entries(res.scores)) {
+  if (x.score == null) continue;
+  const fresh = (res.att || {})[tid];
+  if (N > 1 && Array.isArray(fresh)) {
+    const all = [...(Array.isArray(R[tid]?.att) ? R[tid].att : []), ...fresh].filter(v => typeof v === 'number').slice(0, N);
+    R[tid] = { score: Math.round(100 * all.reduce((p, v) => p + v, 0) / all.length) / 100, att: all };
+  } else R[tid] = { score: x.score };
+}
+if (N > 1) run.attempts = N;
+if (res.set === 'core') run.set = 'core';
 const A = (lb.arena[id] ||= {});
 const notes = []; const proQueue = [];
 const save = (cid, code) => { const d = path.join('submissions', id); fs.mkdirSync(d, { recursive: true }); fs.writeFileSync(path.join(d, cid + '.txt'), code); };
@@ -69,7 +81,10 @@ for (const cid of [...new Set(lb.votes.map(v => v.ch))]) {
   for (const [r, e] of Object.entries(E)) lb.arena[r][cid].metric = Math.round(e);
 }
 { const { ev, total } = run._pendingEvidence; delete run._pendingEvidence;
-  if (Object.keys(R).length < 0.9 * total) ev.add('partial run');
+  // A core-set run is complete when every core item has all its attempts; it is not "partial" just because it skips the rest of the library.
+  if (run.set === 'core') { const ids = JSON.parse(fs.readFileSync('core/core-set.json', 'utf8')).ids, n = run.attempts || 1;
+    if (ids.some(t => !R[t] || (n > 1 && (R[t].att || []).length < n))) ev.add('partial run'); }
+  else if (Object.keys(R).length < 0.9 * total) ev.add('partial run');
   const hasRubric = (res.rubric || []).length; if (hasRubric && !(J && J.panel.length)) ev.add('open-ended not judged'); else if (J && J.panel.length) ev.delete('open-ended not judged');
   run.evidence = [...ev]; }
 lb.updated = new Date().toISOString();
