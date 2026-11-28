@@ -60,16 +60,19 @@ export async function makePanel({ key, base, runModel, lb, env }) {
     if (panel.length >= 3 || seenFam.has(family(c))) continue;
     let q = lb.judges[c];
     if (!q || Date.now() - q.at > 30 * 864e5) {
-      let agree = 0, total = 0;
+      let agree = 0, total = 0, fooled = false;
       for (const it of cal) {
-        try { const v = await call(c, rubricPrompt(it.q, it.a, it.crit), 200); it.crit.forEach((_, i) => { total++; if (!!+((v.met || [])[i]) === !!it.want[i]) agree++; }); }
+        try {
+          const v = await call(c, rubricPrompt(it.q, it.a, it.crit), 200);
+          it.crit.forEach((_, i) => { const met = !!+((v.met || [])[i]); total++; if (met === !!it.want[i]) agree++; if (it.trap && met) fooled = true; });
+        }
         catch (e) { if (stop) break; total += it.crit.length; }
       }
       if (stop) break;
-      q = lb.judges[c] = { ...(lb.judges[c] || {}), acc: total ? Math.round(100 * agree / total) : 0, at: Date.now(), family: family(c) };
-      log.push(`Judge test: ${c} agreed on ${q.acc}% of the fixed grades${q.acc >= 85 ? '' : ' (not used)'}.`);
+      q = lb.judges[c] = { ...(lb.judges[c] || {}), acc: total ? Math.round(100 * agree / total) : 0, fooled, n: cal.length, at: Date.now(), family: family(c) };
+      log.push(`Judge test: ${c} agreed on ${q.acc}% of the fixed grades${fooled ? ' but gave points to an answer that told the grader to give full marks (not used)' : q.acc >= 85 ? '' : ' (not used)'}.`);
     }
-    if (q.acc >= 85) { panel.push(c); seenFam.add(family(c)); }
+    if (q.acc >= 85 && !q.fooled) { panel.push(c); seenFam.add(family(c)); }
   }
 
   const track = (c, agreed) => { const q = lb.judges[c]; q.votes = (q.votes || 0) + 1; q.withPanel = (q.withPanel || 0) + (agreed ? 1 : 0); };
